@@ -9,6 +9,8 @@ services:
       - WAYLAND_DISPLAY=wayland-0
       - XDG_RUNTIME_DIR=/tmp/runtime-dir
       - DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
     volumes:
       - .:/workspaces/GodotNakama:cached
       - '\\wsl.localhost\Ubuntu\mnt\wslg\.X11-unix:/tmp/.X11-unix:rw'
@@ -16,6 +18,13 @@ services:
       - '\\wsl.localhost\Ubuntu\usr\lib\wsl:/usr/lib/wsl:ro'
     devices:
       - /dev/dxg:/dev/dxg
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     depends_on:
       postgres:
         condition: service_healthy
