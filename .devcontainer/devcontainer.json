@@ -37,7 +37,10 @@
   "remoteUser": "root",
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
-    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal"
+    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "XDG_RUNTIME_DIR": "/tmp/runtime-dir"
   },
   "forwardPorts": [7351],
   "portsAttributes": {
