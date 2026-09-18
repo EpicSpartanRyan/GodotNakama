@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Instalar Starship en Bashrc",
+      "type": "shell",
+      "command": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc && echo '¡Listo!'",
+      "problemMatcher": []
+    },
+    {
+      "label": "Iniciar Godot",
+      "type": "shell",
+      "command": "godot -e",
+      "problemMatcher": []
+    }
+  ]
+}
