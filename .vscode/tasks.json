@@ -12,6 +12,18 @@
       "type": "shell",
       "command": "godot -e",
       "problemMatcher": []
+    },
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": "$msCompile"
     }
   ]
 }
