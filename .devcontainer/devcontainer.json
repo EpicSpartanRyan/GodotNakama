@@ -2,7 +2,8 @@
   "name": "Godot Nakama Environment",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "godot",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false
