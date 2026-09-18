@@ -5,4 +5,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>SampleGame</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NakamaClient" Version="3.22.0" />
+  </ItemGroup>
 </Project>
