@@ -14,6 +14,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Detener todos los procesos de Godot",
+      "type": "shell",
+      "command": "ps -eo pid=,comm= | awk 'tolower($2) ~ /^godot/ {print $1}' | xargs -r kill -TERM",
+      "problemMatcher": []
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "process",
