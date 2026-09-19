@@ -29,6 +29,12 @@
       "problemMatcher": []
     },
     {
+      "label": "fix godot game input",
+      "type": "shell",
+      "command": "sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' ~/.config/godot/editor_settings-4.7.tres && echo 'Godot game input fixed.'",
+      "problemMatcher": []
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "process",
