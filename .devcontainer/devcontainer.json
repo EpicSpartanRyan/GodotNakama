@@ -26,6 +26,8 @@
         "docker.docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
 
+        "GitHub.vscode-pull-request-github", // GitHub PR's
+
         "redhat.vscode-yaml"
       ]
     }
