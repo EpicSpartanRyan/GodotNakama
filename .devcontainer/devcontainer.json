@@ -2,14 +2,14 @@
   "name": "Godot Nakama Environment",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "godot",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
+  "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/${localWorkspaceFolderBasename},type=bind",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       "moby": false
     },
     "ghcr.io/devcontainers-extra/features/starship:1": {},
-    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/go:1": {}
   },
   "customizations": {
     "vscode": {
@@ -35,13 +35,14 @@
       ]
     }
   },
-  "remoteUser": "root",
+  "remoteUser": "ubuntu",
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "DISPLAY": ":0",
     "WAYLAND_DISPLAY": "wayland-0",
-    "XDG_RUNTIME_DIR": "/tmp/runtime-dir"
+    "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
+    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
   "forwardPorts": [6007, 6008, 7351],
   "portsAttributes": {

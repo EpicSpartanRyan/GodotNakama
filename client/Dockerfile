@@ -46,6 +46,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-3 \
     libpulse0 \
     libasound2t64 \
+    libasound2-plugins \
+    pulseaudio-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Descargar e instalar la versión .NET (etiquetada como mono) de Godot 4.7.2
@@ -75,6 +77,6 @@ RUN mkdir -p /opt/aseprite /opt/skia && \
     ln -s /opt/aseprite/build/bin/aseprite /usr/local/bin/aseprite && \
     rm -rf /tmp/aseprite /tmp/*.zip
 
-WORKDIR /workspaces/GodotNakama
+WORKDIR /home/ubuntu/GodotNakama
 
 CMD ["sleep", "infinity"]
