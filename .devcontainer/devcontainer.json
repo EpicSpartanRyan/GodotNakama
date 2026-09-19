@@ -43,8 +43,16 @@
     "WAYLAND_DISPLAY": "wayland-0",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir"
   },
-  "forwardPorts": [7351],
+  "forwardPorts": [6007, 6008, 7351],
   "portsAttributes": {
+    "6007": {
+      "label": "Godot Remote Debugger",
+      "onAutoForward": "notify"
+    },
+    "6008": {
+      "label": "GSCript Language Server",
+      "onAutoForward": "notify"
+    },
     "7351": {
       "label": "Nakama Panel",
       "onAutoForward": "notify"
