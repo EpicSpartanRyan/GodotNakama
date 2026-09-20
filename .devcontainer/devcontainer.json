@@ -21,7 +21,8 @@
         "geequlim.godot-tools", // Godot Support
         "neikeq.godot-csharp-vscode",
 
-        "GitHub.vscode-pull-request-github", // GitHub PR's
+        "GitHub.vscode-pull-request-github", // GitHub PR's and Actions
+        "github.vscode-github-actions",
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
 
@@ -30,6 +31,7 @@
         "docker.docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
 
+        "EditorConfig.EditorConfig",
         "redhat.vscode-yaml"
       ]
     }
