@@ -1,8 +1,12 @@
 using Godot;
 using System;
+using System.IO;
+using System.Numerics;
 
-public partial class NewScript : Node
+public partial class NewScript : Node2D
 {
+	private int frame = 0;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -11,5 +15,7 @@ public partial class NewScript : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		frame += 1;
+		Console.WriteLine(frame);
 	}
 }
