@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "docker"
+    directory: "/client"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  
+  - package-ecosystem: "nuget"
+    directory: "/client/sample-game"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
