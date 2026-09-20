@@ -33,12 +33,12 @@ services:
         condition: service_healthy
   postgres:
     container_name: postgres
-    image: postgres:16.8-alpine
+    image: postgres:18.6-trixie
     environment:
       - POSTGRES_DB=nakama
       - POSTGRES_PASSWORD=localdb
     volumes:
-      - data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     expose:
       - "8080"
       - "5432"
@@ -81,4 +81,4 @@ services:
       timeout: 5s
       retries: 5
 volumes:
-  data:
+  postgres-data:
