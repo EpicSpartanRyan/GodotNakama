@@ -21,8 +21,9 @@
         "geequlim.godot-tools", // Godot Support
         "neikeq.godot-csharp-vscode",
 
-        "GitHub.vscode-pull-request-github", // GitHub PR's and Actions
+        "GitHub.vscode-pull-request-github", // GitHub PR's/Actions, Tasks
         "github.vscode-github-actions",
+        "spmeesseman.vscode-taskexplorer",
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
 
