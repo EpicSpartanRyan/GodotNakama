@@ -1,7 +1,5 @@
 using Godot;
 using System;
-using System.IO;
-using System.Numerics;
 
 public partial class NewScript : Node2D
 {
@@ -16,6 +14,5 @@ public partial class NewScript : Node2D
 	public override void _Process(double delta)
 	{
 		frame += 1;
-		Console.WriteLine(frame);
 	}
 }
