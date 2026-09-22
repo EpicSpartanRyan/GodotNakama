@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     unzip \
     git \
+    git-lfs \
     clang \
     cmake \
     g++ \
@@ -50,6 +51,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2-plugins \
     pulseaudio-utils \
     && rm -rf /var/lib/apt/lists/*
+
+RUN git lfs install --system
 
 # 2. Descargar e instalar la versión .NET (etiquetada como mono) de Godot 4.7.2
 RUN GODOT_BUILD="Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux_x86_64" && \
