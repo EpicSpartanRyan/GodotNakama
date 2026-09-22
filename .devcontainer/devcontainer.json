@@ -16,6 +16,7 @@
     "vscode": {
       "extensions": [
         "ms-dotnettools.csdevkit", // C# Language
+        "EditorConfig.EditorConfig",
 
         "golang.go", // Go Language
 
@@ -32,8 +33,7 @@
         "ms-azuretools.vscode-docker",
         "docker.docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
-
-        "EditorConfig.EditorConfig",
+        
         "redhat.vscode-yaml"
       ]
     }
