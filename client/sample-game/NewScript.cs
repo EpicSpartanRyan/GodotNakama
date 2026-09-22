@@ -14,5 +14,6 @@ public partial class NewScript : Node2D
 	public override void _Process(double delta)
 	{
 		frame += 1;
+		GD.Print(frame);
 	}
 }
