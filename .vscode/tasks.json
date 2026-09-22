@@ -35,6 +35,15 @@
       "problemMatcher": []
     },
     {
+      "label": "Install Godot Addons",
+      "type": "shell",
+      "command": "godot --headless -s plug.gd install; rm -rf .plugged",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "process",
