@@ -5,8 +5,8 @@
 # gd-plug
 .plugged/
 
-# Godot addons - ignore most, but keep essential ones tracked
-addons/*
-!addons/gd-plug/plug.gd
-# Add your custom addons below to keep them in git
-#!addons/my-custom-addon/
+# Igpora todos los addons por defecto
+/addons/*
+
+# Permite que Git entre a la carpeta de gd-plug
+!/addons/gd-plug/
