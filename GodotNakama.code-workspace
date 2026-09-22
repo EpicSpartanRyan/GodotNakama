@@ -7,5 +7,7 @@
 			"path": "client/sample-game"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln"
+	}
 }
