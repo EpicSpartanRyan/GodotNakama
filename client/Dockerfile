@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ninja-build \
     tmux \
     jq \
+    nano \
     libfontconfig1-dev \
     libfontconfig1 \
     libgl1-mesa-dev \
