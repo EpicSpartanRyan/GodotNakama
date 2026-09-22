@@ -2,19 +2,19 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Instalar Starship en Bashrc",
+      "label": "Install Starship in Bashrc",
       "type": "shell",
       "command": "grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc && echo 'Listo'",
       "problemMatcher": []
     },
     {
-      "label": "Iniciar Godot",
+      "label": "Start Godot",
       "type": "shell",
       "command": "godot -e",
       "problemMatcher": []
     },
     {
-      "label": "Iniciar Aseprite",
+      "label": "Start Aseprite",
       "type": "shell",
       "command": "aseprite",
       "options": {
@@ -23,13 +23,13 @@
       "problemMatcher": []
     },
     {
-      "label": "Detener todos los procesos de Godot",
+      "label": "Stop all Godot processes",
       "type": "shell",
       "command": "ps -eo pid=,comm= | awk 'tolower($2) ~ /^godot/ {print $1}' | xargs -r kill -TERM",
       "problemMatcher": []
     },
     {
-      "label": "fix godot game input",
+      "label": "Fix Godot game input",
       "type": "shell",
       "command": "sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' ~/.config/godot/editor_settings-4.7.tres && echo 'Godot game input fixed.'",
       "problemMatcher": []
