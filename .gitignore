@@ -1,2 +1,14 @@
 nakama/.cookie
 nakama/modules/
+
+# Godot and .NET generated files
+**/.godot/
+**/bin/
+**/obj/
+.vs/
+.idea/
+
+# Local logs, dumps, and exports
+*.log
+*.dmp
+exports/

@@ -1,1 +1,16 @@
-sample-game/.godot
+# Generated project data and build output
+**/.godot/
+**/bin/
+**/obj/
+
+# Repository and editor metadata
+.git/
+.github/
+.vscode/
+.idea/
+.vs/
+
+# Local diagnostics and exports
+**/*.log
+**/*.dmp
+**/exports/
