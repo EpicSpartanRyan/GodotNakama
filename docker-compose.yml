@@ -53,6 +53,7 @@ services:
   nakama:
     container_name: nakama
     image: heroiclabs/nakama:3.41.0
+    user: "1000:1000"
     entrypoint:
       - "/bin/sh"
       - "-ecx"
