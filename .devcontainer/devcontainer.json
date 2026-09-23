@@ -35,7 +35,8 @@
         "ms-kubernetes-tools.vscode-kubernetes-tools",
         
         "redhat.vscode-yaml", // Files
-        "AykutSarac.jsoncrack-vscode"
+        "AykutSarac.jsoncrack-vscode",
+        "grimaldi-tech.aseprite-preview"
       ]
     }
   },
