@@ -10,7 +10,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # 1. Herramientas y dependencias de sistema (compatibles con Ubuntu 24.04 / Noble)
-# 1. Herramientas y dependencias de sistema (compatibles con Ubuntu 24.04 / Noble)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
@@ -23,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ \
     ninja-build \
     tmux \
+    zsh \
     jq \
     nano \
     libfontconfig1-dev \
