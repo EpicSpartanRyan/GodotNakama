@@ -118,6 +118,16 @@ if command -v ulimit >/dev/null 2>&1; then
     fi
 fi
 
+# Check total RAM allocation
+if command -v free >/dev/null 2>&1; then
+    ram_total_mb=$(free -m | awk '/^Mem:/ {print $2}')
+    if (( ram_total_mb < 3800 )); then
+        info_status "Checking total RAM" "warn" "low RAM allocated (${ram_total_mb}MB), builds may run out of memory"
+    else
+        info_status "Checking total RAM" "ok" "${ram_total_mb}MB allocated"
+    fi
+fi
+
 # Check Swap memory availability
 if command -v free >/dev/null 2>&1; then
     swap_total_kb=$(free -k | awk '/^Swap:/ {print $2}')
@@ -126,6 +136,31 @@ if command -v free >/dev/null 2>&1; then
     else
         swap_total_mb=$(( swap_total_kb / 1024 ))
         info_status "Checking Swap memory" "ok" "${swap_total_mb}MB swap available"
+    fi
+fi
+
+# Check system clock synchronization
+if command -v timedatectl >/dev/null 2>&1 && timedatectl status >/dev/null 2>&1; then
+    if timedatectl status | grep -E -i "synchronized: yes|NTP service: active" >/dev/null 2>&1; then
+        info_status "Checking clock synchronization" "ok" "system clock synchronized"
+    else
+        info_status "Checking clock synchronization" "warn" "clock not marked as synchronized"
+    fi
+elif [[ -f /.dockerenv ]]; then
+    info_status "Checking clock synchronization" "ok" "managed by host container engine"
+else
+    remote_date=$(curl -sI --max-time 3 https://github.com 2>/dev/null | grep -i "^date:" | cut -d' ' -f2- || true)
+    if [[ -n "$remote_date" ]]; then
+        remote_sec=$(date -d "$remote_date" +%s 2>/dev/null || echo 0)
+        local_sec=$(date +%s)
+        diff_sec=$(( local_sec > remote_sec ? local_sec - remote_sec : remote_sec - local_sec ))
+        if (( diff_sec < 15 )); then
+            info_status "Checking clock synchronization" "ok" "clock aligned (drift: ${diff_sec}s)"
+        else
+            info_status "Checking clock synchronization" "warn" "clock drift detected (${diff_sec}s skew)"
+        fi
+    else
+        info_status "Checking clock synchronization" "warn" "unable to verify time status"
     fi
 fi
 
@@ -286,10 +321,21 @@ if ! command -v docker >/dev/null 2>&1; then
     fail=1
 else
     if docker info >/dev/null 2>&1; then
-        info_status "Checking Docker" "ok" "daemon accessible"
+        info_status "Checking Docker daemon" "ok" "accessible"
     else
-        info_status "Checking Docker" "error" "daemon not accessible"
+        info_status "Checking Docker daemon" "error" "not accessible"
         fail=1
+    fi
+fi
+
+# Check Docker socket access inside container
+if [[ -f /.dockerenv ]]; then
+    if [[ -S /var/run/docker.sock ]] && docker ps >/dev/null 2>&1; then
+        info_status "Checking Docker socket access" "ok" "socket mounted and accessible"
+    elif [[ -S /var/run/docker.sock ]]; then
+        info_status "Checking Docker socket access" "warn" "socket mounted but permission denied"
+    else
+        info_status "Checking Docker socket access" "ok" "isolated container (no host socket mounted)"
     fi
 fi
 
@@ -410,8 +456,18 @@ fi
 
 
 # ==========================================
-# 8. External Connectivity Health Checks
+# 8. External Connectivity & Network Health Checks
 # ==========================================
+
+# Check DNS resolution performance
+if command -v getent >/dev/null 2>&1; then
+    if getent hosts github.com >/dev/null 2>&1; then
+        info_status "Checking DNS resolution" "ok" "resolving external hosts correctly"
+    else
+        info_status "Checking DNS resolution" "error" "unable to resolve external hosts"
+        fail=1
+    fi
+fi
 
 # GitHub (Git Push/Pull & APIs)
 if curl -s --max-time 5 https://github.com >/dev/null 2>&1; then
