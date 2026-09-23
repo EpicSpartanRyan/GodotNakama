@@ -75,6 +75,28 @@ fi
 # 2. Languages & Tools
 # ==========================================
 
+# Check C++ build tools (Clang, GCC, CMake)
+if ! command -v cmake >/dev/null 2>&1; then
+    info_status "Checking CMake" "warn" "not found in PATH"
+else
+    cmake_version=$(cmake --version | head -n1)
+    info_status "Checking CMake" "ok" "$cmake_version"
+fi
+
+if ! command -v clang >/dev/null 2>&1; then
+    info_status "Checking Clang" "warn" "not found in PATH"
+else
+    clang_version=$(clang --version | head -n1)
+    info_status "Checking Clang" "ok" "$clang_version"
+fi
+
+if ! command -v g++ >/dev/null 2>&1; then
+    info_status "Checking G++" "warn" "not found in PATH"
+else
+    gxx_version=$(g++ --version | head -n1)
+    info_status "Checking G++" "ok" "$gxx_version"
+fi
+
 # Check .NET SDK version against global.json
 if ! command -v dotnet >/dev/null 2>&1; then
     info_status "Checking .NET SDK" "error" "CLI not found"
@@ -240,7 +262,7 @@ fi
 
 
 # ==========================================
-# 6. Workspace, tmux, zsh, starship
+# 6. Workspace, Editors & Shell Utilities
 # ==========================================
 
 # Check workspace folder
@@ -248,6 +270,22 @@ if [[ -f GodotNakama.code-workspace ]]; then
     info_status "Checking workspace" "ok" "GodotNakama.code-workspace found"
 else
     info_status "Checking workspace" "warn" "workspace file not found"
+fi
+
+# Check VS Code
+if ! command -v code >/dev/null 2>&1; then
+    info_status "Checking VS Code" "warn" "not found in PATH"
+else
+    code_version=$(code --version | head -n1)
+    info_status "Checking VS Code" "ok" "version $code_version"
+fi
+
+# Check nano
+if ! command -v nano >/dev/null 2>&1; then
+    info_status "Checking nano" "warn" "not found in PATH"
+else
+    nano_version=$(nano --version | head -n1)
+    info_status "Checking nano" "ok" "$nano_version"
 fi
 
 # Check tmux
