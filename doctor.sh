@@ -8,7 +8,7 @@
 # - Godot editor availability
 # - Aseprite availability
 # - Git LFS and GitHub CLI availability
-# - Basic connectivity to PostgreSQL and Nakama API
+# - Basic connectivity to PostgreSQL and Nakama APIs
 # - Display and GPU variables for graphical output
 #
 # Usage: ./doctor.sh [--verbose]
@@ -25,22 +25,34 @@ if [[ "${1:-}" == "--verbose" ]]; then
     VERBOSE=true
 fi
 
+# Color codes
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
 log() {
     if $VERBOSE; then
-        echo "[doctor] $*"
+        echo -e "[doctor] $*"
     fi
 }
 
-info() {
-    echo "[doctor] $*"
-}
+info_status() {
+    local message="$1"
+    local status_type="$2" # ok, warn, error
+    local detail="$3"
 
-warn() {
-    echo "[doctor] WARNING: $*" >&2
-}
-
-error() {
-    echo "[doctor] ERROR: $*" >&2
+    case "$status_type" in
+        ok)
+            echo -e "[doctor] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
+            ;;
+        warn)
+            echo -e "[doctor] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
+            ;;
+        error)
+            echo -e "[doctor] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
+            ;;
+    esac
 }
 
 fail=0
@@ -55,209 +67,187 @@ run_cmd() {
 }
 
 # 1. Check Docker
-info "Checking Docker..."
 if ! command -v docker >/dev/null 2>&1; then
-    error "Docker not found in PATH"
+    info_status "Checking Docker" "error" "not found in PATH"
     fail=1
 else
-    # Use docker info to verify daemon is accessible; avoid template issues with newer Docker
     if docker info >/dev/null 2>&1; then
-        log "Docker daemon is accessible"
+        info_status "Checking Docker" "ok" "daemon accessible"
     else
-        error "Docker daemon not accessible"
+        info_status "Checking Docker" "error" "daemon not accessible"
         fail=1
     fi
 fi
 
 # 2. Check Docker Compose
-info "Checking Docker Compose..."
 if ! command -v docker compose >/dev/null 2>&1; then
-    error "docker compose plugin not found"
+    info_status "Checking Docker Compose" "error" "plugin not found"
     fail=1
 else
-    log "Docker Compose version: $(docker compose version --short)"
+    info_status "Checking Docker Compose" "ok" "$(docker compose version --short)"
 fi
 
 # 3. Check .NET SDK version against global.json
-info "Checking .NET SDK..."
 if ! command -v dotnet >/dev/null 2>&1; then
-    error ".NET CLI not found"
+    info_status "Checking .NET SDK" "error" "CLI not found"
     fail=1
 else
     dotnet_version=$(dotnet --version)
-    log ".NET SDK version: $dotnet_version"
-    # Read global.json if exists
     if [[ -f global.json ]]; then
         expected_version=$(jq -r '.sdk.version // empty' global.json 2>/dev/null || true)
         if [[ -n "$expected_version" ]]; then
-            # Allow patch-only rollforward; compare leading components
             if [[ "$dotnet_version" != "$expected_version"* ]]; then
-                warn ".NET SDK version mismatch: expected $expected_version, got $dotnet_version"
-                # Not failing, just warning
+                info_status "Checking .NET SDK" "warn" "expected $expected_version, got $dotnet_version"
             else
-                log ".NET SDK version matches global.json"
+                info_status "Checking .NET SDK" "ok" "version $dotnet_version"
             fi
         else
-            warn "Could not read SDK version from global.json"
+            info_status "Checking .NET SDK" "ok" "version $dotnet_version (no global.json version constraint)"
         fi
     else
-        warn "global.json not found"
+        info_status "Checking .NET SDK" "ok" "version $dotnet_version (global.json not found)"
     fi
 fi
 
 # 4. Check Godot editor
-info "Checking Godot editor..."
 if ! command -v godot >/dev/null 2>&1; then
-    error "Godot editor not found in PATH"
+    info_status "Checking Godot editor" "error" "not found in PATH"
     fail=1
 else
     godot_version=$(godot --version | head -n1)
-    log "Godot version: $godot_version"
+    info_status "Checking Godot editor" "ok" "$godot_version"
 fi
 
 # 5. Check Aseprite
-info "Checking Aseprite..."
 if ! command -v aseprite >/dev/null 2>&1; then
-    error "Aseprite not found in PATH"
+    info_status "Checking Aseprite" "error" "not found in PATH"
     fail=1
 else
     aseprite_version=$(aseprite --version | head -n1)
-    log "Aseprite version: $aseprite_version"
+    info_status "Checking Aseprite" "ok" "$aseprite_version"
 fi
 
 # 6. Check Git LFS
-info "Checking Git LFS..."
 if ! command -v git lfs >/dev/null 2>&1; then
-    error "Git LFS not found"
+    info_status "Checking Git LFS" "error" "not found"
     fail=1
 else
     lfs_version=$(git lfs version | head -n1)
-    log "Git LFS version: $lfs_version"
-    # Check if installed system-wide
     if ! git lfs env | grep -q "Local"; then
-        warn "Git LFS may not be properly installed (check 'git lfs env')"
+        info_status "Checking Git LFS" "warn" "may not be properly installed"
+    else
+        info_status "Checking Git LFS" "ok" "$lfs_version"
     fi
 fi
 
 # 7. Check GitHub CLI
-info "Checking GitHub CLI..."
 if ! command -v gh >/dev/null 2>&1; then
-    error "GitHub CLI not found"
+    info_status "Checking GitHub CLI" "error" "not found"
     fail=1
 else
     gh_version=$(gh --version | head -n1)
-    log "GitHub CLI version: $gh_version"
-    # Check auth status (non-fatal)
     if ! gh auth status >/dev/null 2>&1; then
-        warn "GitHub CLI not authenticated (run 'gh auth login')"
+        info_status "Checking GitHub CLI" "warn" "not authenticated"
+    else
+        info_status "Checking GitHub CLI" "ok" "$gh_version"
     fi
 fi
 
-# 8. Check Go (from devcontainer feature)
-info "Checking Go..."
+# 8. Check Go
 if ! command -v go >/dev/null 2>&1; then
-    error "Go not found"
+    info_status "Checking Go" "error" "not found"
     fail=1
 else
     go_version=$(go version)
-    log "Go version: $go_version"
+    info_status "Checking Go" "ok" "$go_version"
 fi
 
 # 9. Check Starship
-info "Checking Starship..."
 if ! command -v starship >/dev/null 2>&1; then
-    error "Starship not found"
+    info_status "Checking Starship" "error" "not found"
     fail=1
 else
-    starship_version=$(starship --version)
-    log "Starship version: $starship_version"
+    starship_version=$(starship --version | head -n1)
+    info_status "Checking Starship" "ok" "$starship_version"
 fi
 
-# 10. Check Docker Compose services (if compose file exists)
-info "Checking Docker Compose services..."
+# 10. Check Docker Compose services
 if [[ -f docker-compose.yml ]]; then
-    # Check if any services are running
     running_services=$(docker compose ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
     if [[ -n "$running_services" ]]; then
-        log "Some services are running"
+        info_status "Checking Docker Compose services" "ok" "services active"
     else
-        warn "No services appear to be running (try 'docker compose up -d')"
+        info_status "Checking Docker Compose services" "warn" "no services running"
     fi
 
-    # Check specific service health using robust format query
     for service in postgres nakama; do
         if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^${service}$" || \
            docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^${service}$"; then
-            log "Service $service is running"
+            info_status "Checking service '$service'" "ok" "running"
         else
             if docker compose ps --services 2>/dev/null | grep -q "^${service}$"; then
-                warn "Service $service is defined but not running"
+                info_status "Checking service '$service'" "warn" "defined but not running"
             else
-                warn "Service $service not defined in docker-compose.yml"
+                info_status "Checking service '$service'" "warn" "not defined"
             fi
         fi
     done
 
-    # Quick connectivity checks
-    info "Checking PostgreSQL connectivity..."
+    # PostgreSQL connectivity
     if docker compose exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
-        log "PostgreSQL is accepting connections"
+        info_status "Checking PostgreSQL connectivity" "ok" "accepting connections"
     else
-        warn "PostgreSQL is not accepting connections"
+        info_status "Checking PostgreSQL connectivity" "warn" "not accepting connections"
     fi
 
-    info "Checking Nakama APIs..."
-    # Check Nakama Client/HTTP API (Port 7350)
+    # Nakama Client API (Port 7350)
     if curl -s -f http://nakama:7350/healthcheck >/dev/null 2>&1 || \
        curl -s -f http://localhost:7350/healthcheck >/dev/null 2>&1; then
-        log "Nakama Client API (HTTP) is responding on port 7350"
+        info_status "Checking Nakama Client API (7350)" "ok" "responding"
     else
-        warn "Nakama Client API not responding on port 7350"
+        info_status "Checking Nakama Client API (7350)" "warn" "not responding"
     fi
 
-    # Check Nakama gRPC API (Port 7349) using HTTP/2 prior knowledge or basic connection check
+    # Nakama gRPC API (Port 7349)
     if curl -s --http2-prior-knowledge http://nakama:7349 >/dev/null 2>&1 || \
        nc -z nakama 7349 >/dev/null 2>&1 || \
        nc -z localhost 7349 >/dev/null 2>&1; then
-        log "Nakama gRPC API is responding on port 7349"
+        info_status "Checking Nakama gRPC API (7349)" "ok" "responding"
     else
-        warn "Nakama gRPC API not responding on port 7349"
+        info_status "Checking Nakama gRPC API (7349)" "warn" "not responding"
     fi
 else
-    warn "docker-compose.yml not found"
+    info_status "Checking Docker Compose config" "warn" "docker-compose.yml not found"
 fi
 
 # 11. Check display variables for GUI
-info "Checking display variables..."
 if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
-    warn "Neither DISPLAY nor WAYLAND_DISPLAY is set; GUI applications may not display"
+    info_status "Checking display variables" "warn" "neither DISPLAY nor WAYLAND_DISPLAY set"
 else
-    log "Display variables: DISPLAY=${DISPLAY:-unset}, WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-unset}"
+    info_status "Checking display variables" "ok" "DISPLAY=${DISPLAY:-unset}, WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-unset}"
 fi
 
-# 12. Check GPU device access (if NVIDIA)
-info "Checking GPU access..."
+# 12. Check GPU device access
 if [[ -c /dev/dxg ]]; then
-    log "/dev/dxg exists (WSLg DXG device)"
+    info_status "Checking GPU access" "ok" "/dev/dxg exists (WSLg)"
 elif ls /dev/nvidia* >/dev/null 2>&1; then
-    log "NVIDIA devices found"
+    info_status "Checking GPU access" "ok" "NVIDIA devices found"
 else
-    warn "No obvious NVIDIA device nodes found; GPU acceleration may not be available"
+    info_status "Checking GPU access" "warn" "no obvious GPU device nodes found"
 fi
 
 # 13. Check workspace folder
-info "Checking workspace..."
 if [[ -f GodotNakama.code-workspace ]]; then
-    log "Workspace file found: GodotNakama.code-workspace"
+    info_status "Checking workspace" "ok" "GodotNakama.code-workspace found"
 else
-    warn "Workspace file not found"
+    info_status "Checking workspace" "warn" "workspace file not found"
 fi
 
 # Final summary
 if (( fail == 0 )); then
-    info "All checks passed"
+    echo -e "\n[doctor] ${GREEN}All checks passed successfully!${NC}"
 else
-    error "One or more checks failed (see above)"
+    echo -e "\n[doctor] ${RED}One or more critical checks failed.${NC}"
 fi
 
 exit $fail
