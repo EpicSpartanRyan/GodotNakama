@@ -498,6 +498,13 @@ else
     info_status "Checking GitHub reachability" "warn" "unreachable (git push/pull might fail)"
 fi
 
+# NuGet Package Feed (C# Package Restore)
+if curl -s --max-time 5 https://api.nuget.org/v3/index.json >/dev/null 2>&1; then
+    info_status "Checking NuGet reachability" "ok" "reachable"
+else
+    info_status "Checking NuGet reachability" "warn" "unreachable (dotnet restore might fail)"
+fi
+
 # Docker Hub (Pulling images)
 if curl -s --max-time 5 https://registry-1.docker.io/v2/ >/dev/null 2>&1; then
     info_status "Checking Docker Hub reachability" "ok" "reachable"
