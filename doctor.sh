@@ -40,28 +40,42 @@ info_status() {
 
 fail=0
 
-# 1. Check Docker
-if ! command -v docker >/dev/null 2>&1; then
-    info_status "Checking Docker" "error" "not found in PATH"
-    fail=1
+# ==========================================
+# 1. Audio and Video Devices
+# ==========================================
+
+# Check display variables for GUI
+if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
+    info_status "Checking display variables" "warn" "neither DISPLAY nor WAYLAND_DISPLAY set"
 else
-    if docker info >/dev/null 2>&1; then
-        info_status "Checking Docker" "ok" "daemon accessible"
-    else
-        info_status "Checking Docker" "error" "daemon not accessible"
-        fail=1
-    fi
+    info_status "Checking display variables" "ok" "DISPLAY=${DISPLAY:-unset}, WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-unset}"
 fi
 
-# 2. Check Docker Compose
-if ! command -v docker compose >/dev/null 2>&1; then
-    info_status "Checking Docker Compose" "error" "plugin not found"
-    fail=1
+# Check GPU device access
+if [[ -c /dev/dxg ]]; then
+    info_status "Checking GPU access" "ok" "/dev/dxg exists (WSLg)"
+elif ls /dev/nvidia* >/dev/null 2>&1; then
+    info_status "Checking GPU access" "ok" "NVIDIA devices found"
 else
-    info_status "Checking Docker Compose" "ok" "$(docker compose version --short)"
+    info_status "Checking GPU access" "warn" "no obvious GPU device nodes found"
 fi
 
-# 3. Check .NET SDK version against global.json
+# Check audio server (PulseAudio socket via WSLg)
+pulse_socket="${PULSE_SERVER#unix:}"
+if [[ -n "${PULSE_SERVER:-}" && -S "$pulse_socket" ]]; then
+    info_status "Checking audio device" "ok" "PulseAudio socket active ($pulse_socket)"
+elif [[ -n "${PULSE_SERVER:-}" ]]; then
+    info_status "Checking audio device" "warn" "PULSE_SERVER set but socket not found at $pulse_socket"
+else
+    info_status "Checking audio device" "warn" "PULSE_SERVER environment variable not set"
+fi
+
+
+# ==========================================
+# 2. Languages & Tools
+# ==========================================
+
+# Check .NET SDK version against global.json
 if ! command -v dotnet >/dev/null 2>&1; then
     info_status "Checking .NET SDK" "error" "CLI not found"
     fail=1
@@ -83,7 +97,16 @@ else
     fi
 fi
 
-# 4. Check Godot editor
+# Check Go
+if ! command -v go >/dev/null 2>&1; then
+    info_status "Checking Go" "error" "not found"
+    fail=1
+else
+    go_version=$(go version)
+    info_status "Checking Go" "ok" "$go_version"
+fi
+
+# Check Godot editor
 if ! command -v godot >/dev/null 2>&1; then
     info_status "Checking Godot editor" "error" "not found in PATH"
     fail=1
@@ -92,7 +115,7 @@ else
     info_status "Checking Godot editor" "ok" "$godot_version"
 fi
 
-# 5. Check Aseprite
+# Check Aseprite
 if ! command -v aseprite >/dev/null 2>&1; then
     info_status "Checking Aseprite" "error" "not found in PATH"
     fail=1
@@ -101,7 +124,7 @@ else
     info_status "Checking Aseprite" "ok" "$aseprite_version"
 fi
 
-# 6. Check Git LFS
+# Check Git LFS
 if ! command -v git lfs >/dev/null 2>&1; then
     info_status "Checking Git LFS" "error" "not found"
     fail=1
@@ -114,7 +137,7 @@ else
     fi
 fi
 
-# 7. Check GitHub CLI
+# Check GitHub CLI
 if ! command -v gh >/dev/null 2>&1; then
     info_status "Checking GitHub CLI" "error" "not found"
     fail=1
@@ -127,25 +150,37 @@ else
     fi
 fi
 
-# 8. Check Go
-if ! command -v go >/dev/null 2>&1; then
-    info_status "Checking Go" "error" "not found"
+
+# ==========================================
+# 3. Docker & Docker Compose
+# ==========================================
+
+# Check Docker
+if ! command -v docker >/dev/null 2>&1; then
+    info_status "Checking Docker" "error" "not found in PATH"
     fail=1
 else
-    go_version=$(go version)
-    info_status "Checking Go" "ok" "$go_version"
+    if docker info >/dev/null 2>&1; then
+        info_status "Checking Docker" "ok" "daemon accessible"
+    else
+        info_status "Checking Docker" "error" "daemon not accessible"
+        fail=1
+    fi
 fi
 
-# 9. Check Starship
-if ! command -v starship >/dev/null 2>&1; then
-    info_status "Checking Starship" "error" "not found"
+# Check Docker Compose
+if ! command -v docker compose >/dev/null 2>&1; then
+    info_status "Checking Docker Compose" "error" "plugin not found"
     fail=1
 else
-    starship_version=$(starship --version | head -n1)
-    info_status "Checking Starship" "ok" "$starship_version"
+    info_status "Checking Docker Compose" "ok" "$(docker compose version --short)"
 fi
 
-# 10. Check Docker Compose services
+
+# ==========================================
+# 4 & 5. Docker Compose Services & Backend Responding
+# ==========================================
+
 if [[ -f docker-compose.yml ]]; then
     running_services=$(docker compose ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
     if [[ -n "$running_services" ]]; then
@@ -194,40 +229,19 @@ else
     info_status "Checking Docker Compose config" "warn" "docker-compose.yml not found"
 fi
 
-# 11. Check display variables for GUI
-if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
-    info_status "Checking display variables" "warn" "neither DISPLAY nor WAYLAND_DISPLAY set"
-else
-    info_status "Checking display variables" "ok" "DISPLAY=${DISPLAY:-unset}, WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-unset}"
-fi
 
-# 12. Check GPU device access
-if [[ -c /dev/dxg ]]; then
-    info_status "Checking GPU access" "ok" "/dev/dxg exists (WSLg)"
-elif ls /dev/nvidia* >/dev/null 2>&1; then
-    info_status "Checking GPU access" "ok" "NVIDIA devices found"
-else
-    info_status "Checking GPU access" "warn" "no obvious GPU device nodes found"
-fi
+# ==========================================
+# 6. Workspace, tmux, zsh, starship
+# ==========================================
 
-# 13. Check workspace folder
+# Check workspace folder
 if [[ -f GodotNakama.code-workspace ]]; then
     info_status "Checking workspace" "ok" "GodotNakama.code-workspace found"
 else
     info_status "Checking workspace" "warn" "workspace file not found"
 fi
 
-# 14. Check audio server (PulseAudio socket via WSLg)
-pulse_socket="${PULSE_SERVER#unix:}"
-if [[ -n "${PULSE_SERVER:-}" && -S "$pulse_socket" ]]; then
-    info_status "Checking audio device" "ok" "PulseAudio socket active ($pulse_socket)"
-elif [[ -n "${PULSE_SERVER:-}" ]]; then
-    info_status "Checking audio device" "warn" "PULSE_SERVER set but socket not found at $pulse_socket"
-else
-    info_status "Checking audio device" "warn" "PULSE_SERVER environment variable not set"
-fi
-
-# 15. Check tmux
+# Check tmux
 if ! command -v tmux >/dev/null 2>&1; then
     info_status "Checking tmux" "error" "not found in PATH"
     fail=1
@@ -236,7 +250,7 @@ else
     info_status "Checking tmux" "ok" "$tmux_version"
 fi
 
-# 16. Check zsh
+# Check zsh
 if ! command -v zsh >/dev/null 2>&1; then
     info_status "Checking zsh" "warn" "not found in PATH"
 else
@@ -244,7 +258,19 @@ else
     info_status "Checking zsh" "ok" "$zsh_version"
 fi
 
-# --- 17. External Connectivity Health Checks ---
+# Check Starship
+if ! command -v starship >/dev/null 2>&1; then
+    info_status "Checking Starship" "error" "not found"
+    fail=1
+else
+    starship_version=$(starship --version | head -n1)
+    info_status "Checking Starship" "ok" "$starship_version"
+fi
+
+
+# ==========================================
+# 7. External Connectivity Health Checks
+# ==========================================
 
 # GitHub (Git Push/Pull & APIs)
 if curl -s --max-time 5 https://github.com >/dev/null 2>&1; then
