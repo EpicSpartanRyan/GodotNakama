@@ -4,7 +4,13 @@
     {
       "label": "Install Starship in Bashrc",
       "type": "shell",
-      "command": "grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc && echo 'Listo'",
+      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc && echo 'Listo'",
+      "problemMatcher": []
+    },
+    {
+      "label": "Install Starship in Zsh",
+      "type": "shell",
+      "command": "touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc && echo 'Listo para Zsh'",
       "problemMatcher": []
     },
     {
