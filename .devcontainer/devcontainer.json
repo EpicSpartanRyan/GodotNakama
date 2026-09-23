@@ -34,7 +34,8 @@
         "docker.docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
         
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml", // Files
+        "AykutSarac.jsoncrack-vscode"
       ]
     }
   },
