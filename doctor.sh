@@ -124,6 +124,15 @@ else
     info_status "Checking Aseprite" "ok" "$aseprite_version"
 fi
 
+# Check Git
+if ! command -v git >/dev/null 2>&1; then
+    info_status "Checking Git" "error" "not found in PATH"
+    fail=1
+else
+    git_version=$(git --version | head -n1)
+    info_status "Checking Git" "ok" "$git_version"
+fi
+
 # Check Git LFS
 if ! command -v git lfs >/dev/null 2>&1; then
     info_status "Checking Git LFS" "error" "not found"
