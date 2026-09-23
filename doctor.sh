@@ -72,7 +72,7 @@ fi
 
 
 # ==========================================
-# 1.1 Project Permissions, Disk Space & Filesystem Location
+# 1.1 Project Permissions, Disk Space, Filesystem & System Limits
 # ==========================================
 
 # Check write permissions recursively in current directory (ignoring .git internals)
@@ -106,6 +106,37 @@ if [[ "$current_path" == /mnt/* ]]; then
     info_status "Checking project filesystem location" "warn" "located in Windows mount (/mnt/), performance may be degraded"
 else
     info_status "Checking project filesystem location" "ok" "native Linux filesystem"
+fi
+
+# Check open file descriptors limit (nofile)
+if command -v ulimit >/dev/null 2>&1; then
+    nofile_limit=$(ulimit -n)
+    if [[ "$nofile_limit" != "unlimited" ]] && (( nofile_limit < 4096 )); then
+        info_status "Checking open file descriptors limit" "warn" "low limit ($nofile_limit), potential 'Too many open files' issues"
+    else
+        info_status "Checking open file descriptors limit" "ok" "limit is $nofile_limit"
+    fi
+fi
+
+# Check Swap memory availability
+if command -v free >/dev/null 2>&1; then
+    swap_total_kb=$(free -k | awk '/^Swap:/ {print $2}')
+    if [[ -n "$swap_total_kb" ]] && (( swap_total_kb == 0 )); then
+        info_status "Checking Swap memory" "warn" "no swap configured, risk of OOM kills under high load"
+    else
+        swap_total_mb=$(( swap_total_kb / 1024 ))
+        info_status "Checking Swap memory" "ok" "${swap_total_mb}MB swap available"
+    fi
+fi
+
+# Check systemd / init system
+if [[ -f /.dockerenv ]]; then
+    info_status "Checking systemd init system" "ok" "running inside Docker container (PID 1: $(ps -p 1 -o comm= 2>/dev/null || echo 'docker-init'))"
+elif [[ "$(ps -p 1 -o comm= 2>/dev/null)" == "systemd" ]] || [[ -d /run/systemd/system ]]; then
+    systemd_version=$(systemctl --version 2>/dev/null | head -n1 || echo "systemd active")
+    info_status "Checking systemd init system" "ok" "$systemd_version"
+else
+    info_status "Checking systemd init system" "warn" "systemd is not running as PID 1 (run 'wsl --shutdown' in PowerShell if recently enabled)"
 fi
 
 
