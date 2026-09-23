@@ -2,15 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Install Starship in Bashrc",
+      "label": "Install Starship in all terminals",
       "type": "shell",
-      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc && echo 'Listo'",
-      "problemMatcher": []
-    },
-    {
-      "label": "Install Starship in Zsh",
-      "type": "shell",
-      "command": "touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc && echo 'Listo para Zsh'",
+      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configurado en Bash, Zsh y PowerShell'",
       "problemMatcher": []
     },
     {
