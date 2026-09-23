@@ -176,6 +176,7 @@ The preconfigured tasks include:
 
 - **Install Starship in Bashrc**: adds the Starship initialization line only when it is not already present.
 - **Start Godot**: starts the Godot editor.
+- **Install Godot Addons**: installs Godot Addons specified in client/sample-game/plug.gd
 - **Start Aseprite**: starts Aseprite.
 - **Stop all Godot processes**: stops running Godot processes for the current environment.
 - **Fix Godot game input**: disables embedded game mode in the local Godot 4.7 editor settings when needed.
