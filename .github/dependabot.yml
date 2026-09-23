@@ -1,5 +1,11 @@
 version: 2
 updates:
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+
   - package-ecosystem: "docker-compose"
     directory: "/"
     schedule:
