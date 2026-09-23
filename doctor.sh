@@ -117,6 +117,17 @@ else
     else
         info_status "Checking .NET SDK" "ok" "version $dotnet_version (global.json not found)"
     fi
+
+    # Check installed .NET Runtimes
+    runtimes_list=$(dotnet --list-runtimes 2>/dev/null || true)
+    if [[ -n "$runtimes_list" ]]; then
+        # Format list to be concise or log details if verbose
+        runtime_summary=$(echo "$runtimes_list" | awk '{print $1 " " $2}' | paste -sd, -)
+        info_status "Checking .NET Runtimes" "ok" "$runtime_summary"
+        log "Installed runtimes:\n$runtimes_list"
+    else
+        info_status "Checking .NET Runtimes" "warn" "no runtimes found via dotnet --list-runtimes"
+    fi
 fi
 
 # Check Go
