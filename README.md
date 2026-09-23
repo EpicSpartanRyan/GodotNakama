@@ -181,6 +181,7 @@ The preconfigured tasks include:
 - **Stop all Godot processes**: stops running Godot processes for the current environment.
 - **Fix Godot game input**: disables embedded game mode in the local Godot 4.7 editor settings when needed.
 - **build**: builds the C# project using the configured project directory.
+- **Run Environment Doctor**: executes `./doctor.sh` to perform a complete diagnostic health check of the environment, services, audio, and external network connectivity.
 
 Run them from **Tasks: Run Task** in VS Code.
 

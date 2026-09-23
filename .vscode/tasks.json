@@ -54,6 +54,15 @@
         "cwd": "${workspaceFolder}/client/sample-game"
       },
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run Environment Doctor",
+      "type": "shell",
+      "command": "./doctor.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
     }
   ]
 }
