@@ -121,7 +121,7 @@ if ! command -v gh >/dev/null 2>&1; then
 else
     gh_version=$(gh --version | head -n1)
     if ! gh auth status >/dev/null 2>&1; then
-        info_status "Checking GitHub CLI" "warn" "not authenticated"
+        info_status "Checking GitHub CLI" "warn" "not authenticated - run 'gh auth login'"
     else
         info_status "Checking GitHub CLI" "ok" "$gh_version"
     fi
