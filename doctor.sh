@@ -1,22 +1,5 @@
 #!/usr/bin/env bash
 # doctor.sh - Diagnostic script for Godot Nakama development environment
-#
-# This script checks the health of the development environment:
-# - Docker and Docker Compose availability
-# - Running services (PostgreSQL, Nakama, Godot container)
-# - .NET SDK version matches global.json
-# - Godot editor availability
-# - Aseprite availability
-# - Git LFS and GitHub CLI availability
-# - Basic connectivity to PostgreSQL and Nakama APIs
-# - Display, GPU, and Audio (PulseAudio/WSLg) variables
-#
-# Usage: ./doctor.sh [--verbose]
-#
-# Exit codes:
-#   0 - All checks passed
-#   1 - One or more critical checks failed
-#   2 - Usage error
 
 set -euo pipefail
 
@@ -56,15 +39,6 @@ info_status() {
 }
 
 fail=0
-
-# Helper to run a command and capture output
-run_cmd() {
-    if $VERBOSE; then
-        "$@"
-    else
-        "$@" >/dev/null 2>&1
-    fi
-}
 
 # 1. Check Docker
 if ! command -v docker >/dev/null 2>&1; then
@@ -251,6 +225,23 @@ elif [[ -n "${PULSE_SERVER:-}" ]]; then
     info_status "Checking audio device" "warn" "PULSE_SERVER set but socket not found at $pulse_socket"
 else
     info_status "Checking audio device" "warn" "PULSE_SERVER environment variable not set"
+fi
+
+# 15. Check tmux
+if ! command -v tmux >/dev/null 2>&1; then
+    info_status "Checking tmux" "error" "not found in PATH"
+    fail=1
+else
+    tmux_version=$(tmux -V)
+    info_status "Checking tmux" "ok" "$tmux_version"
+fi
+
+# 16. Check zsh
+if ! command -v zsh >/dev/null 2>&1; then
+    info_status "Checking zsh" "warn" "not found in PATH"
+else
+    zsh_version=$(zsh --version)
+    info_status "Checking zsh" "ok" "$zsh_version"
 fi
 
 # Final summary
