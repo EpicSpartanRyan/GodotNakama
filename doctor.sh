@@ -72,7 +72,60 @@ fi
 
 
 # ==========================================
-# 2. Languages & Tools
+# 1.1 Project Permissions, Disk Space & Filesystem Location
+# ==========================================
+
+# Check write permissions recursively in current directory (ignoring .git internals)
+if [[ -w "." ]]; then
+    unwritable_items=$(find . -maxdepth 7 -not -path './.git*' ! -writable 2>/dev/null | head -n 5 || true)
+    if [[ -n "$unwritable_items" ]]; then
+        info_status "Checking project write permissions" "warn" "some files/folders are not writable (possible root ownership from docker)"
+        log "Unwritable items found:\n$unwritable_items"
+    else
+        info_status "Checking project write permissions" "ok" "fully writable (recursive)"
+    fi
+else
+    info_status "Checking project write permissions" "error" "current directory is not writable"
+    fail=1
+fi
+
+# Check available disk space (warn if less than 5GB free on current partition)
+if command -v df >/dev/null 2>&1; then
+    free_space_kb=$(df -k . | awk 'NR==2 {print $4}')
+    free_space_gb=$(( free_space_kb / 1024 / 1024 ))
+    if (( free_space_gb < 5 )); then
+        info_status "Checking available disk space" "warn" "low space: ${free_space_gb}GB remaining"
+    else
+        info_status "Checking available disk space" "ok" "${free_space_gb}GB available"
+    fi
+fi
+
+# Check if project is inside Windows mount under WSL (/mnt/)
+current_path="$(pwd)"
+if [[ "$current_path" == /mnt/* ]]; then
+    info_status "Checking project filesystem location" "warn" "located in Windows mount (/mnt/), performance may be degraded"
+else
+    info_status "Checking project filesystem location" "ok" "native Linux filesystem"
+fi
+
+
+# ==========================================
+# 2. Local Port Availability & Conflicts
+# ==========================================
+
+# Check critical ports (5432, 7350, 7349) for potential conflicts
+for port_info in "5432:PostgreSQL" "7350:Nakama Client" "7349:Nakama gRPC"; do
+    IFS=':' read -r port name <<< "$port_info"
+    if ss -tln 2>/dev/null | grep -q ":$port "; then
+        info_status "Checking port $port ($name)" "ok" "port in use (active container or local service)"
+    else
+        info_status "Checking port $port ($name)" "ok" "port free"
+    fi
+done
+
+
+# ==========================================
+# 3. Languages & Tools
 # ==========================================
 
 # Check C++ build tools (Clang, GCC, CMake)
@@ -121,7 +174,6 @@ else
     # Check installed .NET Runtimes
     runtimes_list=$(dotnet --list-runtimes 2>/dev/null || true)
     if [[ -n "$runtimes_list" ]]; then
-        # Format list to be concise or log details if verbose
         runtime_summary=$(echo "$runtimes_list" | awk '{print $1 " " $2}' | paste -sd, -)
         info_status "Checking .NET Runtimes" "ok" "$runtime_summary"
         log "Installed runtimes:\n$runtimes_list"
@@ -194,7 +246,7 @@ fi
 
 
 # ==========================================
-# 3. Docker & Docker Compose
+# 4. Docker & Docker Compose
 # ==========================================
 
 # Check Docker
@@ -220,7 +272,7 @@ fi
 
 
 # ==========================================
-# 4 & 5. Docker Compose Services & Backend Responding
+# 5 & 6. Docker Compose Services & Backend Responding
 # ==========================================
 
 if [[ -f docker-compose.yml ]]; then
@@ -273,7 +325,7 @@ fi
 
 
 # ==========================================
-# 6. Workspace, Editors & Shell Utilities
+# 7. Workspace, Editors & Shell Utilities
 # ==========================================
 
 # Check workspace folder
@@ -327,7 +379,7 @@ fi
 
 
 # ==========================================
-# 7. External Connectivity Health Checks
+# 8. External Connectivity Health Checks
 # ==========================================
 
 # GitHub (Git Push/Pull & APIs)
