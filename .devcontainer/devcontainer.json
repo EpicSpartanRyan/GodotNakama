@@ -47,7 +47,7 @@
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
-  "forwardPorts": [6007, 6008, 7351, 5432],
+  "forwardPorts": [6007, 6008, 7349, 7350, 7351, 5432],
   "portsAttributes": {
     "6007": {
       "label": "Godot Remote Debugger",
@@ -55,6 +55,14 @@
     },
     "6008": {
       "label": "GSCript Language Server",
+      "onAutoForward": "notify"
+    },
+    "7349": {
+      "label": "Nakama gRPC API",
+      "onAutoForward": "notify"
+    },
+    "7350": {
+      "label": "Nakama Client API",
       "onAutoForward": "notify"
     },
     "7351": {
