@@ -428,13 +428,13 @@ else
     info_status "Checking nano" "ok" "$nano_version"
 fi
 
-# Check tmux
-if ! command -v tmux >/dev/null 2>&1; then
-    info_status "Checking tmux" "error" "not found in PATH"
+# Check bash
+if ! command -v bash >/dev/null 2>&1; then
+    info_status "Checking bash" "error" "not found in PATH"
     fail=1
 else
-    tmux_version=$(tmux -V)
-    info_status "Checking tmux" "ok" "$tmux_version"
+    bash_version=$(bash --version | head -n1)
+    info_status "Checking bash" "ok" "$bash_version"
 fi
 
 # Check zsh
@@ -443,6 +443,28 @@ if ! command -v zsh >/dev/null 2>&1; then
 else
     zsh_version=$(zsh --version)
     info_status "Checking zsh" "ok" "$zsh_version"
+fi
+
+# Check PowerShell (pwsh / powershell.exe / powershell)
+if command -v pwsh >/dev/null 2>&1; then
+    pwsh_version=$(pwsh --version 2>/dev/null | head -n1 || echo "pwsh active")
+    info_status "Checking PowerShell" "ok" "$pwsh_version"
+elif command -v powershell.exe >/dev/null 2>&1; then
+    info_status "Checking PowerShell" "ok" "powershell.exe available (Windows host)"
+elif command -v powershell >/dev/null 2>&1; then
+    ps_version=$(powershell --version 2>/dev/null | head -n1 || echo "powershell active")
+    info_status "Checking PowerShell" "ok" "$ps_version"
+else
+    info_status "Checking PowerShell" "warn" "not found in PATH"
+fi
+
+# Check tmux
+if ! command -v tmux >/dev/null 2>&1; then
+    info_status "Checking tmux" "error" "not found in PATH"
+    fail=1
+else
+    tmux_version=$(tmux -V)
+    info_status "Checking tmux" "ok" "$tmux_version"
 fi
 
 # Check Starship
