@@ -244,6 +244,36 @@ else
     info_status "Checking zsh" "ok" "$zsh_version"
 fi
 
+# --- 17. External Connectivity Health Checks ---
+
+# GitHub (Git Push/Pull & APIs)
+if curl -s --max-time 5 https://github.com >/dev/null 2>&1; then
+    info_status "Checking GitHub reachability" "ok" "reachable"
+else
+    info_status "Checking GitHub reachability" "warn" "unreachable (git push/pull might fail)"
+fi
+
+# Docker Hub (Pulling images)
+if curl -s --max-time 5 https://registry-1.docker.io/v2/ >/dev/null 2>&1; then
+    info_status "Checking Docker Hub reachability" "ok" "reachable"
+else
+    info_status "Checking Docker Hub reachability" "warn" "unreachable (docker pull might fail)"
+fi
+
+# Godot Engine (Assets & Asset Library)
+if curl -s --max-time 5 https://godotengine.org >/dev/null 2>&1; then
+    info_status "Checking Godot Engine reachability" "ok" "reachable"
+else
+    info_status "Checking Godot Engine reachability" "warn" "unreachable (asset library might fail)"
+fi
+
+# VS Code Marketplace (Extensions)
+if curl -s --max-time 5 https://marketplace.visualstudio.com >/dev/null 2>&1; then
+    info_status "Checking VS Code Marketplace reachability" "ok" "reachable"
+else
+    info_status "Checking VS Code Marketplace reachability" "warn" "unreachable (extensions sync might fail)"
+fi
+
 # Final summary
 if (( fail == 0 )); then
     echo -e "\n[doctor] ${GREEN}All checks passed successfully!${NC}"
