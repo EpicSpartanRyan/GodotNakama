@@ -9,7 +9,7 @@
 # - Aseprite availability
 # - Git LFS and GitHub CLI availability
 # - Basic connectivity to PostgreSQL and Nakama APIs
-# - Display and GPU variables for graphical output
+# - Display, GPU, and Audio (PulseAudio/WSLg) variables
 #
 # Usage: ./doctor.sh [--verbose]
 #
@@ -241,6 +241,16 @@ if [[ -f GodotNakama.code-workspace ]]; then
     info_status "Checking workspace" "ok" "GodotNakama.code-workspace found"
 else
     info_status "Checking workspace" "warn" "workspace file not found"
+fi
+
+# 14. Check audio server (PulseAudio socket via WSLg)
+pulse_socket="${PULSE_SERVER#unix:}"
+if [[ -n "${PULSE_SERVER:-}" && -S "$pulse_socket" ]]; then
+    info_status "Checking audio device" "ok" "PulseAudio socket active ($pulse_socket)"
+elif [[ -n "${PULSE_SERVER:-}" ]]; then
+    info_status "Checking audio device" "warn" "PULSE_SERVER set but socket not found at $pulse_socket"
+else
+    info_status "Checking audio device" "warn" "PULSE_SERVER environment variable not set"
 fi
 
 # Final summary
