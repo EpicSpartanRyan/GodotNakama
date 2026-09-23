@@ -36,7 +36,10 @@
         
         "redhat.vscode-yaml", // Files
         "AykutSarac.jsoncrack-vscode",
-        "grimaldi-tech.aseprite-preview"
+        "grimaldi-tech.aseprite-preview",
+        "qwtel.sqlite-viewer",
+        "ms-vscode.hexeditor",
+        "tamasfe.even-better-toml"
       ]
     }
   },
