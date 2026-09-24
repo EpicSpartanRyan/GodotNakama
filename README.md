@@ -102,7 +102,7 @@ PostgreSQL and Nakama use healthchecks. Nakama runs its database migration befor
 ## Service Ports
 
 | Service | Port | Purpose |
-|---|---:|---|
+| --- | ---: | --- |
 | PostgreSQL | `5432` | Nakama database |
 | Nakama API | `7349` | Client/API traffic |
 | Nakama socket | `7350` | Realtime socket traffic |
