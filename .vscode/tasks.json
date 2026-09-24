@@ -18,7 +18,7 @@
       "type": "shell",
       "command": "aseprite",
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/client/sample-game"
       },
       "problemMatcher": []
     },
