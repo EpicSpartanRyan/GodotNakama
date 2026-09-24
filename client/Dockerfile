@@ -25,6 +25,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zsh \
     jq \
     nano \
+    vulkan-tools \
+    libvulkan1 \
+    mesa-vulkan-drivers \
+    vulkan-validationlayers \
+    netcat-openbsd \
     libfontconfig1-dev \
     libfontconfig1 \
     libgl1-mesa-dev \

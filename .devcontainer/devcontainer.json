@@ -45,6 +45,7 @@
   },
   "remoteUser": "ubuntu",
   "remoteEnv": {
+    "NVIDIA_DRIVER_CAPABILITIES": "all",
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "DISPLAY": ":0",
