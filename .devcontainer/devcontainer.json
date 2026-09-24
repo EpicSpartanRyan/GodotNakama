@@ -22,6 +22,7 @@
 
         "geequlim.godot-tools", // Godot Support
         "neikeq.godot-csharp-vscode",
+        "alfish.godot-files",
 
         "GitHub.vscode-pull-request-github", // GitHub PR's/Actions, Tasks
         "github.vscode-github-actions",
