@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0
 # Versión oficial de Godot 4.7.2 .NET Edition
 ARG GODOT_VERSION="4.7.2"
 ARG GODOT_RELEASE="stable"
-ARG ASEPRITE_VERSION="1.3.18.5"
+ARG ASEPRITE_VERSION="1.3.18.6"
 ARG SKIA_VERSION="m124-08a5439a6b"
 
 ENV DEBIAN_FRONTEND=noninteractive
