@@ -484,12 +484,13 @@ if [[ -f docker-compose.yml ]]; then
         info_status "Checking Nakama gRPC API (7349)" "warn" "not responding"
     fi
 
-    # Nakama UDP API (Port 7350 - Multiplayer Routing)
+    # Nakama UDP API (Port 7350 - Realtime / Socket Routing)
     if command -v nc >/dev/null 2>&1; then
-        if nc -u -z -w 1 localhost 7350 >/dev/null 2>&1 || nc -u -z -w 1 nakama 7350 >/dev/null 2>&1; then
-            info_status "Checking Nakama UDP routing (7350)" "ok" "UDP packets are routing correctly"
+        if echo "" | nc -u -w 1 localhost 7350 >/dev/null 2>&1 || \
+           echo "" | nc -u -w 1 nakama 7350 >/dev/null 2>&1; then
+            info_status "Checking Nakama UDP routing (7350)" "ok" "UDP socket reachable"
         else
-            info_status "Checking Nakama UDP routing (7350)" "warn" "UDP check failed (ignore if Nakama is stopped, otherwise check firewall)"
+            info_status "Checking Nakama UDP routing (7350)" "warn" "UDP port 7350 unreachable (ensure 7350:7350/udp is declared in docker-compose.yml)"
         fi
     else
         info_status "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
