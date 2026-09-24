@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpab256ym7mkg"]
+[gd_scene format=3 uid="uid://dpab256ym7mkg"]
 
-[ext_resource type="Script" path="res://NewScript.cs" id="1_script"]
+[ext_resource type="Script" uid="uid://2ac0qovxafqg" path="res://NewScript.cs" id="1_script"]
+[ext_resource type="Shader" uid="uid://c8jp8xrmlfauj" path="res://rainbow.gdshader" id="2_0e48y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_akiqj"]
+shader = ExtResource("2_0e48y")
 
 [node name="Node2D" type="Node2D" unique_id=1269990587]
 script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=736380301]
+material = SubResource("ShaderMaterial_akiqj")
+offset_right = 1152.0
+offset_bottom = 648.0
