@@ -11,3 +11,5 @@ nakama/.cookie
 *.log
 *.dmp
 exports/
+
+logs/
