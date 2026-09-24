@@ -3,7 +3,6 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "godot",
   "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/${localWorkspaceFolderBasename},type=bind",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
       "moby": false
