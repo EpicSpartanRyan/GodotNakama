@@ -68,6 +68,36 @@ elif ls /dev/nvidia* >/dev/null 2>&1; then
     info_status "Checking NVIDIA drivers" "warn" "NVIDIA devices exist, but nvidia-smi is missing"
 fi
 
+# Check Vulkan API
+if command -v vulkaninfo >/dev/null 2>&1; then
+    if vulkaninfo --summary >/dev/null 2>&1; then
+        info_status "Checking Vulkan API" "ok" "Vulkan API initialized successfully"
+    else
+        info_status "Checking Vulkan API" "error" "vulkaninfo failed to run (driver issues or missing dependencies)"
+        fail=1
+    fi
+else
+    if command -v ldconfig >/dev/null 2>&1 && ldconfig -p | grep -q "libvulkan.so"; then
+        info_status "Checking Vulkan API" "ok" "libvulkan found (vulkaninfo not installed to verify init)"
+    else
+        info_status "Checking Vulkan API" "warn" "Vulkan libraries not found. Godot may crash or fallback to software rendering"
+    fi
+fi
+
+# Check video group permissions (Hardware Acceleration)
+if [[ -f /.dockerenv ]]; then
+    info_status "Checking video group permissions" "ok" "isolated container (skipping host group check)"
+elif command -v groups >/dev/null 2>&1; then
+    user_groups=$(groups)
+    if echo "$user_groups" | grep -q -E "\bvideo\b|\brender\b"; then
+        info_status "Checking video group permissions" "ok" "user belongs to 'video' or 'render' group"
+    elif [[ -c /dev/dxg ]]; then
+        info_status "Checking video group permissions" "ok" "WSLg detected (standard group check bypassed)"
+    else
+        info_status "Checking video group permissions" "warn" "user not in 'video' or 'render' group. Run: sudo usermod -aG render \$USER"
+    fi
+fi
+
 # Check audio server (PulseAudio socket via WSLg)
 pulse_socket="${PULSE_SERVER#unix:}"
 if [[ -n "${PULSE_SERVER:-}" && -S "$pulse_socket" ]]; then
@@ -197,6 +227,20 @@ for port_info in "5432:PostgreSQL" "7350:Nakama Client" "7349:Nakama gRPC"; do
     fi
 done
 
+# Check local Firewall (UFW)
+if command -v ufw >/dev/null 2>&1; then
+    if sudo -n ufw status >/dev/null 2>&1; then
+        ufw_status=$(sudo -n ufw status | grep "Status" | awk '{print $2}')
+        if [[ "${ufw_status,,}" == "active" ]]; then
+             info_status "Checking local Firewall (UFW)" "warn" "UFW is ACTIVE. Ensure UDP port 7350 is explicitly allowed for multiplayer"
+        else
+             info_status "Checking local Firewall (UFW)" "ok" "UFW is inactive (no blocking rules)"
+        fi
+    else
+        info_status "Checking local Firewall (UFW)" "ok" "installed but requires sudo to check status (assuming OK)"
+    fi
+fi
+
 
 # ==========================================
 # 3. Languages & Tools
@@ -272,6 +316,17 @@ if ! command -v godot >/dev/null 2>&1; then
 else
     godot_version=$(godot --version | head -n1)
     info_status "Checking Godot editor" "ok" "$godot_version"
+fi
+
+# Check Godot Vulkan rendering
+if command -v godot >/dev/null 2>&1; then
+    if godot --rendering-driver vulkan --headless --editor --quit >/dev/null 2>&1; then
+        info_status "Checking Godot Vulkan rendering" "ok" "headless Vulkan initialization succeeded"
+    else
+        info_status "Checking Godot Vulkan rendering" "warn" "failed to initialize Vulkan renderer in headless mode"
+    fi
+else
+    info_status "Checking Godot Vulkan rendering" "warn" "skipped (Godot binary not found)"
 fi
 
 # Check Aseprite
@@ -428,6 +483,17 @@ if [[ -f docker-compose.yml ]]; then
     else
         info_status "Checking Nakama gRPC API (7349)" "warn" "not responding"
     fi
+
+    # Nakama UDP API (Port 7350 - Multiplayer Routing)
+    if command -v nc >/dev/null 2>&1; then
+        if nc -u -z -w 1 localhost 7350 >/dev/null 2>&1 || nc -u -z -w 1 nakama 7350 >/dev/null 2>&1; then
+            info_status "Checking Nakama UDP routing (7350)" "ok" "UDP packets are routing correctly"
+        else
+            info_status "Checking Nakama UDP routing (7350)" "warn" "UDP check failed (ignore if Nakama is stopped, otherwise check firewall)"
+        fi
+    else
+        info_status "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
+    fi
 else
     info_status "Checking Docker Compose config" "warn" "docker-compose.yml not found"
 fi
@@ -572,7 +638,10 @@ else
     info_status "Checking VS Code Marketplace reachability" "warn" "unreachable (extensions sync might fail)"
 fi
 
+
+# ==========================================
 # Final summary
+# ==========================================
 if (( fail == 0 )); then
     echo -e "\n[doctor] ${GREEN}All checks passed successfully!${NC}"
 else
