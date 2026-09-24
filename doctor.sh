@@ -60,6 +60,14 @@ else
     info_status "Checking GPU access" "warn" "no obvious GPU device nodes found"
 fi
 
+# Check NVIDIA drivers
+if command -v nvidia-smi >/dev/null 2>&1; then
+    gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader | head -n1 || echo "NVIDIA GPU")
+    info_status "Checking NVIDIA drivers" "ok" "$gpu_name (nvidia-smi found)"
+elif ls /dev/nvidia* >/dev/null 2>&1; then
+    info_status "Checking NVIDIA drivers" "warn" "NVIDIA devices exist, but nvidia-smi is missing"
+fi
+
 # Check audio server (PulseAudio socket via WSLg)
 pulse_socket="${PULSE_SERVER#unix:}"
 if [[ -n "${PULSE_SERVER:-}" && -S "$pulse_socket" ]]; then
@@ -284,6 +292,20 @@ else
     info_status "Checking Git" "ok" "$git_version"
 fi
 
+# Check Git repository status
+if command -v git >/dev/null 2>&1; then
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        git_branch=$(git branch --show-current 2>/dev/null)
+        if [[ -z "$git_branch" ]]; then
+            git_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "detached")
+        fi
+        git_hash=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+        info_status "Checking Git repository" "ok" "branch: $git_branch, commit: $git_hash"
+    else
+        info_status "Checking Git repository" "warn" "current directory is not a git repository"
+    fi
+fi
+
 # Check Git LFS
 if ! command -v git lfs >/dev/null 2>&1; then
     info_status "Checking Git LFS" "error" "not found"
@@ -294,6 +316,16 @@ else
         info_status "Checking Git LFS" "warn" "may not be properly installed"
     else
         info_status "Checking Git LFS" "ok" "$lfs_version"
+    fi
+fi
+
+# Check for pending Git LFS downloads (pointers instead of real files)
+if command -v git >/dev/null 2>&1 && command -v git lfs >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    if git lfs ls-files 2>&1 | grep -q '^-'; then
+        info_status "Checking Git LFS integrity" "error" "missing binary files detected (run 'git lfs pull')"
+        fail=1
+    else
+        info_status "Checking Git LFS integrity" "ok" "all LFS files downloaded"
     fi
 fi
 
@@ -363,7 +395,7 @@ if [[ -f docker-compose.yml ]]; then
     for service in postgres nakama; do
         if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^${service}$" || \
            docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^${service}$"; then
-            info_status "Checking service '$service'" "ok" "running"
+             info_status "Checking service '$service'" "ok" "running"
         else
             if docker compose ps --services 2>/dev/null | grep -q "^${service}$"; then
                 info_status "Checking service '$service'" "warn" "defined but not running"
