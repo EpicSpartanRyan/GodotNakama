@@ -523,6 +523,20 @@ if command -v getent >/dev/null 2>&1; then
     fi
 fi
 
+# Check strict localhost resolution (critical for gRPC and Docker port binding)
+if command -v getent >/dev/null 2>&1; then
+    # ahosts checks all addresses (IPv4 and IPv6)
+    if getent ahosts localhost | grep -qE "^127\.|^::1"; then
+        resolved_ips=$(getent ahosts localhost | awk '{print $1}' | sort -u | paste -sd, -)
+        info_status "Checking localhost resolution" "ok" "resolves to local loopback ($resolved_ips)"
+    else
+        info_status "Checking localhost resolution" "error" "localhost does not resolve to 127.x.x.x or ::1 (check /etc/hosts)"
+        fail=1
+    fi
+else
+    info_status "Checking localhost resolution" "warn" "getent command not found, skipping check"
+fi
+
 # GitHub (Git Push/Pull & APIs)
 if curl -s --max-time 5 https://github.com >/dev/null 2>&1; then
     info_status "Checking GitHub reachability" "ok" "reachable"
