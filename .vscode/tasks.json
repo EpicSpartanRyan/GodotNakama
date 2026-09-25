@@ -18,7 +18,7 @@
       "type": "shell",
       "command": "aseprite",
       "options": {
-        "cwd": "${workspaceFolder}/client/sample-game"
+        "cwd": "${workspaceFolder}/${input:asepriteProjectSelect}"
       },
       "problemMatcher": []
     },
@@ -114,6 +114,22 @@
         {
           "label": "Workspace root (No --path)",
           "value": ""
+        }
+      ]
+    },
+    {
+      "id": "asepriteProjectSelect",
+      "type": "pickString",
+      "description": "Select the working directory for Aseprite:",
+      "default": "client/sample-game",
+      "options": [
+        {
+          "label": "client/sample-game",
+          "value": "client/sample-game"
+        },
+        {
+          "label": "Workspace root",
+          "value": "."
         }
       ]
     }
