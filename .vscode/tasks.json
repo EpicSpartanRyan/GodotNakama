@@ -63,6 +63,41 @@
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Install .NET profiler",
+      "type": "shell",
+      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Profiler Server",
+      "dependsOn": "build",
+      "type": "shell",
+      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output profile.nettrace",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Waiting for connection",
+          "endsPattern": "DOTNET_DiagnosticPorts="
+        }
+      }
+    },
+    {
+      "label": "Stop Profiler & Generate Speedscope",
+      "type": "shell",
+      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && dotnet-trace convert --format speedscope profile.nettrace && echo '¡Trace convertido con símbolos correctamente!'",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": []
     }
   ]
 }

@@ -20,6 +20,19 @@
             "request": "attach",
             "address": "localhost",
             "port": 23685
+        },
+        {
+            "name": "Play & Profile (Speedscope)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Start Profiler Server",
+            "program": "/usr/local/bin/godot",
+            "args": [],
+            "cwd": "${workspaceFolder}/client/sample-game",
+            "stopAtEntry": false,
+            "env": {
+                "DOTNET_DiagnosticPorts": "/tmp/godot-diag,suspend"
+            }
         }
     ]
 }
