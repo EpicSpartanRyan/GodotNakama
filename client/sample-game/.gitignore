@@ -10,3 +10,5 @@
 
 # Permite que Git entre a la carpeta de gd-plug
 !/addons/gd-plug/
+
+.traces/

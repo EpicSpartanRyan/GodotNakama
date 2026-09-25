@@ -74,7 +74,7 @@
       "label": "Start Profiler Server",
       "dependsOn": "build",
       "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output profile.nettrace",
+      "command": "mkdir -p .traces && NEXT=$(ls .traces/profile-*.nettrace 2>/dev/null | sed -n 's/.*profile-\\([0-9]*\\)\\.nettrace/\\1/p' | sort -n | tail -1); NEXT=$(printf \"%03d\" $((10#${NEXT:-0} + 1))) && export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output \".traces/profile-${NEXT}.nettrace\"",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -93,7 +93,7 @@
     {
       "label": "Stop Profiler & Generate Speedscope",
       "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && dotnet-trace convert --format speedscope profile.nettrace && echo '¡Trace convertido con símbolos correctamente!'",
+      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then dotnet-trace convert --format speedscope \"$LATEST\" && echo \"¡Trace generado exitosamente: ${LATEST/.nettrace/.speedscope.json}!\"; fi",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
