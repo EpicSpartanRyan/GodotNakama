@@ -10,7 +10,7 @@
     {
       "label": "Start Godot",
       "type": "shell",
-      "command": "godot -e",
+      "command": "P=\"${input:godotProjectSelect}\"; godot -e ${P:+\"--path\" \"$P\"}",
       "problemMatcher": []
     },
     {
@@ -98,6 +98,24 @@
         "cwd": "${workspaceFolder}/client/sample-game"
       },
       "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "godotProjectSelect",
+      "type": "pickString",
+      "description": "Select the Godot project to open:",
+      "default": "client/sample-game",
+      "options": [
+        {
+          "label": "client/sample-game",
+          "value": "client/sample-game"
+        },
+        {
+          "label": "Workspace root (No --path)",
+          "value": ""
+        }
+      ]
     }
   ]
 }
