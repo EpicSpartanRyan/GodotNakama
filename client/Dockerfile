@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     git-lfs \
     clang \
+    clangd \
+    clang-tidy \
     cmake \
     g++ \
     ninja-build \
