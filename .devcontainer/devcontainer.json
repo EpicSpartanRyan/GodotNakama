@@ -14,8 +14,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "llvm-vs-code-extensions.vscode-clangd", // C++ / Clangd Support
-        "vadimcn.vscode-lldb",
+        "ms-vscode.cpptools-extension-pack", // C++ Language
 
         "ms-dotnettools.csdevkit", // C# Language
         "EditorConfig.EditorConfig",
