@@ -16,10 +16,7 @@
     {
       "label": "Start Aseprite",
       "type": "shell",
-      "command": "aseprite",
-      "options": {
-        "cwd": "${workspaceFolder}/${input:asepriteProjectSelect}"
-      },
+      "command": "DIR=\"${workspaceFolder}/${input:asepriteProjectSelect}\"; mkdir -p ~/.config/aseprite && touch ~/.config/aseprite/aseprite.ini && if grep -q 'current_folder' ~/.config/aseprite/aseprite.ini; then sed -i \"s|^current_folder = .*|current_folder = $DIR|\" ~/.config/aseprite/aseprite.ini; else echo -e \"\\n[file_selector]\\ncurrent_folder = $DIR\" >> ~/.config/aseprite/aseprite.ini; fi; cd \"$DIR\" && aseprite",
       "problemMatcher": []
     },
     {
@@ -91,9 +88,9 @@
       }
     },
     {
-      "label": "Stop Profiler & Generate Speedscope",
+      "label": "Stop Profiler & Convert Trace",
       "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then dotnet-trace convert --format speedscope \"$LATEST\" && echo \"¡Trace generado exitosamente: ${LATEST/.nettrace/.speedscope.json}!\"; fi",
+      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"¡Trace convertido exitosamente a formato $FMT!\"; else echo \"¡Trace conservado en formato raw: $LATEST!\"; fi; fi",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -130,6 +127,30 @@
         {
           "label": "Workspace root",
           "value": "."
+        }
+      ]
+    },
+    {
+      "id": "traceFormatSelect",
+      "type": "pickString",
+      "description": "Select trace conversion format (Default: Speedscope):",
+      "default": "Speedscope",
+      "options": [
+        {
+          "label": "Speedscope (JSON - speedscope.app / VS Code)",
+          "value": "Speedscope"
+        },
+        {
+          "label": "Chromium (chrome://tracing / Perfetto UI)",
+          "value": "Chromium"
+        },
+        {
+          "label": "NetTrace (Re-export / Keep nettrace)",
+          "value": "NetTrace"
+        },
+        {
+          "label": "None (Keep raw .nettrace binary only)",
+          "value": "none"
         }
       ]
     }
