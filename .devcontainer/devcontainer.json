@@ -20,6 +20,7 @@
 
         "ms-dotnettools.csdevkit", // C# Language
         "EditorConfig.EditorConfig",
+        "csharpier.csharpier-vscode",
 
         "golang.go", // Go Language
 

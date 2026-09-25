@@ -1,0 +1,18 @@
+{
+  "editor.formatOnSave": true,
+  "[c]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  },
+  "[gdscript]": {
+    "editor.defaultFormatter": "geequlim.godot-tools"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  }
+}
