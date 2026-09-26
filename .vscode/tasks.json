@@ -34,7 +34,7 @@
     {
       "label": "Install Godot Addons",
       "type": "shell",
-      "command": "godot --headless -s plug.gd install; rm -rf .plugged",
+      "command": "godot --headless -s plug.gd install force debug; rm -rf .plugged",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
