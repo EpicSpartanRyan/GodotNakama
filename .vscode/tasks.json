@@ -95,6 +95,20 @@
         "cwd": "${workspaceFolder}/client/sample-game"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Docker: View Logs (Nakama / DB)",
+      "type": "shell",
+      "command": "docker compose logs -f --tail 100 ${input:serviceLogSelect}",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
     }
   ],
   "inputs": [
@@ -151,6 +165,26 @@
         {
           "label": "None (Keep raw .nettrace binary only)",
           "value": "none"
+        }
+      ]
+    },
+    {
+      "id": "serviceLogSelect",
+      "type": "pickString",
+      "description": "Select the service to view its real-time logs:",
+      "default": "nakama",
+      "options": [
+        {
+          "label": "Nakama Server (Game Backend)",
+          "value": "nakama"
+        },
+        {
+          "label": "PostgreSQL (Database)",
+          "value": "postgres"
+        },
+        {
+          "label": "All services",
+          "value": ""
         }
       ]
     }
