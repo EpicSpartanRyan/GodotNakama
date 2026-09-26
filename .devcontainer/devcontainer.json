@@ -21,6 +21,8 @@
         "ms-dotnettools.csdevkit", // C# Language
         "EditorConfig.EditorConfig",
         "csharpier.csharpier-vscode",
+        "sransara.speedscope-in-vscode",
+        "drain99.perfetto-trace",
 
         "golang.go", // Go Language
 
@@ -45,7 +47,13 @@
         "qwtel.sqlite-viewer",
         "ms-vscode.hexeditor",
         "tamasfe.even-better-toml"
-      ]
+      ],
+      "settings": {
+        "workbench.editorAssociations": {
+          "*.speedscope.json": "speedscope-in-vscode.speedscope",
+          "*.chromium.json": "perfetto-trace.perfetto-native-editor"
+        }
+      }
     }
   },
   "remoteUser": "ubuntu",
