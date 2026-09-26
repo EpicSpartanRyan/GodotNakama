@@ -8,6 +8,10 @@
   <ItemGroup>
     <!-- Bug tracking for beta testers -->
     <PackageReference Include="Backtrace" Version="2.1.11" />
+    
+    <!-- Dependency Injection -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+
     <!-- Multiplayer -->
     <PackageReference Include="NakamaClient" Version="3.22.0" />
   </ItemGroup>

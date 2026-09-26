@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Backtrace.Model;
 using Backtrace;
-using Game.Config;
+using Microsoft.Extensions.DependencyInjection;
 
 public partial class NewScript : Node2D
 {
@@ -12,11 +12,8 @@ public partial class NewScript : Node2D
 	// Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        var credentials = new BacktraceCredentials(
-            Secrets.BacktraceUrl
-        );
-        _backtraceClient = new BacktraceClient(credentials);
-        _backtraceClient.HandleApplicationException();
+        
+        _backtraceClient = DependencyContainer.Provider.GetRequiredService<BacktraceClient>();
 
         try
         {
@@ -31,7 +28,6 @@ public partial class NewScript : Node2D
             report.Attributes.Add("godot.version", engineVersion);
             
             _backtraceClient.Send(report);
-            
             GD.PrintErr("Excepción de prueba enviada a Backtrace exitosamente.");
         }
     }
