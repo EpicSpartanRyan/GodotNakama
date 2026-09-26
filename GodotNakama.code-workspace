@@ -9,5 +9,10 @@
 	],
 	"settings": {
 		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln"
+	},
+	"extensions": {
+		"recommendations": [
+			"davidanson.vscode-markdownlint"
+		]
 	}
 }
