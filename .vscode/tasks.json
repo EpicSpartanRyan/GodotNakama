@@ -109,6 +109,15 @@
         "showReuseMessage": false,
         "clear": true
       }
+    },
+    {
+      "label": "Instantiate Templates",
+      "type": "shell",
+      "command": "find . -type f -name '*.template' | while read -r f; do dest=\"${f%.template}\"; if [ ! -f \"$dest\" ]; then cp \"$f\" \"$dest\"; echo \"Created: $dest\"; fi; done",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": []
     }
   ],
   "inputs": [
