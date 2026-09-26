@@ -28,13 +28,13 @@ info_status() {
 
     case "$status_type" in
         ok)
-            echo -e "[doctor] [$check_num/60] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
+            echo -e "[doctor] [$check_num/61] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
             ;;
         warn)
-            echo -e "[doctor] [$check_num/60] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/61] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
             ;;
         error)
-            echo -e "[doctor] [$check_num/60] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/61] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
             ;;
     esac
 }
@@ -715,6 +715,13 @@ if curl -s --max-time 5 https://godotengine.org >/dev/null 2>&1; then
     info_status "60" "Checking Godot Engine reachability" "ok" "reachable"
 else
     info_status "60" "Checking Godot Engine reachability" "warn" "unreachable (asset library might fail)"
+fi
+
+# Check 61: Backtrace (Bug reporting)
+if curl -s --max-time 5 https://backtrace.io >/dev/null 2>&1; then
+    info_status "61" "Checking Backtrace reachability" "ok" "reachable"
+else
+    info_status "61" "Checking Backtrace reachability" "warn" "unreachable (errors won't show up in Backtrace panel)"
 fi
 
 
