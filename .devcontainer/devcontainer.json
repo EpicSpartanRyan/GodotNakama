@@ -36,15 +36,17 @@
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
 
+        "qwtel.sqlite-viewer", // SQLite Support
+
         "ms-azuretools.vscode-containers", // Docker and Kubernetes
         "ms-azuretools.vscode-docker",
         "docker.docker",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
         
         "redhat.vscode-yaml", // Files
+        "redhat.vscode-xml",
         "AykutSarac.jsoncrack-vscode",
         "grimaldi-tech.aseprite-preview",
-        "qwtel.sqlite-viewer",
         "ms-vscode.hexeditor",
         "tamasfe.even-better-toml"
       ],
