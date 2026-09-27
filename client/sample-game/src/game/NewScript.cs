@@ -3,6 +3,9 @@ using System;
 using Backtrace.Model;
 using Backtrace;
 using Microsoft.Extensions.DependencyInjection;
+using SampleGame.src.core;
+
+namespace SampleGame.src.game;
 
 public partial class NewScript : Node2D
 {

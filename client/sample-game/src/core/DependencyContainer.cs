@@ -3,8 +3,10 @@ using Godot;
 using Microsoft.Extensions.DependencyInjection;
 using Backtrace.Model;
 using Backtrace;
-using Game.Config;
+using SampleGame.src.config;
 using System;
+
+namespace SampleGame.src.core;
 
 public partial class DependencyContainer : Node
 {
