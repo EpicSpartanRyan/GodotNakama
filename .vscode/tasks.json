@@ -68,6 +68,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Restore .NET Tools",
+      "type": "shell",
+      "command": "dotnet tool restore",
+      "problemMatcher": []
+    },
+    {
       "label": "Start Profiler Server",
       "dependsOn": "build",
       "type": "shell",
