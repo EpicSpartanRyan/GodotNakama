@@ -21,7 +21,7 @@
         "ms-dotnettools.csdevkit", // C# Language
         "EditorConfig.EditorConfig",
         "csharpier.csharpier-vscode",
-        "sransara.speedscope-in-vscode",
+        "sransara.speedscope-in-vscode", // Profiling
         "drain99.perfetto-trace",
 
         "golang.go", // Go Language
@@ -46,9 +46,9 @@
         "redhat.vscode-yaml", // Files
         "redhat.vscode-xml",
         "AykutSarac.jsoncrack-vscode",
+        "tamasfe.even-better-toml",
         "grimaldi-tech.aseprite-preview",
-        "ms-vscode.hexeditor",
-        "tamasfe.even-better-toml"
+        "ms-vscode.hexeditor"
       ],
       "settings": {
         "workbench.editorAssociations": {
