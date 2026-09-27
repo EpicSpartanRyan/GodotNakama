@@ -22,7 +22,7 @@
             "port": 23685
         },
         {
-            "name": "Play & Profile (Speedscope)",
+            "name": "Play & Profile",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Start Profiler Server",
