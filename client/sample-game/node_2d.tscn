@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dpab256ym7mkg"]
 
-[ext_resource type="Script" uid="uid://2ac0qovxafqg" path="res://NewScript.cs" id="1_script"]
-[ext_resource type="Shader" uid="uid://c8jp8xrmlfauj" path="res://rainbow.gdshader" id="2_0e48y"]
+[ext_resource type="Script" uid="uid://2ac0qovxafqg" path="res://src/game/NewScript.cs" id="1_script"]
+[ext_resource type="Shader" uid="uid://c8jp8xrmlfauj" path="res://assets/rainbow.gdshader" id="2_0e48y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_akiqj"]
 shader = ExtResource("2_0e48y")
