@@ -74,6 +74,15 @@
       "problemMatcher": []
     },
     {
+      "label": "Export Godot Game",
+      "type": "shell",
+      "command": "TARGET=\"${input:godotExportPlatform}\"; mkdir -p builds/windows builds/linux builds/macos; if [ \"$TARGET\" = \"All\" ]; then godot --headless --export-release \"Windows Desktop\" && godot --headless --export-release \"Linux\" && godot --headless --export-release \"macOS\"; else godot --headless --export-release \"$TARGET\"; fi",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Start Profiler Server",
       "dependsOn": "build",
       "type": "shell",
@@ -156,6 +165,30 @@
         {
           "label": "Workspace root",
           "value": "."
+        }
+      ]
+    },
+    {
+      "id": "godotExportPlatform",
+      "type": "pickString",
+      "description": "Select export platform:",
+      "default": "Windows Desktop",
+      "options": [
+        {
+          "label": "Windows Desktop",
+          "value": "Windows Desktop"
+        },
+        {
+          "label": "Linux",
+          "value": "Linux"
+        },
+        {
+          "label": "macOS",
+          "value": "macOS"
+        },
+        {
+          "label": "All (Build all platforms)",
+          "value": "All"
         }
       ]
     },
