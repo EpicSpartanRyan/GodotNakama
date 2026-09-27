@@ -2,3 +2,38 @@ root = true
 
 [*]
 charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.cs]
+# Indent style for C#
+indent_style = space
+indent_size = 4
+
+# Naming Conventions
+# Private fields with underscore (_camelCase)
+dotnet_naming_rule.private_member_should_be_underscore_camel_case.symbols = private_fields
+dotnet_naming_rule.private_member_should_be_underscore_camel_case.style = underscore_camel_case_style
+dotnet_naming_rule.private_member_should_be_underscore_camel_case.severity = suggestion
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private, protected
+
+dotnet_naming_style.underscore_camel_case_style.capitalization = camel_case
+dotnet_naming_style.underscore_camel_case_style.required_prefix = _
+
+# Code organization rules and preferred access modifiers
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# Implicit use of 'var' when the type is apparent
+csharp_style_var_for_built_in_types = true:silent
+csharp_style_var_when_type_is_apparent = true:suggestion
+
+[*.{tscn,tres}]
+indent_style = tab
+indent_size = 4
