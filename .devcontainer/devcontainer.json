@@ -57,7 +57,9 @@
         },
         "files.associations": {
           "*.cs.template": "csharp"
-        }
+        },
+        "csharp.experimental.debug.hotReload": true,
+        "csharp.debug.hotReloadOnSave": true
       }
     }
   },
@@ -71,7 +73,10 @@
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
-  "forwardPorts": [6007, 6008],
+  "forwardPorts": [
+    6007,
+    6008
+  ],
   "portsAttributes": {
     "6007": {
       "label": "Godot Remote Debugger",
