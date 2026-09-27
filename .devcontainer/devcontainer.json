@@ -54,6 +54,9 @@
         "workbench.editorAssociations": {
           "*.speedscope.json": "speedscope-in-vscode.speedscope",
           "*.chromium.json": "perfetto-trace.perfetto-native-editor"
+        },
+        "files.associations": {
+          "*.cs.template": "csharp"
         }
       }
     }
