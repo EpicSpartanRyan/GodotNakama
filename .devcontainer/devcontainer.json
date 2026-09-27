@@ -83,7 +83,7 @@
       "onAutoForward": "notify"
     },
     "6008": {
-      "label": "GSCript Language Server",
+      "label": "GDScript Language Server",
       "onAutoForward": "notify"
     }
   },
