@@ -1,0 +1,11 @@
+{
+  "files.exclude": {
+    "**/*.uid": true
+  },
+  "search.exclude": {
+    "**/*.uid": true
+  },
+  "files.watcherExclude": {
+    "**/*.uid": true
+  }
+}
