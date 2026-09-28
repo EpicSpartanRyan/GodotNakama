@@ -28,13 +28,13 @@ info_status() {
 
     case "$status_type" in
         ok)
-            echo -e "[doctor] [$check_num/63] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
+            echo -e "[doctor] [$check_num/64] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
             ;;
         warn)
-            echo -e "[doctor] [$check_num/63] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/64] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
             ;;
         error)
-            echo -e "[doctor] [$check_num/63] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/64] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
             ;;
     esac
 }
@@ -738,6 +738,15 @@ if curl -s --max-time 5 https://backtrace.io >/dev/null 2>&1; then
     info_status "63" "Checking Backtrace reachability" "ok" "reachable"
 else
     info_status "63" "Checking Backtrace reachability" "warn" "unreachable (errors won't show up in Backtrace panel)"
+fi
+
+# Check 64: Godot Export Templates
+export_templates_dir="${HOME}/.local/share/godot/export_templates"
+if [[ -d "$export_templates_dir" ]] && find "$export_templates_dir" -type f \( -name "*.tpz" -o -name "linuxbsd_*" -o -name "windows_*" -o -name "android_*" \) -print -quit | grep -q .; then
+    templates_count=$(find "$export_templates_dir" -type f \( -name "*.tpz" -o -name "linuxbsd_*" -o -name "windows_*" -o -name "android_*" \) | wc -l)
+    info_status "64" "Checking Godot export templates" "ok" "found $templates_count export template files installed"
+else
+    info_status "64" "Checking Godot export templates" "warn" "no valid export templates found. Review tasks.json (Godot: Install Export Templates)"
 fi
 
 
