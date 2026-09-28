@@ -353,19 +353,19 @@ else
 fi
 
 # Check 27: csharpier
-if command -v dotnet-csharpier >/dev/null 2>&1 || dotnet csharpier --version >/dev/null 2>&1; then
-    csharpier_version=$(dotnet-csharpier --version 2>/dev/null || dotnet csharpier --version 2>/dev/null | head -n1)
+if command -v dotnet-csharpier >/dev/null 2>&1 || dotnet csharpier --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-csharpier ]]; then
+    csharpier_version=$(dotnet-csharpier --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-csharpier --version 2>/dev/null | head -n1 || echo "installed")
     info_status "27" "Checking csharpier" "ok" "$csharpier_version"
 else
-    info_status "27" "Checking csharpier" "warn" "not found. Please review tasks.json (.NET: Restore Tools) to ensure it is installed."
+    info_status "27" "Checking csharpier" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Restore Tools)."
 fi
 
 # Check 28: dotnet-trace
-if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1; then
-    trace_version=$(dotnet-trace --version 2>/dev/null || dotnet trace --version 2>/dev/null | head -n1)
+if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-trace ]]; then
+    trace_version=$(dotnet-trace --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-trace --version 2>/dev/null | head -n1 || echo "installed")
     info_status "28" "Checking dotnet-trace" "ok" "$trace_version"
 else
-    info_status "28" "Checking dotnet-trace" "warn" "not found. Please review tasks.json (.NET: Restore Tools) to ensure it is installed."
+    info_status "28" "Checking dotnet-trace" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Install Profiler)."
 fi
 
 # Check 29: Go

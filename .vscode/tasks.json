@@ -8,6 +8,12 @@
       "problemMatcher": []
     },
     {
+      "label": ".NET: Install Profiler",
+      "type": "shell",
+      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
+      "problemMatcher": []
+    },
+    {
       "label": "Aseprite: Start",
       "type": "shell",
       "command": "DIR=\"${workspaceFolder}/${input:asepriteProjectSelect}\"; mkdir -p ~/.config/aseprite && touch ~/.config/aseprite/aseprite.ini && if grep -q 'current_folder' ~/.config/aseprite/aseprite.ini; then sed -i \"s|^current_folder = .*|current_folder = $DIR|\" ~/.config/aseprite/aseprite.ini; else echo -e \"\\n[file_selector]\\ncurrent_folder = $DIR\" >> ~/.config/aseprite/aseprite.ini; fi; cd \"$DIR\" && aseprite",
