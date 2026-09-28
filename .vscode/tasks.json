@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": ".NET Restore Tools",
+      "label": ".NET: Restore Tools",
       "type": "shell",
       "command": "dotnet tool restore",
       "problemMatcher": []
