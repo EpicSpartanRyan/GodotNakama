@@ -32,7 +32,7 @@
 
         "GitHub.vscode-pull-request-github", // GitHub PR's/Actions, Tasks
         "github.vscode-github-actions",
-        "spmeesseman.vscode-taskexplorer",
+        "isopodlabs.taskviewer",
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
 

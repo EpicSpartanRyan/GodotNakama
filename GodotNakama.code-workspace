@@ -8,7 +8,9 @@
 		}
 	],
 	"settings": {
-		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln"
+		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
+		"taskviewer.showAll": false,
+		"taskviewer.showLaunches": true
 	},
 	"extensions": {
 		"recommendations": [
