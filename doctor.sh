@@ -28,13 +28,13 @@ info_status() {
 
     case "$status_type" in
         ok)
-            echo -e "[doctor] [$check_num/61] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
+            echo -e "[doctor] [$check_num/63] ${message}... ${GREEN}OK${NC}${detail:+ ($detail)}"
             ;;
         warn)
-            echo -e "[doctor] [$check_num/61] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/63] ${message}... ${YELLOW}WARNING${NC}${detail:+ ($detail)}" >&2
             ;;
         error)
-            echo -e "[doctor] [$check_num/61] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
+            echo -e "[doctor] [$check_num/63] ${message}... ${RED}ERROR${NC}${detail:+ ($detail)}" >&2
             ;;
     esac
 }
@@ -352,54 +352,70 @@ else
     fi
 fi
 
-# Check 27: Go
+# Check 27: csharpier
+if command -v dotnet-csharpier >/dev/null 2>&1 || dotnet csharpier --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-csharpier ]]; then
+    csharpier_version=$(dotnet-csharpier --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-csharpier --version 2>/dev/null | head -n1 || echo "installed")
+    info_status "27" "Checking csharpier" "ok" "$csharpier_version"
+else
+    info_status "27" "Checking csharpier" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Restore Tools)."
+fi
+
+# Check 28: dotnet-trace
+if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-trace ]]; then
+    trace_version=$(dotnet-trace --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-trace --version 2>/dev/null | head -n1 || echo "installed")
+    info_status "28" "Checking dotnet-trace" "ok" "$trace_version"
+else
+    info_status "28" "Checking dotnet-trace" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Install Profiler)."
+fi
+
+# Check 29: Go
 if ! command -v go >/dev/null 2>&1; then
-    info_status "27" "Checking Go" "error" "not found"
+    info_status "29" "Checking Go" "error" "not found"
     fail=1
 else
     go_version=$(go version)
-    info_status "27" "Checking Go" "ok" "$go_version"
+    info_status "29" "Checking Go" "ok" "$go_version"
 fi
 
-# Check 28: Godot editor
+# Check 30: Godot editor
 if ! command -v godot >/dev/null 2>&1; then
-    info_status "28" "Checking Godot editor" "error" "not found in PATH"
+    info_status "30" "Checking Godot editor" "error" "not found in PATH"
     fail=1
 else
     godot_version=$(godot --version | head -n1)
-    info_status "28" "Checking Godot editor" "ok" "$godot_version"
+    info_status "30" "Checking Godot editor" "ok" "$godot_version"
 fi
 
-# Check 29: Godot Vulkan rendering
+# Check 31: Godot Vulkan rendering
 if command -v godot >/dev/null 2>&1; then
     if godot --rendering-driver vulkan --headless --editor --quit >/dev/null 2>&1; then
-        info_status "29" "Checking Godot Vulkan rendering" "ok" "headless Vulkan initialization succeeded"
+        info_status "31" "Checking Godot Vulkan rendering" "ok" "headless Vulkan initialization succeeded"
     else
-        info_status "29" "Checking Godot Vulkan rendering" "warn" "failed to initialize Vulkan renderer in headless mode"
+        info_status "31" "Checking Godot Vulkan rendering" "warn" "failed to initialize Vulkan renderer in headless mode"
     fi
 else
-    info_status "29" "Checking Godot Vulkan rendering" "warn" "skipped (Godot binary not found)"
+    info_status "31" "Checking Godot Vulkan rendering" "warn" "skipped (Godot binary not found)"
 fi
 
-# Check 30: Aseprite
+# Check 32: Aseprite
 if ! command -v aseprite >/dev/null 2>&1; then
-    info_status "30" "Checking Aseprite" "error" "not found in PATH"
+    info_status "32" "Checking Aseprite" "error" "not found in PATH"
     fail=1
 else
     aseprite_version=$(aseprite --version | head -n1)
-    info_status "30" "Checking Aseprite" "ok" "$aseprite_version"
+    info_status "32" "Checking Aseprite" "ok" "$aseprite_version"
 fi
 
-# Check 31: Git
+# Check 33: Git
 if ! command -v git >/dev/null 2>&1; then
-    info_status "31" "Checking Git" "error" "not found in PATH"
+    info_status "33" "Checking Git" "error" "not found in PATH"
     fail=1
 else
     git_version=$(git --version | head -n1)
-    info_status "31" "Checking Git" "ok" "$git_version"
+    info_status "33" "Checking Git" "ok" "$git_version"
 fi
 
-# Check 32: Git repository status
+# Check 34: Git repository status
 if command -v git >/dev/null 2>&1; then
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         git_branch=$(git branch --show-current 2>/dev/null)
@@ -407,49 +423,49 @@ if command -v git >/dev/null 2>&1; then
             git_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "detached")
         fi
         git_hash=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-        info_status "32" "Checking Git repository" "ok" "branch: $git_branch, commit: $git_hash"
+        info_status "34" "Checking Git repository" "ok" "branch: $git_branch, commit: $git_hash"
     else
-        info_status "32" "Checking Git repository" "warn" "current directory is not a git repository"
+        info_status "34" "Checking Git repository" "warn" "current directory is not a git repository"
     fi
 else
-    info_status "32" "Checking Git repository" "warn" "git not found"
+    info_status "34" "Checking Git repository" "warn" "git not found"
 fi
 
-# Check 33: Git LFS
+# Check 35: Git LFS
 if ! command -v git >/dev/null 2>&1 || ! git lfs version >/dev/null 2>&1; then
-    info_status "33" "Checking Git LFS" "error" "not found"
+    info_status "35" "Checking Git LFS" "error" "not found"
     fail=1
 else
     lfs_version=$(git lfs version | head -n1)
     if ! git lfs env | grep -q "Local"; then
-        info_status "33" "Checking Git LFS" "warn" "may not be properly installed"
+        info_status "35" "Checking Git LFS" "warn" "may not be properly installed"
     else
-        info_status "33" "Checking Git LFS" "ok" "$lfs_version"
+        info_status "35" "Checking Git LFS" "ok" "$lfs_version"
     fi
 fi
 
-# Check 34: Git LFS integrity (pending binary downloads)
+# Check 36: Git LFS integrity (pending binary downloads)
 if command -v git >/dev/null 2>&1 && command -v git lfs >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     if git lfs ls-files 2>&1 | grep -q '^-'; then
-        info_status "34" "Checking Git LFS integrity" "error" "missing binary files detected (run 'git lfs pull')"
+        info_status "36" "Checking Git LFS integrity" "error" "missing binary files detected (run 'git lfs pull')"
         fail=1
     else
-        info_status "34" "Checking Git LFS integrity" "ok" "all LFS files downloaded"
+        info_status "36" "Checking Git LFS integrity" "ok" "all LFS files downloaded"
     fi
 else
-    info_status "34" "Checking Git LFS integrity" "ok" "skipped"
+    info_status "36" "Checking Git LFS integrity" "ok" "skipped"
 fi
 
-# Check 35: GitHub CLI
+# Check 37: GitHub CLI
 if ! command -v gh >/dev/null 2>&1; then
-    info_status "35" "Checking GitHub CLI" "error" "not found"
+    info_status "37" "Checking GitHub CLI" "error" "not found"
     fail=1
 else
     gh_version=$(gh --version | head -n1)
     if ! gh auth status >/dev/null 2>&1; then
-        info_status "35" "Checking GitHub CLI" "warn" "not authenticated - run 'gh auth login'"
+        info_status "37" "Checking GitHub CLI" "warn" "not authenticated - run 'gh auth login'"
     else
-        info_status "35" "Checking GitHub CLI" "ok" "$gh_version"
+        info_status "37" "Checking GitHub CLI" "ok" "$gh_version"
     fi
 fi
 
@@ -458,46 +474,46 @@ fi
 # 4. Docker & Docker Compose
 # ==========================================
 
-# Check 36: Docker CLI
+# Check 38: Docker CLI
 if ! command -v docker >/dev/null 2>&1; then
-    info_status "36" "Checking Docker" "error" "not found in PATH"
+    info_status "38" "Checking Docker" "error" "not found in PATH"
     fail=1
 else
-    info_status "36" "Checking Docker" "ok" "CLI available"
+    info_status "38" "Checking Docker" "ok" "CLI available"
 fi
 
-# Check 37: Docker daemon
+# Check 39: Docker daemon
 if ! command -v docker >/dev/null 2>&1; then
-    info_status "37" "Checking Docker daemon" "error" "skipped"
+    info_status "39" "Checking Docker daemon" "error" "skipped"
     fail=1
 else
     if docker info >/dev/null 2>&1; then
-        info_status "37" "Checking Docker daemon" "ok" "accessible"
+        info_status "39" "Checking Docker daemon" "ok" "accessible"
     else
-        info_status "37" "Checking Docker daemon" "error" "not accessible"
+        info_status "39" "Checking Docker daemon" "error" "not accessible"
         fail=1
     fi
 fi
 
-# Check 38: Docker socket access inside container
+# Check 40: Docker socket access inside container
 if [[ -f /.dockerenv ]]; then
     if [[ -S /var/run/docker.sock ]] && docker ps >/dev/null 2>&1; then
-        info_status "38" "Checking Docker socket access" "ok" "socket mounted and accessible"
+        info_status "40" "Checking Docker socket access" "ok" "socket mounted and accessible"
     elif [[ -S /var/run/docker.sock ]]; then
-        info_status "38" "Checking Docker socket access" "warn" "socket mounted but permission denied"
+        info_status "40" "Checking Docker socket access" "warn" "socket mounted but permission denied"
     else
-        info_status "38" "Checking Docker socket access" "ok" "isolated container (no host socket mounted)"
+        info_status "40" "Checking Docker socket access" "ok" "isolated container (no host socket mounted)"
     fi
 else
-    info_status "38" "Checking Docker socket access" "ok" "not in container (native host)"
+    info_status "40" "Checking Docker socket access" "ok" "not in container (native host)"
 fi
 
-# Check 39: Docker Compose
+# Check 41: Docker Compose
 if ! command -v docker compose >/dev/null 2>&1; then
-    info_status "39" "Checking Docker Compose" "error" "plugin not found"
+    info_status "41" "Checking Docker Compose" "error" "plugin not found"
     fail=1
 else
-    info_status "39" "Checking Docker Compose" "ok" "$(docker compose version --short)"
+    info_status "41" "Checking Docker Compose" "ok" "$(docker compose version --short)"
 fi
 
 
@@ -506,81 +522,81 @@ fi
 # ==========================================
 
 if [[ -f docker-compose.yml ]]; then
-    # Check 40: Docker Compose services active overall
+    # Check 42: Docker Compose services active overall
     running_services=$(docker compose ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
     if [[ -n "$running_services" ]]; then
-        info_status "40" "Checking Docker Compose services" "ok" "services active"
+        info_status "42" "Checking Docker Compose services" "ok" "services active"
     else
-        info_status "40" "Checking Docker Compose services" "warn" "no services running"
+        info_status "42" "Checking Docker Compose services" "warn" "no services running"
     fi
 
-    # Check 41: Service 'postgres'
+    # Check 43: Service 'postgres'
     if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
        docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
-         info_status "41" "Checking service 'postgres'" "ok" "running"
+         info_status "43" "Checking service 'postgres'" "ok" "running"
     else
         if docker compose ps --services 2>/dev/null | grep -q "^postgres$"; then
-            info_status "41" "Checking service 'postgres'" "warn" "defined but not running"
+            info_status "43" "Checking service 'postgres'" "warn" "defined but not running"
         else
-            info_status "41" "Checking service 'postgres'" "warn" "not defined"
+            info_status "43" "Checking service 'postgres'" "warn" "not defined"
         fi
     fi
 
-    # Check 42: Service 'nakama'
+    # Check 44: Service 'nakama'
     if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
        docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
-         info_status "42" "Checking service 'nakama'" "ok" "running"
+         info_status "44" "Checking service 'nakama'" "ok" "running"
     else
         if docker compose ps --services 2>/dev/null | grep -q "^nakama$"; then
-            info_status "42" "Checking service 'nakama'" "warn" "defined but not running"
+            info_status "44" "Checking service 'nakama'" "warn" "defined but not running"
         else
-            info_status "42" "Checking service 'nakama'" "warn" "not defined"
+            info_status "44" "Checking service 'nakama'" "warn" "not defined"
         fi
     fi
 
-    # Check 43: PostgreSQL connectivity
+    # Check 45: PostgreSQL connectivity
     if docker compose exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
-        info_status "43" "Checking PostgreSQL connectivity" "ok" "accepting connections"
+        info_status "45" "Checking PostgreSQL connectivity" "ok" "accepting connections"
     else
-        info_status "43" "Checking PostgreSQL connectivity" "warn" "not accepting connections"
+        info_status "45" "Checking PostgreSQL connectivity" "warn" "not accepting connections"
     fi
 
-    # Check 44: Nakama Client API (Port 7350)
+    # Check 46: Nakama Client API (Port 7350)
     if curl -s -f http://nakama:7350/healthcheck >/dev/null 2>&1 || \
        curl -s -f http://localhost:7350/healthcheck >/dev/null 2>&1; then
-        info_status "44" "Checking Nakama Client API (7350)" "ok" "responding"
+        info_status "46" "Checking Nakama Client API (7350)" "ok" "responding"
     else
-        info_status "44" "Checking Nakama Client API (7350)" "warn" "not responding"
+        info_status "46" "Checking Nakama Client API (7350)" "warn" "not responding"
     fi
 
-    # Check 45: Nakama gRPC API (Port 7349)
+    # Check 47: Nakama gRPC API (Port 7349)
     if curl -s --http2-prior-knowledge http://nakama:7349 >/dev/null 2>&1 || \
        nc -z nakama 7349 >/dev/null 2>&1 || \
        nc -z localhost 7349 >/dev/null 2>&1; then
-        info_status "45" "Checking Nakama gRPC API (7349)" "ok" "responding"
+        info_status "47" "Checking Nakama gRPC API (7349)" "ok" "responding"
     else
-        info_status "45" "Checking Nakama gRPC API (7349)" "warn" "not responding"
+        info_status "47" "Checking Nakama gRPC API (7349)" "warn" "not responding"
     fi
 
-    # Check 46: Nakama UDP API (Port 7350 - Realtime / Socket Routing)
+    # Check 48: Nakama UDP API (Port 7350 - Realtime / Socket Routing)
     if command -v nc >/dev/null 2>&1; then
         if echo "" | nc -u -w 1 localhost 7350 >/dev/null 2>&1 || \
            echo "" | nc -u -w 1 nakama 7350 >/dev/null 2>&1; then
-            info_status "46" "Checking Nakama UDP routing (7350)" "ok" "UDP socket reachable"
+             info_status "48" "Checking Nakama UDP routing (7350)" "ok" "UDP socket reachable"
         else
-            info_status "46" "Checking Nakama UDP routing (7350)" "warn" "UDP port 7350 unreachable (ensure 7350:7350/udp is declared in docker-compose.yml)"
+             info_status "48" "Checking Nakama UDP routing (7350)" "warn" "UDP port 7350 unreachable (ensure 7350:7350/udp is declared in docker-compose.yml)"
         fi
     else
-        info_status "46" "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
+        info_status "48" "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
     fi
 else
-    info_status "40" "Checking Docker Compose services" "warn" "docker-compose.yml not found"
-    info_status "41" "Checking service 'postgres'" "warn" "docker-compose.yml not found"
-    info_status "42" "Checking service 'nakama'" "warn" "docker-compose.yml not found"
-    info_status "43" "Checking PostgreSQL connectivity" "warn" "docker-compose.yml not found"
-    info_status "44" "Checking Nakama Client API (7350)" "warn" "docker-compose.yml not found"
-    info_status "45" "Checking Nakama gRPC API (7349)" "warn" "docker-compose.yml not found"
-    info_status "46" "Checking Nakama UDP routing (7350)" "warn" "docker-compose.yml not found"
+    info_status "42" "Checking Docker Compose services" "warn" "docker-compose.yml not found"
+    info_status "43" "Checking service 'postgres'" "warn" "docker-compose.yml not found"
+    info_status "44" "Checking service 'nakama'" "warn" "docker-compose.yml not found"
+    info_status "45" "Checking PostgreSQL connectivity" "warn" "docker-compose.yml not found"
+    info_status "46" "Checking Nakama Client API (7350)" "warn" "docker-compose.yml not found"
+    info_status "47" "Checking Nakama gRPC API (7349)" "warn" "docker-compose.yml not found"
+    info_status "48" "Checking Nakama UDP routing (7350)" "warn" "docker-compose.yml not found"
 fi
 
 
@@ -588,75 +604,75 @@ fi
 # 7. Workspace, Editors & Shell Utilities
 # ==========================================
 
-# Check 47: Workspace folder
+# Check 49: Workspace folder
 if [[ -f GodotNakama.code-workspace ]]; then
-    info_status "47" "Checking workspace" "ok" "GodotNakama.code-workspace found"
+    info_status "49" "Checking workspace" "ok" "GodotNakama.code-workspace found"
 else
-    info_status "47" "Checking workspace" "warn" "workspace file not found"
+    info_status "49" "Checking workspace" "warn" "workspace file not found"
 fi
 
-# Check 48: VS Code
+# Check 50: VS Code
 if ! command -v code >/dev/null 2>&1; then
-    info_status "48" "Checking VS Code" "warn" "not found in PATH"
+    info_status "50" "Checking VS Code" "warn" "not found in PATH"
 else
     code_version=$(code --version | head -n1)
-    info_status "48" "Checking VS Code" "ok" "version $code_version"
+    info_status "50" "Checking VS Code" "ok" "version $code_version"
 fi
 
-# Check 49: Nano
+# Check 51: Nano
 if ! command -v nano >/dev/null 2>&1; then
-    info_status "49" "Checking nano" "warn" "not found in PATH"
+    info_status "51" "Checking nano" "warn" "not found in PATH"
 else
     nano_version=$(nano --version | head -n1)
-    info_status "49" "Checking nano" "ok" "$nano_version"
+    info_status "51" "Checking nano" "ok" "$nano_version"
 fi
 
-# Check 50: Bash
+# Check 52: Bash
 if ! command -v bash >/dev/null 2>&1; then
-    info_status "50" "Checking bash" "error" "not found in PATH"
+    info_status "52" "Checking bash" "error" "not found in PATH"
     fail=1
 else
     bash_version=$(bash --version | head -n1)
-    info_status "50" "Checking bash" "ok" "$bash_version"
+    info_status "52" "Checking bash" "ok" "$bash_version"
 fi
 
-# Check 51: Zsh
+# Check 53: Zsh
 if ! command -v zsh >/dev/null 2>&1; then
-    info_status "51" "Checking zsh" "warn" "not found in PATH"
+    info_status "53" "Checking zsh" "warn" "not found in PATH"
 else
     zsh_version=$(zsh --version)
-    info_status "51" "Checking zsh" "ok" "$zsh_version"
+    info_status "53" "Checking zsh" "ok" "$zsh_version"
 fi
 
-# Check 52: PowerShell
+# Check 54: PowerShell
 if command -v pwsh >/dev/null 2>&1; then
     pwsh_version=$(pwsh --version 2>/dev/null | head -n1 || echo "pwsh active")
-    info_status "52" "Checking PowerShell" "ok" "$pwsh_version"
+    info_status "54" "Checking PowerShell" "ok" "$pwsh_version"
 elif command -v powershell.exe >/dev/null 2>&1; then
-    info_status "52" "Checking PowerShell" "ok" "powershell.exe available (Windows host)"
+    info_status "54" "Checking PowerShell" "ok" "powershell.exe available (Windows host)"
 elif command -v powershell >/dev/null 2>&1; then
     ps_version=$(powershell --version 2>/dev/null | head -n1 || echo "powershell active")
-    info_status "52" "Checking PowerShell" "ok" "$ps_version"
+    info_status "54" "Checking PowerShell" "ok" "$ps_version"
 else
-    info_status "52" "Checking PowerShell" "warn" "not found in PATH"
+    info_status "54" "Checking PowerShell" "warn" "not found in PATH"
 fi
 
-# Check 53: Tmux
+# Check 55: Tmux
 if ! command -v tmux >/dev/null 2>&1; then
-    info_status "53" "Checking tmux" "error" "not found in PATH"
+    info_status "55" "Checking tmux" "error" "not found in PATH"
     fail=1
 else
     tmux_version=$(tmux -V)
-    info_status "53" "Checking tmux" "ok" "$tmux_version"
+    info_status "55" "Checking tmux" "ok" "$tmux_version"
 fi
 
-# Check 54: Starship
+# Check 56: Starship
 if ! command -v starship >/dev/null 2>&1; then
-    info_status "54" "Checking Starship" "error" "not found"
+    info_status "56" "Checking Starship" "error" "not found"
     fail=1
 else
     starship_version=$(starship --version | head -n1)
-    info_status "54" "Checking Starship" "ok" "$starship_version"
+    info_status "56" "Checking Starship" "ok" "$starship_version"
 fi
 
 
@@ -664,64 +680,64 @@ fi
 # 8. External Connectivity & Network Health Checks
 # ==========================================
 
-# Check 55: DNS resolution performance
+# Check 57: DNS resolution performance
 if command -v getent >/dev/null 2>&1; then
     if getent hosts github.com >/dev/null 2>&1; then
-        info_status "55" "Checking DNS resolution" "ok" "resolving external hosts correctly"
+        info_status "57" "Checking DNS resolution" "ok" "resolving external hosts correctly"
     else
-        info_status "55" "Checking DNS resolution" "error" "unable to resolve external hosts"
+        info_status "57" "Checking DNS resolution" "error" "unable to resolve external hosts"
         fail=1
     fi
 else
-    info_status "55" "Checking DNS resolution" "warn" "getent command not found"
+    info_status "57" "Checking DNS resolution" "warn" "getent command not found"
 fi
 
-# Check 56: Strict localhost resolution
+# Check 58: Strict localhost resolution
 if command -v getent >/dev/null 2>&1; then
     if getent ahosts localhost | grep -qE "^127\.|^::1"; then
         resolved_ips=$(getent ahosts localhost | awk '{print $1}' | sort -u | paste -sd, -)
-        info_status "56" "Checking localhost resolution" "ok" "resolves to local loopback ($resolved_ips)"
+        info_status "58" "Checking localhost resolution" "ok" "resolves to local loopback ($resolved_ips)"
     else
-        info_status "56" "Checking localhost resolution" "error" "localhost does not resolve to 127.x.x.x or ::1 (check /etc/hosts)"
+        info_status "58" "Checking localhost resolution" "error" "localhost does not resolve to 127.x.x.x or ::1 (check /etc/hosts)"
         fail=1
     fi
 else
-    info_status "56" "Checking localhost resolution" "warn" "getent command not found, skipping check"
+    info_status "58" "Checking localhost resolution" "warn" "getent command not found, skipping check"
 fi
 
-# Check 57: GitHub (Git Push/Pull & APIs)
+# Check 59: GitHub (Git Push/Pull & APIs)
 if curl -s --max-time 5 https://github.com >/dev/null 2>&1; then
-    info_status "57" "Checking GitHub reachability" "ok" "reachable"
+    info_status "59" "Checking GitHub reachability" "ok" "reachable"
 else
-    info_status "57" "Checking GitHub reachability" "warn" "unreachable (git push/pull might fail)"
+    info_status "59" "Checking GitHub reachability" "warn" "unreachable (git push/pull might fail)"
 fi
 
-# Check 58: NuGet Package Feed (C# Package Restore)
+# Check 60: NuGet Package Feed (C# Package Restore)
 if curl -s --max-time 5 https://api.nuget.org/v3/index.json >/dev/null 2>&1; then
-    info_status "58" "Checking NuGet reachability" "ok" "reachable"
+    info_status "60" "Checking NuGet reachability" "ok" "reachable"
 else
-    info_status "58" "Checking NuGet reachability" "warn" "unreachable (dotnet restore might fail)"
+    info_status "60" "Checking NuGet reachability" "warn" "unreachable (dotnet restore might fail)"
 fi
 
-# Check 59: Docker Hub (Pulling images)
+# Check 61: Docker Hub (Pulling images)
 if curl -s --max-time 5 https://registry-1.docker.io/v2/ >/dev/null 2>&1; then
-    info_status "59" "Checking Docker Hub reachability" "ok" "reachable"
+    info_status "61" "Checking Docker Hub reachability" "ok" "reachable"
 else
-    info_status "59" "Checking Docker Hub reachability" "warn" "unreachable (docker pull might fail)"
+    info_status "61" "Checking Docker Hub reachability" "warn" "unreachable (docker pull might fail)"
 fi
 
-# Check 60: Godot Engine (Assets & Asset Library)
+# Check 62: Godot Engine (Assets & Asset Library)
 if curl -s --max-time 5 https://godotengine.org >/dev/null 2>&1; then
-    info_status "60" "Checking Godot Engine reachability" "ok" "reachable"
+    info_status "62" "Checking Godot Engine reachability" "ok" "reachable"
 else
-    info_status "60" "Checking Godot Engine reachability" "warn" "unreachable (asset library might fail)"
+    info_status "62" "Checking Godot Engine reachability" "warn" "unreachable (asset library might fail)"
 fi
 
-# Check 61: Backtrace (Bug reporting)
+# Check 63: Backtrace (Bug reporting)
 if curl -s --max-time 5 https://backtrace.io >/dev/null 2>&1; then
-    info_status "61" "Checking Backtrace reachability" "ok" "reachable"
+    info_status "63" "Checking Backtrace reachability" "ok" "reachable"
 else
-    info_status "61" "Checking Backtrace reachability" "warn" "unreachable (errors won't show up in Backtrace panel)"
+    info_status "63" "Checking Backtrace reachability" "warn" "unreachable (errors won't show up in Backtrace panel)"
 fi
 
 
