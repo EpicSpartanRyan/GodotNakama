@@ -122,7 +122,7 @@
     {
       "label": "Godot: Stop Profiler & Convert Trace",
       "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"¡Trace convertido exitosamente a formato $FMT!\"; else echo \"¡Trace conservado en formato raw: $LATEST!\"; fi; fi",
+      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"Trace successfully converted to $FMT format!\"; else echo \"Trace kept in raw format: $LATEST!\"; fi; fi",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -131,7 +131,7 @@
     {
       "label": "Starship: Install in all terminals",
       "type": "shell",
-      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configurado en Bash, Zsh y PowerShell'",
+      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configured in Bash, Zsh, and PowerShell'",
       "problemMatcher": []
     },
     {
