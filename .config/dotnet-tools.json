@@ -8,6 +8,13 @@
         "csharpier"
       ],
       "rollForward": false
+    },
+    "dotnet-trace": {
+      "version": "10.0.745401",
+      "commands": [
+        "dotnet-trace"
+      ],
+      "rollForward": false
     }
   }
 }
