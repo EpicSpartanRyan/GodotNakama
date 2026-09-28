@@ -8,6 +8,9 @@
   <ItemGroup>
     <!-- Bug tracking for beta testers -->
     <PackageReference Include="Backtrace" Version="2.1.11" />
+
+    <!-- Discord RPC -->
+    <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
     
     <!-- Dependency Injection -->
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
