@@ -2,46 +2,57 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Install Starship in all terminals",
+      "label": ".NET Restore Tools",
       "type": "shell",
-      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configurado en Bash, Zsh y PowerShell'",
+      "command": "dotnet tool restore",
       "problemMatcher": []
     },
     {
-      "label": "Start Godot",
+      "label": ".NET: Install Profiler",
       "type": "shell",
-      "command": "P=\"${input:godotProjectSelect}\"; godot -e ${P:+\"--path\" \"$P\"}",
+      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
       "problemMatcher": []
     },
     {
-      "label": "Start Aseprite",
+      "label": "Aseprite: Start",
       "type": "shell",
       "command": "DIR=\"${workspaceFolder}/${input:asepriteProjectSelect}\"; mkdir -p ~/.config/aseprite && touch ~/.config/aseprite/aseprite.ini && if grep -q 'current_folder' ~/.config/aseprite/aseprite.ini; then sed -i \"s|^current_folder = .*|current_folder = $DIR|\" ~/.config/aseprite/aseprite.ini; else echo -e \"\\n[file_selector]\\ncurrent_folder = $DIR\" >> ~/.config/aseprite/aseprite.ini; fi; cd \"$DIR\" && aseprite",
       "problemMatcher": []
     },
     {
-      "label": "Stop all Godot processes",
+      "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
-      "command": "ps -eo pid=,comm= | awk 'tolower($2) ~ /^godot/ {print $1}' | xargs -r kill -TERM",
-      "problemMatcher": []
+      "command": "docker compose logs -f --tail 100 ${input:serviceLogSelect}",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
     },
     {
-      "label": "Fix Godot game input",
+      "label": "Environment: Run Doctor",
       "type": "shell",
-      "command": "sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' ~/.config/godot/editor_settings-4.7.tres && echo 'Godot game input fixed.'",
-      "problemMatcher": []
-    },
-    {
-      "label": "Install Godot Addons",
-      "type": "shell",
-      "command": "godot --headless -s plug.gd install force debug; rm -rf .plugged",
+      "command": "mkdir -p logs && ./doctor.sh --verbose 2>&1 | tee >(sed 's/\\x1B\\[[0-9;]*[mK]//g' > logs/doctor-$(date +%Y%m%d-%H%M%S).log); exit ${PIPESTATUS[0]}",
       "options": {
-        "cwd": "${workspaceFolder}/client/sample-game"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
     },
     {
-      "label": "build",
+      "label": "Git: Clean Untracked & Ignored Files",
+      "type": "shell",
+      "command": "git clean -fdx",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Godot: Build",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -53,28 +64,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Run Environment Doctor",
-      "type": "shell",
-      "command": "mkdir -p logs && ./doctor.sh --verbose 2>&1 | tee >(sed 's/\\x1B\\[[0-9;]*[mK]//g' > logs/doctor-$(date +%Y%m%d-%H%M%S).log); exit ${PIPESTATUS[0]}",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Install .NET profiler",
-      "type": "shell",
-      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
-      "problemMatcher": []
-    },
-    {
-      "label": "Restore .NET Tools",
-      "type": "shell",
-      "command": "dotnet tool restore",
-      "problemMatcher": []
-    },
-    {
-      "label": "Export Godot Game",
+      "label": "Godot: Export Game",
       "type": "shell",
       "command": "TARGET=\"${input:godotExportPlatform}\"; mkdir -p builds/windows builds/linux builds/macos; if [ \"$TARGET\" = \"All\" ]; then godot --headless --export-release \"Windows Desktop\" && godot --headless --export-release \"Linux\" && godot --headless --export-release \"macOS\"; else godot --headless --export-release \"$TARGET\"; fi",
       "options": {
@@ -83,8 +73,29 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Profiler Server",
-      "dependsOn": "build",
+      "label": "Godot: Fix game input",
+      "type": "shell",
+      "command": "sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' ~/.config/godot/editor_settings-4.7.tres && echo 'Godot game input fixed.'",
+      "problemMatcher": []
+    },
+    {
+      "label": "Godot: Install Addons",
+      "type": "shell",
+      "command": "godot --headless -s plug.gd install force debug; rm -rf .plugged",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Godot: Start",
+      "type": "shell",
+      "command": "P=\"${input:godotProjectSelect}\"; godot -e ${P:+\"--path\" \"$P\"}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Godot: Start Profiler Server",
+      "dependsOn": "Godot: Build",
       "type": "shell",
       "command": "mkdir -p .traces && NEXT=$(ls .traces/profile-*.nettrace 2>/dev/null | sed -n 's/.*profile-\\([0-9]*\\)\\.nettrace/\\1/p' | sort -n | tail -1); NEXT=$(printf \"%03d\" $((10#${NEXT:-0} + 1))) && export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output \".traces/profile-${NEXT}.nettrace\"",
       "options": {
@@ -103,7 +114,13 @@
       }
     },
     {
-      "label": "Stop Profiler & Convert Trace",
+      "label": "Godot: Stop all processes",
+      "type": "shell",
+      "command": "ps -eo pid=,comm= | awk 'tolower($2) ~ /^godot/ {print $1}' | xargs -r kill -TERM",
+      "problemMatcher": []
+    },
+    {
+      "label": "Godot: Stop Profiler & Convert Trace",
       "type": "shell",
       "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"¡Trace convertido exitosamente a formato $FMT!\"; else echo \"¡Trace conservado en formato raw: $LATEST!\"; fi; fi",
       "options": {
@@ -112,21 +129,13 @@
       "problemMatcher": []
     },
     {
-      "label": "Docker: View Logs (Nakama / DB)",
+      "label": "Starship: Install in all terminals",
       "type": "shell",
-      "command": "docker compose logs -f --tail 100 ${input:serviceLogSelect}",
-      "problemMatcher": [],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared",
-        "showReuseMessage": false,
-        "clear": true
-      }
+      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configurado en Bash, Zsh y PowerShell'",
+      "problemMatcher": []
     },
     {
-      "label": "Instantiate Templates",
+      "label": "Templates: Instantiate",
       "type": "shell",
       "command": "find . -type f -name '*.template' | while read -r f; do dest=\"${f%.template}\"; if [ ! -f \"$dest\" ]; then cp \"$f\" \"$dest\"; echo \"Created: $dest\"; fi; done",
       "options": {
@@ -136,22 +145,6 @@
     }
   ],
   "inputs": [
-    {
-      "id": "godotProjectSelect",
-      "type": "pickString",
-      "description": "Select the Godot project to open:",
-      "default": "client/sample-game",
-      "options": [
-        {
-          "label": "client/sample-game",
-          "value": "client/sample-game"
-        },
-        {
-          "label": "Workspace root (No --path)",
-          "value": ""
-        }
-      ]
-    },
     {
       "id": "asepriteProjectSelect",
       "type": "pickString",
@@ -193,26 +186,18 @@
       ]
     },
     {
-      "id": "traceFormatSelect",
+      "id": "godotProjectSelect",
       "type": "pickString",
-      "description": "Select trace conversion format (Default: Speedscope):",
-      "default": "Speedscope",
+      "description": "Select the Godot project to open:",
+      "default": "client/sample-game",
       "options": [
         {
-          "label": "Speedscope (JSON - speedscope.app / VS Code)",
-          "value": "Speedscope"
+          "label": "client/sample-game",
+          "value": "client/sample-game"
         },
         {
-          "label": "Chromium (chrome://tracing / Perfetto UI)",
-          "value": "Chromium"
-        },
-        {
-          "label": "NetTrace (Re-export / Keep nettrace)",
-          "value": "NetTrace"
-        },
-        {
-          "label": "None (Keep raw .nettrace binary only)",
-          "value": "none"
+          "label": "Workspace root (No --path)",
+          "value": ""
         }
       ]
     },
@@ -233,6 +218,30 @@
         {
           "label": "All services",
           "value": ""
+        }
+      ]
+    },
+    {
+      "id": "traceFormatSelect",
+      "type": "pickString",
+      "description": "Select trace conversion format (Default: Speedscope):",
+      "default": "Speedscope",
+      "options": [
+        {
+          "label": "Speedscope (JSON - speedscope.app / VS Code)",
+          "value": "Speedscope"
+        },
+        {
+          "label": "Chromium (chrome://tracing / Perfetto UI)",
+          "value": "Chromium"
+        },
+        {
+          "label": "NetTrace (Re-export / Keep nettrace)",
+          "value": "NetTrace"
+        },
+        {
+          "label": "None (Keep raw .nettrace binary only)",
+          "value": "none"
         }
       ]
     }
