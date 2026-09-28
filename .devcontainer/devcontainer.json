@@ -8,8 +8,8 @@
       "moby": false
     },
     "ghcr.io/devcontainers-extra/features/starship:1.0.10": {},
-    "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
-    "ghcr.io/devcontainers/features/go:1.4.0": {}
+    "ghcr.io/devcontainers/features/go:1.4.0": {},
+    "ghcr.io/devcontainers/features/github-cli:1.1.3": {}
   },
   "customizations": {
     "vscode": {
