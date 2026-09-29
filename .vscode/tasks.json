@@ -20,6 +20,18 @@
       "problemMatcher": []
     },
     {
+      "label": "Aseprite: Install Languages",
+      "type": "shell",
+      "command": "FILE=\"${workspaceFolder}/aseprite-languages.txt\"; if [ ! -f \"$FILE\" ]; then echo \"Archivo $FILE no encontrado.\"; exit 1; fi; EXT_DIR=\"$HOME/.config/aseprite/extensions\"; mkdir -p /tmp/ase_ext \"$EXT_DIR\"; while IFS='|' read -r enabled lang url || [ -n \"$enabled\" ]; do enabled=$(echo \"$enabled\" | tr -d '\\r'); if [ \"$enabled\" = \"true\" ]; then url=$(echo \"$url\" | tr -d '\\r'); lang=$(echo \"$lang\" | tr -d '\\r'); echo \"Downloading $lang extension...\"; filename=$(basename \"$url\"); filepath=\"/tmp/ase_ext/$filename\"; curl -# -L -o \"$filepath\" \"$url\"; target_folder=\"$EXT_DIR/$(basename \"$filename\" .aseprite-extension)\"; rm -rf \"$target_folder\"; mkdir -p \"$target_folder\"; unzip -q \"$filepath\" -d \"$target_folder\"; fi; done < \"$FILE\"; rm -rf /tmp/ase_ext; echo \"✅ Extensiones de lenguaje instaladas correctamente en el sistema.\"",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
       "command": "docker compose logs -f --tail 100 ${input:serviceLogSelect}",
