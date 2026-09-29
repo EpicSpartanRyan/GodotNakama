@@ -3,15 +3,20 @@
   "tasks": [
     {
       "label": "Environment: Run all first time recommended tasks",
+      "type": "shell",
+      "command": "echo ✅ Successfully rann all first time recommended tasks",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Git: Clean Untracked & Ignored Files",
+        ".NET: Restore Tools",
+        ".NET: Install Profiler",
         "Templates: Instantiate",
         "Starship: Install in all terminals",
         "Aseprite: Install Languages",
         "Godot: Install Export Templates",
         "Godot: Install Addons",
         "Godot: Build",
+        "Godot: Export Game",
         "Nakama: Go Vendor",
         "Nakama: Build & Restart",
         "Environment: Run Doctor",
@@ -190,6 +195,8 @@
     },
     {
       "label": "Nakama: Build & Restart",
+      "type": "shell",
+      "command": "echo ✅ Successfully built Go plugin and restarted Nakama server",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Nakama: Build Plugin",
