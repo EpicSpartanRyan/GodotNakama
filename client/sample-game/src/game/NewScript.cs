@@ -30,12 +30,13 @@ public partial class NewScript : Node2D
            Assets = new Assets()
            {
                LargeImageKey = "godot",
-               LargeImageText = "Lachee's Discord IPC Library",
-               SmallImageKey = "godot"
+               LargeImageText = "Godot Engine",
+               SmallImageKey = "csharp",
+               SmallImageText = ".NET version"
            } ,
            Buttons = new DiscordRPC.Button[]
            {
-               new DiscordRPC.Button() { Label = "lachee.dev", Url = "https://lachee.dev/"},
+               new DiscordRPC.Button() { Label = "RPC Library Author", Url = "https://lachee.dev/"},
                new DiscordRPC.Button() { Label = "Multiplayer Template", Url = "https://github.com/EpicSpartanRyan/GodotNakama" }
            }
         });
