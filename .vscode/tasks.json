@@ -4,7 +4,7 @@
     {
       "label": "Environment: Run all first time recommended tasks",
       "type": "shell",
-      "command": "echo ✅ Successfully rann all first time recommended tasks",
+      "command": "echo ✅ Successfully ran all first time recommended tasks",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Git: Clean Untracked & Ignored Files",
