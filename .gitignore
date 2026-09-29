@@ -1,4 +1,5 @@
 nakama/.cookie
+nakama/modules/**.so
 
 # Godot and .NET generated files
 **/.godot/
