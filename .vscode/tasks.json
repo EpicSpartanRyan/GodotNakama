@@ -10,9 +10,10 @@
         "Starship: Install in all terminals",
         "Aseprite: Install Languages",
         "Godot: Install Export Templates",
+        "Godot: Install Addons",
         "Godot: Build",
         "Nakama: Go Vendor",
-        "Nakama: Build Plugin",
+        "Nakama: Build & Restart",
         "Environment: Run Doctor",
       ],
       "problemMatcher": []
