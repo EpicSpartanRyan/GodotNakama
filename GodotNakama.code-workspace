@@ -4,6 +4,9 @@
 			"path": "."
 		},
 		{
+			"path": "backend"
+		},
+		{
 			"path": "client/sample-game"
 		}
 	],
