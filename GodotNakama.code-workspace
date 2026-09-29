@@ -10,7 +10,7 @@
 	"settings": {
 		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
 		"taskviewer.showAll": false,
-		"taskviewer.showLaunches": true
+		"taskviewer.showLaunches": false
 	},
 	"extensions": {
 		"recommendations": [
