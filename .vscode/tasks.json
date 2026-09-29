@@ -147,9 +147,43 @@
       "problemMatcher": []
     },
     {
+      "label": "Nakama: Go Vendor",
+      "type": "shell",
+      "command": "go mod vendor",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Nakama: Build Plugin",
       "type": "shell",
       "command": "cd backend && go build --trimpath --mod=vendor --buildmode=plugin -o ../nakama/modules/${input:pluginNameInput}.so && echo '✅ Plugin ${input:pluginNameInput}.so compiled and moved inside nakama/modules/'",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "Nakama: Build & Restart",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Nakama: Build Plugin",
+        "Nakama: Restart Server"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Nakama: Restart Server",
+      "type": "shell",
+      "command": "docker compose restart nakama",
       "options": {
         "cwd": "${workspaceFolder}"
       },
