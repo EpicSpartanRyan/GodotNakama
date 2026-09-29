@@ -2,6 +2,31 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Environment: Run all first time recommended tasks",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Git: Clean Untracked & Ignored Files",
+        "Templates: Instantiate",
+        "Starship: Install in all terminals",
+        "Aseprite: Install Languages",
+        "Godot: Install Export Templates",
+        "Godot: Build",
+        "Nakama: Go Vendor",
+        "Nakama: Build Plugin",
+        "Environment: Run Doctor",
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Environment: Run Doctor",
+      "type": "shell",
+      "command": "mkdir -p logs && ./doctor.sh --verbose 2>&1 | tee >(sed 's/\\x1B\\[[0-9;]*[mK]//g' > logs/doctor-$(date +%Y%m%d-%H%M%S).log); exit ${PIPESTATUS[0]}",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": ".NET: Restore Tools",
       "type": "shell",
       "command": "dotnet tool restore",
@@ -44,15 +69,6 @@
         "showReuseMessage": false,
         "clear": true
       }
-    },
-    {
-      "label": "Environment: Run Doctor",
-      "type": "shell",
-      "command": "mkdir -p logs && ./doctor.sh --verbose 2>&1 | tee >(sed 's/\\x1B\\[[0-9;]*[mK]//g' > logs/doctor-$(date +%Y%m%d-%H%M%S).log); exit ${PIPESTATUS[0]}",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": []
     },
     {
       "label": "Git: Clean Untracked & Ignored Files",
