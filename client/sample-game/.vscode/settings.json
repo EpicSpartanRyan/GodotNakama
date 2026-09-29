@@ -1,11 +1,14 @@
 {
   "files.exclude": {
-    "**/*.uid": true
+    "**/*.uid": true,
+    ".godot/": true
   },
   "search.exclude": {
-    "**/*.uid": true
+    "**/*.uid": true,
+    ".godot/": true
   },
   "files.watcherExclude": {
-    "**/*.uid": true
+    "**/*.uid": true,
+    ".godot/": true
   }
 }

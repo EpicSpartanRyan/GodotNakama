@@ -14,5 +14,26 @@
   },
   "[go]": {
     "editor.defaultFormatter": "golang.go"
+  },
+  "files.exclude": {
+    "**/*.uid": true,
+    "backend/vendor/": true,
+    "backend/.vscode/": true,
+    "client/sample-game/.godot/": true,
+    "client/sample-game/.vscode/": true
+  },
+  "search.exclude": {
+    "**/*.uid": true,
+    "backend/vendor/": true,
+    "backend/.vscode/": true,
+    "client/sample-game/.godot/": true,
+    "client/sample-game/.vscode/": true
+  },
+  "files.watcherExclude": {
+    "**/*.uid": true,
+    "backend/vendor/": true,
+    "backend/.vscode/": true,
+    "client/sample-game/.godot/": true,
+    "client/sample-game/.vscode/": true
   }
 }
