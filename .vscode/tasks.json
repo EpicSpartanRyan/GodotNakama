@@ -147,6 +147,22 @@
       "problemMatcher": []
     },
     {
+      "label": "Nakama: Build Plugin",
+      "type": "shell",
+      "command": "cd backend && go build --trimpath --mod=vendor --buildmode=plugin -o ../nakama/modules/${input:pluginNameInput}.so && echo '✅ Plugin ${input:pluginNameInput}.so compiled and moved inside nakama/modules/'",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
       "label": "Starship: Install in all terminals",
       "type": "shell",
       "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configured in Bash, Zsh, and PowerShell'",
@@ -218,6 +234,12 @@
           "value": ""
         }
       ]
+    },
+    {
+      "id": "pluginNameInput",
+      "type": "promptString",
+      "description": "Name of compiled plugin (without .so)",
+      "default": "backend"
     },
     {
       "id": "serviceLogSelect",
