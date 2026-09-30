@@ -22,8 +22,7 @@
         "ms-dotnettools.csdevkit", // C# Language
         "EditorConfig.EditorConfig",
         "csharpier.csharpier-vscode",
-        "sransara.speedscope-in-vscode", // Profiling
-        "drain99.perfetto-trace",
+        "drain99.perfetto-trace", // Profiling visualization
 
         "golang.go", // Go Language
 
@@ -53,7 +52,6 @@
       ],
       "settings": {
         "workbench.editorAssociations": {
-          "*.speedscope.json": "speedscope-in-vscode.speedscope",
           "*.chromium.json": "perfetto-trace.perfetto-native-editor"
         },
         "files.associations": {
