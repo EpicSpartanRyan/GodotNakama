@@ -1,17 +1,17 @@
 version: 2
 updates:
   - package-ecosystem: "devcontainers"
-    directories:
-      - "/.devcontainer/linux-nvidia"
-      - "/.devcontainer/windows-wslg-nvidia"
+    directory: "/.devcontainer/linux-nvidia"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
-    groups:
-      devcontainers-group:
-        patterns:
-          - "*"
 
+  - package-ecosystem: "devcontainers"
+    directory: "/.devcontainer/windows-wslg-nvidia"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+          
   - package-ecosystem: "docker-compose"
     directories:
       - "/.devcontainer/linux-nvidia"
