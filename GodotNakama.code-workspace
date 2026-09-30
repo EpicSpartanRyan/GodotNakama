@@ -24,6 +24,7 @@
             "restart": "debug-restart-frame",
             "instantiate": "notebook-template",
             "export": "cloud-upload",
+            "panel": "link-external",
             "logs": "file-binary",
         },
         "taskviewer.colors": {

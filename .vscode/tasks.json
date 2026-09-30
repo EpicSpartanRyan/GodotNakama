@@ -19,6 +19,7 @@
         "Godot: Export Game",
         "Nakama: Go Vendor",
         "Nakama: Build & Restart",
+        "Nakama: Open Panel",
         "Environment: Run Doctor"
       ],
       "problemMatcher": []
@@ -218,6 +219,19 @@
         "focus": false,
         "panel": "shared",
         "clear": true
+      }
+    },
+    {
+      "label": "Nakama: Open Panel",
+      "type": "shell",
+      "command": "code --command simpleBrowser.show http://localhost:7351/#/",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "never",
+        "focus": false,
+        "panel": "shared",
+        "close": true
       }
     },
     {
