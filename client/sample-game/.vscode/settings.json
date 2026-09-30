@@ -10,5 +10,9 @@
   "files.watcherExclude": {
     "**/*.uid": true,
     ".godot/": true
+  },
+  "files.readonlyInclude": {
+    "**/*.template": true,
+    "**/*.uid": true
   }
 }

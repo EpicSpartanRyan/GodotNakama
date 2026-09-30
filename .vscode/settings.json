@@ -35,5 +35,11 @@
     "backend/.vscode/": true,
     "client/sample-game/.godot/": true,
     "client/sample-game/.vscode/": true
+  },
+  "files.readonlyInclude": {
+    "**/*.sum": true,
+    "**/*.uid": true,
+    "**/*.template": true,
+    "LICENSE": true
   }
 }
