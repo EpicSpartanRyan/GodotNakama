@@ -1,8 +1,7 @@
 {
     "folders": [
         {
-            "path": ".",
-            "name": "🌐 Workspace"
+            "path": "."
         },
         {
             "path": "backend",
