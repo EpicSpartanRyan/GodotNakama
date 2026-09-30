@@ -1,27 +1,55 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "backend"
-		},
-		{
-			"path": "client/sample-game"
-		}
-	],
-	"settings": {
-		"dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
-		"taskviewer.showAll": false,
-		"taskviewer.showLaunches": false
-	},
-	"extensions": {
-		"recommendations": [
-			"davidanson.vscode-markdownlint",
-			"ms-vscode-remote.remote-ssh-edit",
-			"ms-vscode.remote-explorer",
-			"ms-vscode-remote.vscode-remote-extensionpack",
-			"FanaticPythoner.better-todo-tree"
-		]
-	}
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "backend"
+        },
+        {
+            "path": "client/sample-game"
+        }
+    ],
+    "settings": {
+        "dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
+        "taskviewer.showAll": false,
+        "taskviewer.showLaunches": false,
+        "taskviewer.icons": {
+            "recommended": "device-desktop",
+            "doctor": "heart",
+            "build": "package",
+            "restore": "download",
+            "install": "download",
+            "vendor": "download",
+            "restart": "debug-restart-frame",
+            "instantiate": "notebook-template",
+            "export": "cloud-upload",
+            "logs": "file-binary",
+        },
+        "taskviewer.colors": {
+            "start": "charts.blue",
+            "input": "charts.blue",
+            "output": "charts.blue",
+            "npm": "charts.blue",
+            "shell": "charts.blue",
+            "typescript": "charts.blue",
+            "gulp": "charts.blue",
+            "grunt": "charts.blue",
+            "node": "charts.blue",
+            "extensionHost": "charts.blue",
+            "chrome": "charts.blue",
+            "msedge": "charts.blue",
+            "compound": "charts.blue",
+            "default": "charts.blue"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "davidanson.vscode-markdownlint",
+            "ms-vscode-remote.remote-ssh-edit",
+            "ms-vscode.remote-explorer",
+            "ms-vscode-remote.vscode-remote-extensionpack",
+            "FanaticPythoner.better-todo-tree"
+        ]
+    }
 }
