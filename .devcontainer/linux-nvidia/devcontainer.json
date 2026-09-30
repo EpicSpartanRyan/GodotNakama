@@ -72,7 +72,8 @@
     "DISPLAY": ":1",
     "WAYLAND_DISPLAY": "",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
-    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
+    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
+    "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
   },
   "forwardPorts": [
     6007,
