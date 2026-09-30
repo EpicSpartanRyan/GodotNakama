@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zsh \
     jq \
     nano \
+    btop \
     vulkan-tools \
     libvulkan1 \
     mesa-vulkan-drivers \
