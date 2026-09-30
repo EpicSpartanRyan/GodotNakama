@@ -16,6 +16,7 @@ services:
       - ../../:/home/ubuntu/GodotNakama:cached
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ~/.Xauthority:/tmp/.Xauthority:ro
+      - /run/user/1000/pulse:/tmp/runtime-dir/pulse
     deploy:
       resources:
         reservations:
