@@ -224,7 +224,10 @@
     {
       "label": "Nakama: Open Panel",
       "type": "shell",
-      "command": "code --command simpleBrowser.show http://localhost:7351/#/",
+      "command": "echo",
+      "args": [
+        "Done. ${input:openNakamaPanel}"
+      ],
       "problemMatcher": [],
       "presentation": {
         "echo": false,
@@ -351,6 +354,14 @@
           "label": "None (Keep raw .nettrace binary only)",
           "value": "none"
         }
+      ]
+    },
+    {
+      "id": "openNakamaPanel",
+      "type": "command",
+      "command": "simpleBrowser.show",
+      "args": [
+        "http://localhost:7351/#/"
       ]
     }
   ]
