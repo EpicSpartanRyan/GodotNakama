@@ -1,6 +1,10 @@
 github.com/heroiclabs/nakama-common v1.48.0 h1:7fS78yNiscIB6tl7AOdBrdz+GtonRJ8OajyXwbxHBgw=
 github.com/heroiclabs/nakama-common v1.48.0/go.mod h1:dZzLuoiS2JEs1GN74w7UP52SjqYmPE7wPKKuBlXBOk4=
+github.com/jellydator/ttlcache/v3 v3.4.1 h1:bOdXmXiycyK6E6Qjyuj5vl+/vU3SCOoDs8a86NbHjAQ=
+github.com/jellydator/ttlcache/v3 v3.4.1/go.mod h1:j7LO12PNghFg5+0v9budMAT4rDK4JY969jb9vOdOBBk=
 github.com/mlange-42/ark v0.8.3 h1:vgmV4EiwqYbW9adiO576zapzW/O0BhkuUT2IXlqJ43s=
 github.com/mlange-42/ark v0.8.3/go.mod h1:gkS9cuklENPTmSjL2z4DcJgJsIVqF1yNwFlx48Hz/Sw=
+golang.org/x/sync v0.16.0 h1:ycBJEhp9p4vXvUZNszeOq0kGTPghopOL8q0fq3vstxw=
+golang.org/x/sync v0.16.0/go.mod h1:1dzgHSNfp02xaA81J2MS99Qcpr2w7fw1gpm99rleRqA=
 google.golang.org/protobuf v1.36.12 h1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=
 google.golang.org/protobuf v1.36.12/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=

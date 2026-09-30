@@ -4,8 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"math/rand/v2"
+	"time"
 
 	"github.com/heroiclabs/nakama-common/runtime"
+	"github.com/jellydator/ttlcache/v3"
 	"github.com/mlange-42/ark/ecs"
 )
 
@@ -21,7 +23,31 @@ type Velocity struct {
 
 // Main Module Initialization
 func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, initializer runtime.Initializer) error {
-	logger.Info("Initializing Nakama module with Ark ECS...")
+	logger.Info("Initializing Nakama module with Ark ECS and TTLCache...")
+
+	// --- TTLCache Test ---
+	
+	// Create a new cache instance with string keys and string values
+	// Default TTL is set to 5 minutes
+	cache := ttlcache.New[string, string](
+		ttlcache.WithTTL[string, string](5 * time.Minute),
+	)
+
+	// Start the background goroutine to remove expired items automatically
+	go cache.Start()
+
+	// Set a test value in the cache
+	cache.Set("test_key", "hello_nakama_cache", ttlcache.DefaultTTL)
+
+	// Retrieve the value immediately to verify it works
+	item := cache.Get("test_key")
+	if item != nil {
+		logger.Info("TTLCache test successful. Retrieved value: %s", item.Value())
+	} else {
+		logger.Error("TTLCache test failed. Value not found.")
+	}
+
+	// --- Ark ECS Test ---
 
 	// Create a new World
 	world := ecs.NewWorld()
@@ -55,6 +81,6 @@ func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runti
 		}
 	}
 
-	logger.Info("Ark ECS successfully initialized and verified!")
+	logger.Info("Ark ECS and TTLCache successfully initialized and verified!")
 	return nil
 }
