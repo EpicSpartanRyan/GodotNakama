@@ -1,13 +1,16 @@
 {
     "folders": [
         {
-            "path": "."
+            "path": ".",
+            "name": "🌐 Workspace"
         },
         {
-            "path": "backend"
+            "path": "backend",
+            "name": "⚡🐹 Backend Server"
         },
         {
-            "path": "client/sample-game"
+            "path": "client/sample-game",
+            "name": "🕹️🎯 Game Client"
         }
     ],
     "settings": {
@@ -44,6 +47,7 @@
             "default": "charts.blue"
         }
     },
+    
     "extensions": {
         "recommendations": [
             "davidanson.vscode-markdownlint",
