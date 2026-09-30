@@ -323,15 +323,15 @@
       "id": "traceFormatSelect",
       "type": "pickString",
       "description": "Select trace conversion format (Default: Speedscope):",
-      "default": "Speedscope",
+      "default": "Chromium",
       "options": [
-        {
-          "label": "Speedscope (JSON - speedscope.app / VS Code)",
-          "value": "Speedscope"
-        },
         {
           "label": "Chromium (chrome://tracing / Perfetto UI)",
           "value": "Chromium"
+        },
+        {
+          "label": "Speedscope (JSON - speedscope.app / VS Code)",
+          "value": "Speedscope"
         },
         {
           "label": "NetTrace (Re-export / Keep nettrace)",
