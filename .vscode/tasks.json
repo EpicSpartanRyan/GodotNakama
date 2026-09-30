@@ -19,7 +19,7 @@
         "Godot: Export Game",
         "Nakama: Go Vendor",
         "Nakama: Build & Restart",
-        "Environment: Run Doctor",
+        "Environment: Run Doctor"
       ],
       "problemMatcher": []
     },
@@ -65,7 +65,7 @@
     {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
-      "command": "docker compose logs -f --tail 100 ${input:serviceLogSelect}",
+      "command": "docker logs -f --tail 100 ${input:serviceLogSelect}",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -207,7 +207,7 @@
     {
       "label": "Nakama: Restart Server",
       "type": "shell",
-      "command": "docker compose restart nakama",
+      "command": "docker restart nakama",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -312,10 +312,6 @@
         {
           "label": "PostgreSQL (Database)",
           "value": "postgres"
-        },
-        {
-          "label": "All services",
-          "value": ""
         }
       ]
     },
