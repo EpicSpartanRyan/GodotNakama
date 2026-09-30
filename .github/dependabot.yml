@@ -1,13 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "devcontainers"
-    directory: "/.devcontainer/linux-nvidia"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 10
-
-  - package-ecosystem: "devcontainers"
-    directory: "/.devcontainer/windows-wslg-nvidia"
+    directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
