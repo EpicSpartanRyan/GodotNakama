@@ -9,6 +9,7 @@ import (
 	"github.com/heroiclabs/nakama-common/runtime"
 	"github.com/jellydator/ttlcache/v3"
 	"github.com/mlange-42/ark/ecs"
+	"github.com/samber/do/v2"
 )
 
 // Position component
@@ -21,9 +22,31 @@ type Velocity struct {
 	DX, DY float64
 }
 
+/**
+ * Wheel
+ */
+type Wheel struct{}
+
+/**
+ * Engine
+ */
+type Engine struct{}
+
+/**
+ * Car
+ */
+type Car struct {
+	Engine *Engine
+	Wheels []*Wheel
+}
+
+func (c *Car) Start() {
+	println("vroooom")
+}
+
 // Main Module Initialization
 func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, initializer runtime.Initializer) error {
-	logger.Info("Initializing Nakama module with Ark ECS and TTLCache...")
+	logger.Info("Initializing Nakama module with Ark ECS, TTLCache and do...")
 
 	// --- TTLCache Test ---
 	
@@ -81,6 +104,38 @@ func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runti
 		}
 	}
 
-	logger.Info("Ark ECS and TTLCache successfully initialized and verified!")
+	injector := do.New()
+
+	// provide wheels
+	do.ProvideNamedValue(injector, "wheel-1", &Wheel{})
+	do.ProvideNamedValue(injector, "wheel-2", &Wheel{})
+	do.ProvideNamedValue(injector, "wheel-3", &Wheel{})
+	do.ProvideNamedValue(injector, "wheel-4", &Wheel{})
+
+	// provide car
+	do.Provide(injector, func(i do.Injector) (*Car, error) {
+		car := Car{
+			Engine: do.MustInvoke[*Engine](i),
+			Wheels: []*Wheel{
+				do.MustInvokeNamed[*Wheel](i, "wheel-1"),
+				do.MustInvokeNamed[*Wheel](i, "wheel-2"),
+				do.MustInvokeNamed[*Wheel](i, "wheel-3"),
+				do.MustInvokeNamed[*Wheel](i, "wheel-4"),
+			},
+		}
+
+		return &car, nil
+	})
+
+	// provide engine
+	do.Provide(injector, func(i do.Injector) (*Engine, error) {
+		return &Engine{}, nil
+	})
+
+	// start car
+	car := do.MustInvoke[*Car](injector)
+	car.Start()
+
+	logger.Info("Ark ECS, TTLCache and do successfully initialized and verified!")
 	return nil
 }
