@@ -1,23 +1,35 @@
 version: 2
 updates:
   - package-ecosystem: "devcontainers"
-    directory: "/"
+    directories:
+      - "/.devcontainer/linux-nvidia"
+      - "/.devcontainer/windows-wslg-nvidia"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
+    groups:
+      devcontainers-group:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker-compose"
-    directory: "/"
+    directories:
+      - "/.devcontainer/linux-nvidia"
+      - "/.devcontainer/windows-wslg-nvidia"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
+    groups:
+      docker-compose-group:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/client"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
-  
+
   - package-ecosystem: "nuget"
     directory: "/client/sample-game"
     schedule:
