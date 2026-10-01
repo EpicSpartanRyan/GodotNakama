@@ -1,1 +1,3 @@
 *.gd linguist-language=GDScript
+
+*.sh text eol=lf
