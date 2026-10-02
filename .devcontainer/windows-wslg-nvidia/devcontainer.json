@@ -72,6 +72,9 @@
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
+  "containerEnv": {
+    "COMPOSE_YML_PATH": "/home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/windows-wslg-nvidia/docker-compose.yml"
+  },
   "forwardPorts": [
     6007,
     6008

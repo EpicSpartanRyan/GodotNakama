@@ -516,14 +516,21 @@ else
     info_status "41" "Checking Docker Compose" "ok" "$(docker compose version --short)"
 fi
 
-
 # ==========================================
 # 5 & 6. Docker Compose Services & Backend Responding
 # ==========================================
 
-if [[ -f docker-compose.yml ]]; then
+# Determinar el archivo de compose a utilizar
+COMPOSE_FILE_ARG=""
+if [[ -n "${COMPOSE_YML_PATH:-}" && -f "$COMPOSE_YML_PATH" ]]; then
+    COMPOSE_FILE_ARG="-f $COMPOSE_YML_PATH"
+elif [[ -f docker-compose.yml ]]; then
+    COMPOSE_FILE_ARG="-f docker-compose.yml"
+fi
+
+if [[ -n "$COMPOSE_FILE_ARG" ]]; then
     # Check 42: Docker Compose services active overall
-    running_services=$(docker compose ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
+    running_services=$(docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
     if [[ -n "$running_services" ]]; then
         info_status "42" "Checking Docker Compose services" "ok" "services active"
     else
@@ -531,11 +538,11 @@ if [[ -f docker-compose.yml ]]; then
     fi
 
     # Check 43: Service 'postgres'
-    if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
-       docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
+    if docker compose $COMPOSE_FILE_ARG ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
+       docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
          info_status "43" "Checking service 'postgres'" "ok" "running"
     else
-        if docker compose ps --services 2>/dev/null | grep -q "^postgres$"; then
+        if docker compose $COMPOSE_FILE_ARG ps --services 2>/dev/null | grep -q "^postgres$"; then
             info_status "43" "Checking service 'postgres'" "warn" "defined but not running"
         else
             info_status "43" "Checking service 'postgres'" "warn" "not defined"
@@ -543,11 +550,11 @@ if [[ -f docker-compose.yml ]]; then
     fi
 
     # Check 44: Service 'nakama'
-    if docker compose ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
-       docker compose ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
+    if docker compose $COMPOSE_FILE_ARG ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
+       docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
          info_status "44" "Checking service 'nakama'" "ok" "running"
     else
-        if docker compose ps --services 2>/dev/null | grep -q "^nakama$"; then
+        if docker compose $COMPOSE_FILE_ARG ps --services 2>/dev/null | grep -q "^nakama$"; then
             info_status "44" "Checking service 'nakama'" "warn" "defined but not running"
         else
             info_status "44" "Checking service 'nakama'" "warn" "not defined"
@@ -555,7 +562,7 @@ if [[ -f docker-compose.yml ]]; then
     fi
 
     # Check 45: PostgreSQL connectivity
-    if docker compose exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
+    if docker compose $COMPOSE_FILE_ARG exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
         info_status "45" "Checking PostgreSQL connectivity" "ok" "accepting connections"
     else
         info_status "45" "Checking PostgreSQL connectivity" "warn" "not accepting connections"
@@ -590,13 +597,13 @@ if [[ -f docker-compose.yml ]]; then
         info_status "48" "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
     fi
 else
-    info_status "42" "Checking Docker Compose services" "warn" "docker-compose.yml not found"
-    info_status "43" "Checking service 'postgres'" "warn" "docker-compose.yml not found"
-    info_status "44" "Checking service 'nakama'" "warn" "docker-compose.yml not found"
-    info_status "45" "Checking PostgreSQL connectivity" "warn" "docker-compose.yml not found"
-    info_status "46" "Checking Nakama Client API (7350)" "warn" "docker-compose.yml not found"
-    info_status "47" "Checking Nakama gRPC API (7349)" "warn" "docker-compose.yml not found"
-    info_status "48" "Checking Nakama UDP routing (7350)" "warn" "docker-compose.yml not found"
+    info_status "42" "Checking Docker Compose services" "warn" "docker-compose file not found"
+    info_status "43" "Checking service 'postgres'" "warn" "docker-compose file not found"
+    info_status "44" "Checking service 'nakama'" "warn" "docker-compose file not found"
+    info_status "45" "Checking PostgreSQL connectivity" "warn" "docker-compose file not found"
+    info_status "46" "Checking Nakama Client API (7350)" "warn" "docker-compose file not found"
+    info_status "47" "Checking Nakama gRPC API (7349)" "warn" "docker-compose file not found"
+    info_status "48" "Checking Nakama UDP routing (7350)" "warn" "docker-compose file not found"
 fi
 
 

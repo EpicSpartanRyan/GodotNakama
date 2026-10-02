@@ -74,6 +74,9 @@
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
     "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
   },
+  "containerEnv": {
+    "COMPOSE_YML_PATH": "/home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/linux-nvidia/docker-compose.yml"
+  },
   "forwardPorts": [
     6007,
     6008
