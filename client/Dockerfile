@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     nano \
     btop \
+    gimp \
     vulkan-tools \
     libvulkan1 \
     mesa-vulkan-drivers \

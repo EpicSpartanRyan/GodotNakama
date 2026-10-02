@@ -76,6 +76,21 @@
       }
     },
     {
+      "label": "Aseprite: Fix and Override PSD",
+      "type": "shell",
+      "command": "gimp -i -b '(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"${input:psdFilePath}\" \"${input:psdFilePath}\"))) (layers (gimp-image-get-layers image))) (if (> (car layers) 0) (gimp-file-save RUN-NONINTERACTIVE image (aref (cadr layers) 0) \"${input:psdFilePath}\" \"${input:psdFilePath}\")) (gimp-image-delete image))' -b '(gimp-quit 0)'",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
       "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect}",
@@ -280,17 +295,23 @@
       "id": "asepriteProjectSelect",
       "type": "pickString",
       "description": "Select the working directory for Aseprite:",
-      "default": "client/sample-game",
+      "default": "client/sample-game/assets",
       "options": [
         {
-          "label": "client/sample-game",
-          "value": "client/sample-game"
+          "label": "client/sample-game/assets",
+          "value": "client/sample-game/assets"
         },
         {
           "label": "Workspace root",
           "value": "."
         }
       ]
+    },
+    {
+      "id": "psdFilePath",
+      "type": "promptString",
+      "description": "Path of PSD file to repair (eg: assets/personaje.psd)",
+      "default": "assets/"
     },
     {
       "id": "godotExportPlatform",
