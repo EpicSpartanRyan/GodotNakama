@@ -64,6 +64,18 @@
       }
     },
     {
+      "label": "Aseprite: Install Tools",
+      "type": "shell",
+      "command": "FILE=\"${workspaceFolder}/aseprite-tools.txt\"; if [ ! -f \"$FILE\" ]; then echo \"Archivo $FILE no encontrado.\"; exit 1; fi; SCRIPTS_DIR=\"$HOME/.config/aseprite/scripts\"; EXT_DIR=\"$HOME/.config/aseprite/extensions\"; mkdir -p /tmp/ase_tools \"$SCRIPTS_DIR\" \"$EXT_DIR\"; while IFS='|' read -r enabled name url type || [ -n \"$enabled\" ]; do enabled=$(echo \"$enabled\" | tr -d '\\r'); if [ \"$enabled\" = \"true\" ]; then url=$(echo \"$url\" | tr -d '\\r'); name=$(echo \"$name\" | tr -d '\\r'); type=$(echo \"$type\" | tr -d '\\r'); filename=$(basename \"$url\"); filepath=\"/tmp/ase_tools/$filename\"; echo \"Downloading $name...\"; curl -# -L -o \"$filepath\" \"$url\"; if [ \"$type\" = \"script\" ]; then cp \"$filepath\" \"$SCRIPTS_DIR/\"; echo \" -> Installed as script in $SCRIPTS_DIR\"; elif [ \"$type\" = \"extension\" ]; then target_folder=\"$EXT_DIR/$(basename \"$filename\" .aseprite-extension)\"; rm -rf \"$target_folder\"; mkdir -p \"$target_folder\"; unzip -q \"$filepath\" -d \"$target_folder\"; echo \" -> Installed as extension in $target_folder\"; fi; fi; done < \"$FILE\"; rm -rf /tmp/ase_tools; echo \"✅ Herramientas y scripts de Aseprite instalados correctamente.\"",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
       "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect}",
