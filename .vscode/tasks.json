@@ -66,7 +66,7 @@
     {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
-      "command": "docker logs -f --tail 100 ${input:serviceLogSelect}",
+      "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect}",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -208,7 +208,7 @@
     {
       "label": "Nakama: Restart Server",
       "type": "shell",
-      "command": "docker restart nakama",
+      "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} restart nakama",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -329,6 +329,10 @@
         {
           "label": "PostgreSQL (Database)",
           "value": "postgres"
+        },
+        {
+          "label": "All services",
+          "value": ""
         }
       ]
     },
