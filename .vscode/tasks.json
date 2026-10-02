@@ -197,13 +197,23 @@
     {
       "label": "Nakama: Build & Restart",
       "type": "shell",
-      "command": "echo ✅ Successfully built Go plugin and restarted Nakama server",
+      "command": "echo '✅ Successfully built Go plugin and restarted Nakama server' && docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 nakama | GREP_COLORS='mt=01;36' grep --color=always -E 'go-project/main.go|$'",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Nakama: Build Plugin",
         "Nakama: Restart Server"
       ],
-      "problemMatcher": []
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "clear": true
+      }
     },
     {
       "label": "Nakama: Restart Server",
