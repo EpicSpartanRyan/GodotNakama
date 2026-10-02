@@ -91,6 +91,18 @@
       }
     },
     {
+      "label": "Inochi: Start",
+      "type": "shell",
+      "command": "export SDL_VIDEODRIVER=x11; export XDG_STATE_HOME=\"${HOME}/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-launch /opt/inochi-creator/inochi-creator",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
       "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect}",
