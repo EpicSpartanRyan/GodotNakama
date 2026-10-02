@@ -172,7 +172,7 @@
     {
       "label": "Nakama: Go Vendor",
       "type": "shell",
-      "command": "go mod vendor",
+      "command": "go mod tidy && go mod vendor",
       "options": {
         "cwd": "${workspaceFolder}/backend"
       },
