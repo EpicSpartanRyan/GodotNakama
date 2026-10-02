@@ -12,6 +12,7 @@
             "name": "🕹️🎯 Game Client"
         }
     ],
+    
     "settings": {
         "dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
         "taskviewer.showAll": false,
@@ -46,7 +47,7 @@
             "default": "charts.blue"
         }
     },
-    
+
     "extensions": {
         "recommendations": [
             "davidanson.vscode-markdownlint",

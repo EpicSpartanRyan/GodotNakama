@@ -48,7 +48,8 @@
         "tamasfe.even-better-toml",
         "grimaldi-tech.aseprite-preview",
         "three-flatland.fl-tools",
-        "ms-vscode.hexeditor"
+        "ms-vscode.hexeditor",
+        "YuTengjing.open-in-external-app"
       ],
       "settings": {
         "workbench.editorAssociations": {
@@ -58,7 +59,49 @@
           "*.cs.template": "csharp"
         },
         "csharp.experimental.debug.hotReload": true,
-        "csharp.debug.hotReloadOnSave": true
+        "csharp.debug.hotReloadOnSave": true,
+        "openInExternalApp.openMapper": [
+          {
+            "extensionName": "aseprite",
+            "apps": [
+              {
+                "title": "Aseprite",
+                "shellCommand": "aseprite ${file}",
+                "wslConvertWindowsPath": false
+              }
+            ]
+          },
+          {
+            "extensionName": "inp",
+            "apps": [
+              {
+                "title": "Inochi Creator",
+                "shellCommand": "export SDL_VIDEODRIVER=x11; export XDG_STATE_HOME=\"${HOME}/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-launch /opt/inochi-creator/inochi-creator \"${file}\"",
+                "wslConvertWindowsPath": false
+              }
+            ]
+          },
+          {
+            "extensionName": "godot",
+            "apps": [
+              {
+                "title": "Godot Editor",
+                "shellCommand": "godot -e --path \"${fileDirname}\"",
+                "wslConvertWindowsPath": false
+              }
+            ]
+          },
+          {
+            "extensionName": "psd",
+            "apps": [
+              {
+                "title": "GIMP",
+                "shellCommand": "gimp \"${file}\"",
+                "wslConvertWindowsPath": false
+              }
+            ]
+          }
+        ]
       }
     }
   },
