@@ -88,16 +88,15 @@ jobs:
 
       - name: Export Game for Windows, Linux, and macOS
         run: |
-          # Usamos github.workspace para garantizar que se creen en la raíz absoluta del repositorio
-          mkdir -p ${{ github.workspace }}/builds/windows ${{ github.workspace }}/builds/linux ${{ github.workspace }}/builds/macos
-          godot --headless --export-release "Windows Desktop" ${{ github.workspace }}/builds/windows/game.zip
-          godot --headless --export-release "Linux" ${{ github.workspace }}/builds/linux/game.zip
-          godot --headless --export-release "macOS" ${{ github.workspace }}/builds/macos/game.zip
+          mkdir -p builds
+          godot --headless --export-release "Windows Desktop" builds/windows-game.zip
+          godot --headless --export-release "Linux" builds/linux-game.zip
+          godot --headless --export-release "macOS" builds/macos-game.zip
         working-directory: client/sample-game
 
       - name: Upload Game Builds as Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: game-builds
-          path: ${{ github.workspace }}/builds/
+          path: client/sample-game/builds/
           retention-days: 7
