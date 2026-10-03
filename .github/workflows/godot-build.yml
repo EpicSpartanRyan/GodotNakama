@@ -99,5 +99,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: game-builds
-          path: builds/
+          path: ${{ github.workspace }}/builds/
           retention-days: 7
