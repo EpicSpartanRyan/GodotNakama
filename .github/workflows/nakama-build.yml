@@ -35,7 +35,7 @@ jobs:
       - name: Nakama Build Plugin
         env:
           CGO_ENABLED: 1
-        run: go build --trimpath --mod=vendor --buildmode=plugin -o backend.so
+        run: go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o backend.so
         working-directory: backend
 
       - name: Upload Nakama Plugin as Artifact
