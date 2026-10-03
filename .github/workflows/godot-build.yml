@@ -1,6 +1,9 @@
 name: Build Godot
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
