@@ -63,13 +63,21 @@ jobs:
           mv /tmp/gtpl/templates/* ~/.local/share/godot/export_templates/$DIR/
           rm -rf /tmp/tpl.zip /tmp/gtpl
 
-      - name: Instantiate templates if any exist
+      - name: Inject secrets and Instantiate templates
+        env:
+          BACKTRACEURL: ${{ secrets.BACKTRACEURL }}
+          DISCORDAPPID: ${{ secrets.DISCORDAPPID }}
         run: |
           find . -type f -name '*.template' | while read -r f; do
             dest="${f%.template}"
             if [ ! -f "$dest" ]; then
               cp "$f" "$dest"
-              echo "Created: $dest"
+              
+              # Reemplazar los placeholders por los valores de los secretos de GitHub
+              sed -i "s|YOUR_BACKTRACE_URL_HERE|${BACKTRACEURL}|g" "$dest"
+              sed -i "s|YOUR_DISCORD_APP_ID_HERE|${DISCORDAPPID}|g" "$dest"
+              
+              echo "Created and injected secrets into: $dest"
             fi
           done
         working-directory: client/sample-game
