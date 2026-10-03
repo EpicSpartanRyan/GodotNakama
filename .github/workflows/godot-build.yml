@@ -1,0 +1,91 @@
+name: Build Godot
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:10.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install system dependencies & git-lfs
+        run: |
+          apt-get update && apt-get install -y --no-install-recommends \
+            ca-certificates \
+            curl \
+            wget \
+            unzip \
+            git \
+            git-lfs \
+            libgl1 \
+            libxcursor1 \
+            libxi6 \
+            libxinerama1 \
+            libxrandr2 \
+            libxkbcommon0 \
+            libasound2t64 \
+            libpulse0 \
+            && rm -rf /var/lib/apt/lists/*
+          git lfs install --system
+
+      - name: Download and install Godot 4.7.2 .NET (Mono)
+        run: |
+          GODOT_VERSION="4.7.2"
+          GODOT_RELEASE="stable"
+          GODOT_BUILD="Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux_x86_64"
+          wget --quiet https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/${GODOT_BUILD}.zip
+          unzip ${GODOT_BUILD}.zip -d /opt/godot
+          rm ${GODOT_BUILD}.zip
+          mv /opt/godot/${GODOT_BUILD} /opt/godot/godot-mono
+          ln -s /opt/godot/godot-mono/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux.x86_64 /usr/local/bin/godot
+
+      - name: Install Godot Export Templates
+        run: |
+          V="4.7.2"
+          DIR="${V}.stable.mono"
+          URL="https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz"
+          echo "Downloading Godot ${V} Mono templates..."
+          curl -L -o /tmp/tpl.zip "$URL"
+          mkdir -p /tmp/gtpl
+          unzip -q /tmp/tpl.zip -d /tmp/gtpl
+          mkdir -p ~/.local/share/godot/export_templates/$DIR
+          mv /tmp/gtpl/templates/* ~/.local/share/godot/export_templates/$DIR/
+          rm -rf /tmp/tpl.zip /tmp/gtpl
+
+      - name: Instantiate templates if any exist
+        run: |
+          find . -type f -name '*.template' | while read -r f; do
+            dest="${f%.template}"
+            if [ ! -f "$dest" ]; then
+              cp "$f" "$dest"
+              echo "Created: $dest"
+            fi
+          done
+        working-directory: client/sample-game
+
+      - name: Restore .NET Tools & Build C# project
+        run: |
+          dotnet tool restore || true
+          dotnet build
+        working-directory: client/sample-game
+
+      - name: Export Game for Windows, Linux, and macOS
+        run: |
+          mkdir -p builds/windows builds/linux builds/macos
+          godot --headless --export-release "Windows Desktop" ../../builds/windows/game.zip
+          godot --headless --export-release "Linux" ../../builds/linux/game.zip
+          godot --headless --export-release "macOS" ../../builds/macos/game.zip
+        working-directory: client/sample-game
+
+      - name: Upload Game Builds as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-builds
+          path: builds/
+          retention-days: 7

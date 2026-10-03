@@ -12,6 +12,12 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
+[*.{yml,yaml}]
+# Indent style for yml
+indent_style = space
+indent_size = 2
+tab_width = 2
+
 # Naming Conventions
 # Private fields with underscore (_camelCase)
 dotnet_naming_rule.private_member_should_be_underscore_camel_case.symbols = private_fields
