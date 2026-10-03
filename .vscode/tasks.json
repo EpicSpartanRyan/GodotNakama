@@ -106,7 +106,7 @@
     {
       "label": "Docker: View Logs (Nakama / DB)",
       "type": "shell",
-      "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect}",
+      "command": "docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -391,6 +391,12 @@
           "value": ""
         }
       ]
+    },
+    {
+      "id": "logHighlight",
+      "type": "promptString",
+      "description": "Text to highlight in blue color:",
+      "default": "go-project/main.go"
     },
     {
       "id": "traceFormatSelect",
