@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
 
     <!-- Multiplayer -->
-    <PackageReference Include="NakamaClient" Version="3.22.0" />
+    <PackageReference Include="NakamaClient" Version="3.22.1" />
 
     <!-- Integration testing -->
     <PackageReference Include="Testcontainers" Version="4.15.0" PrivateAssets="All" />
