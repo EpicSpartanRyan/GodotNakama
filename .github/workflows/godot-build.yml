@@ -94,6 +94,27 @@ jobs:
           godot --headless --export-release "macOS" builds/macos-game.zip
         working-directory: client/sample-game
 
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: client/sample-game/builds/windows-game.zip
+          retention-days: 7
+
+      - name: Upload Linux Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: client/sample-game/builds/linux-game.zip
+          retention-days: 7
+
+      - name: Upload macOS Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: client/sample-game/builds/macos-game.zip
+          retention-days: 7
+
       - name: Upload Game Builds as Artifacts
         uses: actions/upload-artifact@v4
         with:
