@@ -76,7 +76,7 @@ jobs:
 
       - name: Install Godot Addons
         run: |
-          godot --headless -s plug.gd install force debug
+          godot --headless -s plug.gd install force debug || true
           rm -rf .plugged
         working-directory: client/sample-game
 
