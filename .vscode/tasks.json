@@ -18,7 +18,6 @@
         "Godot: Install Addons",
         "Godot: Build",
         "Godot: Export Game",
-        "Nakama: Go Vendor",
         "Nakama: Build & Restart",
         "Nakama: Open Panel",
         "Environment: Run Doctor"
@@ -240,13 +239,24 @@
       "command": "echo '✅ Successfully built Go plugin and restarted Nakama server' && docker compose ${COMPOSE_YML_PATH:+-f \"$COMPOSE_YML_PATH\"} logs -f --tail 100 nakama | GREP_COLORS='mt=01;36' grep --color=always -E 'go-project/main.go|$'",
       "dependsOrder": "sequence",
       "dependsOn": [
+        "Nakama: Go Vendor",
         "Nakama: Build Plugin",
         "Nakama: Restart Server"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "problemMatcher": [],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*$",
+          "endsPattern": "Successfully built Go plugin"
+        }
+      },
       "presentation": {
         "echo": true,
         "reveal": "always",
