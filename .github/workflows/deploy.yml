@@ -12,14 +12,14 @@ jobs:
     container:
       image: mcr.microsoft.com/dotnet/sdk:10.0
     steps:
-      - name: Install Node.js and SSH Client (Required for act & GitHub Local Actions)
-        run: apt-get update && apt-get install -y nodejs openssh-client
+      - name: Install Node.js (Required for act & GitHub Local Actions)
+        run: apt-get update && apt-get install -y nodejs
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: '1.27.1'
           cache-dependency-path: backend/go.sum
@@ -48,7 +48,6 @@ jobs:
             dest="${f%.template}"
             cp "$f" "$dest"
             
-            # Reemplazar los placeholders por los valores de los secretos
             sed -i "s|NAKAMA_USERNAME|${NAKAMA_USERNAME}|g" "$dest"
             sed -i "s|NAKAMA_PASSWORD|${NAKAMA_PASSWORD}|g" "$dest"
             
@@ -56,21 +55,19 @@ jobs:
           done
         working-directory: nakama
 
-      - name: Get SSH Key and set permissions
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Update Repository on Server (Forcing tracked files overwrite & keeping untracked volumes safe)
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            PROJECT_PATH=\"\$HOME/my-nakama-project\"
+      - name: Prepare Server and Sync Repository
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            PROJECT_PATH="~/my-nakama-project"
             
-            if [ ! -d \"\$PROJECT_PATH/.git\" ]; then
-              if [ -d \"\$PROJECT_PATH\" ]; then
+            if [ ! -d "$PROJECT_PATH/.git" ]; then
+              if [ -d "$PROJECT_PATH" ]; then
                 echo 'Folder exists but is not a git repository. Initializing and syncing...'
-                cd \"\$PROJECT_PATH\"
+                cd "$PROJECT_PATH"
                 git init
                 if ! git remote get-url origin &>/dev/null; then
                   git remote add origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
@@ -79,32 +76,45 @@ jobs:
                 git checkout -B main origin/main
               else
                 echo 'Folder not found. Cloning repository...'
-                git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git \"\$PROJECT_PATH\"
+                git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git "$PROJECT_PATH"
               fi
             else
-              echo 'Repository found. Resetting tracked files and pulling latest changes...'
-              cd \"\$PROJECT_PATH\"
-              # Descartar cambios locales en archivos trackeados y asegurar sincronización limpia
+              echo 'Repository found. Resetting tracked files...'
+              cd "$PROJECT_PATH"
               git fetch origin main
               git reset --hard origin/main
             fi
-          "
+            
+            # Crear directorios de destino
+            mkdir -p "$PROJECT_PATH/nakama/modules"
 
-      - name: Create destination directories on server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            mkdir -p ${{ env.SERVER_PROJECT_PATH }}/nakama/modules
-          "
+      - name: Transfer backend.so to server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "backend/backend.so"
+          target: "~/my-nakama-project/nakama/modules"
+          strip_components: 1
 
-      - name: Transfer backend.so and configured my-config.yml to server
-        run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa backend/backend.so ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.SERVER_PROJECT_PATH }}/nakama/modules/backend.so
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa nakama/my-config.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.SERVER_PROJECT_PATH }}/nakama/my-config.yml
+      - name: Transfer configured my-config.yml to server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "nakama/my-config.yml"
+          target: "~/my-nakama-project/nakama"
+          strip_components: 1
 
       - name: Restart Server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-            cd ${{ env.SERVER_PROJECT_PATH }}/.devcontainer/windows-wslg-nvidia/ &&
-            docker compose down &&
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/my-nakama-project/.devcontainer/windows-wslg-nvidia/
+            docker compose down
             docker compose up --build -d postgres nakama
-          "

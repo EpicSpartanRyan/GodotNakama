@@ -18,10 +18,10 @@ jobs:
         run: apt-get update && apt-get install -y nodejs
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
           go-version: '1.27.1'
           cache-dependency-path: backend/go.sum
@@ -42,8 +42,9 @@ jobs:
         working-directory: backend
 
       - name: Upload Nakama Plugin as Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: nakama-plugin-backend
           path: backend/backend.so
           retention-days: 7
+          overwrite: true

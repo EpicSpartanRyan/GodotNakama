@@ -18,7 +18,7 @@ jobs:
         run: apt-get update && apt-get install -y nodejs
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install system dependencies & git-lfs
         run: |
@@ -106,29 +106,33 @@ jobs:
         working-directory: client/sample-game
 
       - name: Upload Windows Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: windows-build
           path: client/sample-game/builds/windows-game.zip
           retention-days: 7
+          overwrite: true
 
       - name: Upload Linux Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linux-build
           path: client/sample-game/builds/linux-game.zip
           retention-days: 7
+          overwrite: true
 
       - name: Upload macOS Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: macos-build
           path: client/sample-game/builds/macos-game.zip
           retention-days: 7
+          overwrite: true
 
       - name: Upload Game Builds as Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: game-builds
           path: client/sample-game/builds/
           retention-days: 7
+          overwrite: true
