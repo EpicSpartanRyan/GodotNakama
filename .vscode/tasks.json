@@ -120,7 +120,7 @@
     {
       "label": "Git: Clean Untracked & Ignored Files",
       "type": "shell",
-      "command": "git clean -fdx",
+      "command": "git clean -fdx -e .secrets -e .vscode/vscode-kanban.json -e client/sample-game/src/config/Secrets.cs",
       "options": {
         "cwd": "${workspaceFolder}"
       },
