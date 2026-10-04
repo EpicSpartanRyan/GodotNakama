@@ -2,6 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Act: Build All",
+      "group": "build",
+      "type": "shell",
+      "command": "echo '✅ All Github Local Actions finalized their execution successfully.'",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Act: Build Nakama Plugin",
+        "Act: Build Godot Executables"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
       "label": "Act: Build Nakama Plugin",
       "group": "build",
       "type": "shell",
