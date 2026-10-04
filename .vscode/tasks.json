@@ -30,6 +30,8 @@
         ".github/workflows/nakama-build.yml",
         "--job",
         "build-plugin",
+        "--secret-file",
+        ".secrets",
         "--artifact-server-path",
         "${workspaceFolder}/.act-artifacts"
       ],
@@ -52,6 +54,32 @@
         ".github/workflows/godot-build.yml",
         "--job",
         "build-executables",
+        "--secret-file",
+        ".secrets",
+        "--artifact-server-path",
+        "${workspaceFolder}/.act-artifacts"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Act: Nakama Deploy",
+      "group": "build",
+      "type": "shell",
+      "command": "act",
+      "args": [
+        "--workflows",
+        ".github/workflows/deploy.yml",
+        "--job",
+        "build-and-deploy",
+        "--secret-file",
+        ".secrets",
         "--artifact-server-path",
         "${workspaceFolder}/.act-artifacts"
       ],

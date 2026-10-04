@@ -1,0 +1,92 @@
+name: Deploy Nakama
+
+on:
+  workflow_dispatch:
+
+env:
+  SERVER_PROJECT_PATH: "~/my-nakama-project"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:10.0
+    steps:
+      # --- 1. BUILD PHASE ---
+      - name: Install Node.js and SSH Client (Required for act & GitHub Local Actions)
+        run: apt-get update && apt-get install -y nodejs openssh-client
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.1'
+          cache-dependency-path: backend/go.sum
+
+      - name: Nakama Go Vendor
+        run: |
+          go mod tidy
+          go mod vendor
+        working-directory: backend
+
+      - name: Install C Compiler for CGO
+        run: apt-get update && apt-get install -y gcc libc6-dev
+
+      - name: Nakama Build Plugin
+        env:
+          CGO_ENABLED: 1
+        run: go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o backend.so
+        working-directory: backend
+
+      # --- 2. DEPLOYMENT PHASE (Inspirado en la imagen de referencia) ---
+      - name: Get SSH Key and set permissions
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Update or Clone Repository on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            PROJECT_PATH=\"\$HOME/my-nakama-project\"
+            
+            if [ ! -d \"\$PROJECT_PATH/.git\" ]; then
+              if [ -d \"\$PROJECT_PATH\" ]; then
+                echo 'Folder exists but is not a git repository. Initializing and syncing...'
+                cd \"\$PROJECT_PATH\"
+                git init
+                if ! git remote get-url origin &>/dev/null; then
+                  git remote add origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+                fi
+                git fetch origin main
+                git checkout -B main origin/main
+              else
+                echo 'Folder not found. Cloning repository...'
+                git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git \"\$PROJECT_PATH\"
+              fi
+            else
+              echo 'Repository found. Updating via git pull...'
+              cd \"\$PROJECT_PATH\"
+              git pull origin main
+            fi
+          "
+
+      - name: Create destination directory on server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            mkdir -p ${{ env.SERVER_PROJECT_PATH }}/nakama/modules
+          "
+
+      - name: Transfer backend.so to server
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa backend/backend.so ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.SERVER_PROJECT_PATH }}/nakama/modules/backend.so
+
+      - name: Restart Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd ${{ env.SERVER_PROJECT_PATH }}/.devcontainer/windows-wslg-nvidia/ &&
+            docker compose down &&
+            docker compose up --build -d postgres nakama
+          "
