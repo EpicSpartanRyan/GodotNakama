@@ -8,6 +8,7 @@
     <!-- Force totally deterministic C# compilation -->
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildProjectDirectory)=/</PathMap>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <!-- Bug tracking for beta testers -->
