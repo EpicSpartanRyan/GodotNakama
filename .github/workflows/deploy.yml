@@ -40,7 +40,7 @@ jobs:
         run: go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o backend.so
         working-directory: backend
 
-      # --- 2. DEPLOYMENT PHASE (Inspirado en la imagen de referencia) ---
+      # --- 2. DEPLOYMENT PHASE ---
       - name: Get SSH Key and set permissions
         run: |
           mkdir -p ~/.ssh
