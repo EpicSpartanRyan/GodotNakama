@@ -221,7 +221,7 @@
     {
       "label": "Nakama: Build Plugin",
       "type": "shell",
-      "command": "cd backend && go build --trimpath --mod=vendor --buildmode=plugin -o ../nakama/modules/${input:pluginNameInput}.so && echo '✅ Plugin ${input:pluginNameInput}.so compiled and moved inside nakama/modules/'",
+      "command": "cd backend && go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o ../nakama/modules/${input:pluginNameInput}.so && echo '✅ Plugin ${input:pluginNameInput}.so compiled and moved inside nakama/modules/'",
       "options": {
         "cwd": "${workspaceFolder}"
       },
