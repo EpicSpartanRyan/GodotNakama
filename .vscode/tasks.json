@@ -2,6 +2,50 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Act: Build Nakama Plugin",
+      "group": "build",
+      "type": "shell",
+      "command": "act",
+      "args": [
+        "--workflows",
+        ".github/workflows/nakama-build.yml",
+        "--job",
+        "build-plugin",
+        "--artifact-server-path",
+        "${workspaceFolder}/.act-artifacts"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Act: Build Godot Executables",
+      "group": "build",
+      "type": "shell",
+      "command": "act",
+      "args": [
+        "--workflows",
+        ".github/workflows/godot-build.yml",
+        "--job",
+        "build-executables",
+        "--artifact-server-path",
+        "${workspaceFolder}/.act-artifacts"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Environment: Run all first time recommended tasks",
       "type": "shell",
       "command": "echo ✅ Successfully ran all first time recommended tasks",
