@@ -9,7 +9,8 @@
     },
     "ghcr.io/devcontainers-extra/features/starship:1.0.10": {},
     "ghcr.io/devcontainers/features/go:1.4.0": {},
-    "ghcr.io/devcontainers/features/github-cli:1.1.3": {}
+    "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
+    "ghcr.io/devcontainers-extra/features/act:1.0.15": {}
   },
   "customizations": {
     "vscode": {
@@ -31,6 +32,7 @@
 
         "GitHub.vscode-pull-request-github", // GitHub PR's/Actions, Tasks
         "github.vscode-github-actions",
+        "SanjulaGanepola.github-local-actions",
         "isopodlabs.taskviewer",
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
