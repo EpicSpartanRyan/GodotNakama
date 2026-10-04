@@ -8,7 +8,7 @@ if [[ "${1:-}" == "--verbose" ]]; then
     VERBOSE=true
 fi
 
-TOTAL_CHECKS=67
+TOTAL_CHECKS=68
 
 # Color codes
 GREEN='\033[0;32m'
@@ -781,6 +781,14 @@ if [[ -d "$export_templates_dir" ]] && find "$export_templates_dir" -type f \( -
     info_status "67" "Checking Godot Export Templates" "ok" "$templates_count template files found"
 else
     info_status "67" "Checking Godot Export Templates" "warn" "no export templates found in $export_templates_dir"
+fi
+
+# Check 68: act (Local GitHub Actions)
+if ! command -v act >/dev/null 2>&1; then
+    info_status "68" "Checking act (Local GitHub Actions)" "warn" "not found in PATH (local CI testing disabled)"
+else
+    act_version=$(act --version | head -n1)
+    info_status "68" "Checking act (Local GitHub Actions)" "ok" "$act_version"
 fi
 
 if (( fail > 0 )); then
