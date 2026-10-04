@@ -6,3 +6,6 @@ logger:
   level: DEBUG
 session:
   token_expiry_sec: 7200
+console:
+  username: "NAKAMA_USERNAME"
+  password: "NAKAMA_PASSWORD"

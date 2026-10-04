@@ -39,13 +39,30 @@ jobs:
         run: go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o backend.so
         working-directory: backend
 
+      - name: Inject secrets into Nakama Config Template
+        env:
+          NAKAMA_USERNAME: ${{ secrets.NAKAMA_USERNAME }}
+          NAKAMA_PASSWORD: ${{ secrets.NAKAMA_PASSWORD }}
+        run: |
+          find . -type f -name '*.template' | while read -r f; do
+            dest="${f%.template}"
+            cp "$f" "$dest"
+            
+            # Reemplazar los placeholders por los valores de los secretos
+            sed -i "s|NAKAMA_USERNAME|${NAKAMA_USERNAME}|g" "$dest"
+            sed -i "s|NAKAMA_PASSWORD|${NAKAMA_PASSWORD}|g" "$dest"
+            
+            echo "Injected secrets into: $dest"
+          done
+        working-directory: nakama
+
       - name: Get SSH Key and set permissions
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Update or Clone Repository on Server
+      - name: Update Repository on Server (Forcing tracked files overwrite & keeping untracked volumes safe)
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             PROJECT_PATH=\"\$HOME/my-nakama-project\"
@@ -65,21 +82,24 @@ jobs:
                 git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git \"\$PROJECT_PATH\"
               fi
             else
-              echo 'Repository found. Updating via git pull...'
+              echo 'Repository found. Resetting tracked files and pulling latest changes...'
               cd \"\$PROJECT_PATH\"
-              git pull origin main
+              # Descartar cambios locales en archivos trackeados y asegurar sincronización limpia
+              git fetch origin main
+              git reset --hard origin/main
             fi
           "
 
-      - name: Create destination directory on server
+      - name: Create destination directories on server
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             mkdir -p ${{ env.SERVER_PROJECT_PATH }}/nakama/modules
           "
 
-      - name: Transfer backend.so to server
+      - name: Transfer backend.so and configured my-config.yml to server
         run: |
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa backend/backend.so ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.SERVER_PROJECT_PATH }}/nakama/modules/backend.so
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa nakama/my-config.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.SERVER_PROJECT_PATH }}/nakama/my-config.yml
 
       - name: Restart Server
         run: |
