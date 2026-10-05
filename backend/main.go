@@ -50,6 +50,12 @@ func (c *Car) Start() {
 func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, initializer runtime.Initializer) error {
 	logger.Info("Initializing Nakama module with Ark ECS, TTLCache, Ark Serde and do...")
 
+	logger.Info("Registering healthcheck RPC")
+	err := initializer.RegisterRpc("healthcheck", RpcHealthcheck)
+	if err != nil {
+		return err
+	}
+
 	// --- TTLCache Test ---
 	cache := ttlcache.New[string, string](
 		ttlcache.WithTTL[string, string](5 * time.Minute),
