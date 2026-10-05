@@ -4,13 +4,15 @@ on:
   workflow_dispatch:
 
 env:
-  SERVER_PROJECT_PATH: "~/my-nakama-project"
+  SERVER_PROJECT_PATH: "$HOME/my-nakama-project"
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-24.04
+
     container:
       image: mcr.microsoft.com/dotnet/sdk:10.0
+
     steps:
       - name: Install Node.js (Required for act & GitHub Local Actions)
         run: apt-get update && apt-get install -y nodejs
@@ -21,39 +23,46 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version: '1.27.1'
+          go-version: "1.27.1"
           cache-dependency-path: backend/go.sum
 
       - name: Nakama Go Vendor
+        working-directory: backend
         run: |
           go mod tidy
           go mod vendor
-        working-directory: backend
 
       - name: Install C Compiler for CGO
         run: apt-get update && apt-get install -y gcc libc6-dev
 
       - name: Nakama Build Plugin
+        working-directory: backend
         env:
           CGO_ENABLED: 1
-        run: go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o backend.so
-        working-directory: backend
+        run: |
+          go build \
+            --trimpath \
+            --mod=vendor \
+            -buildvcs=false \
+            --buildmode=plugin \
+            -o backend.so
 
       - name: Inject secrets into Nakama Config Template
+        working-directory: nakama
         env:
           NAKAMA_USERNAME: ${{ secrets.NAKAMA_USERNAME }}
           NAKAMA_PASSWORD: ${{ secrets.NAKAMA_PASSWORD }}
         run: |
           find . -type f -name '*.template' | while read -r f; do
             dest="${f%.template}"
+
             cp "$f" "$dest"
-            
+
             sed -i "s|NAKAMA_USERNAME|${NAKAMA_USERNAME}|g" "$dest"
             sed -i "s|NAKAMA_PASSWORD|${NAKAMA_PASSWORD}|g" "$dest"
-            
+
             echo "Injected secrets into: $dest"
           done
-        working-directory: nakama
 
       - name: Stop Services & Sync Repository
         uses: appleboy/ssh-action@v1.2.5
@@ -62,34 +71,54 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -e # <-- ESTO ES CLAVE: Detiene el script si cualquier comando falla
-            
-            PROJECT_PATH="~/my-nakama-project"
+            set -euxo pipefail
+
+            PROJECT_PATH="$HOME/my-nakama-project"
             DEVCONTAINER_PATH="$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
-            
-            # 1. Apagar servicios existentes
+
+            echo "=== STOP SERVICES ==="
+
             if [ -d "$DEVCONTAINER_PATH" ]; then
-              echo "Stopping running docker services..."
               cd "$DEVCONTAINER_PATH"
               docker compose down || true
             fi
 
-            # 2. Actualizar / Clonar repositorio
+            echo "=== SYNC REPOSITORY ==="
+
             if [ ! -d "$PROJECT_PATH/.git" ]; then
-              echo 'Folder not found or not a git repo. Cloning repository...'
-              git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git "$PROJECT_PATH"
+
+              rm -rf "$PROJECT_PATH"
+
+              git clone \
+                "https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git" \
+                "$PROJECT_PATH"
+
             else
-              echo 'Repository found. Updating remote URL and resetting tracked files...'
+
               cd "$PROJECT_PATH"
-              # Forzar la URL remota para asegurar que siempre haya permisos de lectura
-              git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
-              
-              # Obtener los últimos cambios reales de github
-              git fetch origin main
+
+              git remote set-url origin \
+                "https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git"
+
+              git fetch --all --prune
+
+              git checkout main
+
               git reset --hard origin/main
+
+              git clean -xfd
+
             fi
-            
-            # Crear directorios de destino
+
+            echo "=== CURRENT COMMIT ==="
+            git rev-parse HEAD
+
+            echo "=== LAST 10 COMMITS ==="
+            git log --oneline -10
+
+            echo "=== VERIFY RUSTFS ==="
+            grep -R "rustfs" . || true
+
             mkdir -p "$PROJECT_PATH/nakama/modules"
 
       - name: Transfer backend.so to server
@@ -119,18 +148,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "=== REVISANDO EL ÚLTIMO COMMIT DESCARGADO ==="
-            cd ~/my-nakama-project
-            git log -1
-            git status
-            
-            echo "=== REVISANDO QUÉ HAY EN LA CARPETA ==="
-            cd ~/my-nakama-project/.devcontainer/windows-wslg-nvidia/
-            ls -la
-            
-            echo "=== CONTENIDO REAL DEL DOCKER-COMPOSE EN EL SERVIDOR ==="
-            cat docker-compose.yml || cat compose.yml || echo "¡NO HAY ARCHIVO COMPOSE AQUÍ!"
-            echo "========================================================"
-            
-            # Intentamos levantar los contenedores
+            set -euxo pipefail
+
+            PROJECT_PATH="$HOME/my-nakama-project"
+
+            cd "$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
+
+            echo "=== COMPOSE SERVICES ==="
+            docker compose config --services
+
             docker compose up --build -d postgres nakama rustfs
