@@ -119,5 +119,18 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "=== REVISANDO EL ÚLTIMO COMMIT DESCARGADO ==="
+            cd ~/my-nakama-project
+            git log -1
+            git status
+            
+            echo "=== REVISANDO QUÉ HAY EN LA CARPETA ==="
             cd ~/my-nakama-project/.devcontainer/windows-wslg-nvidia/
+            ls -la
+            
+            echo "=== CONTENIDO REAL DEL DOCKER-COMPOSE EN EL SERVIDOR ==="
+            cat docker-compose.yml || cat compose.yml || echo "¡NO HAY ARCHIVO COMPOSE AQUÍ!"
+            echo "========================================================"
+            
+            # Intentamos levantar los contenedores
             docker compose up --build -d postgres nakama rustfs
