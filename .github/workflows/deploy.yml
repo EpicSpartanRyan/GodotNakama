@@ -113,12 +113,6 @@ jobs:
             echo "=== CURRENT COMMIT ==="
             git rev-parse HEAD
 
-            echo "=== LAST 10 COMMITS ==="
-            git log --oneline -10
-
-            echo "=== VERIFY RUSTFS ==="
-            grep -R "rustfs" . || true
-
             mkdir -p "$PROJECT_PATH/nakama/modules"
 
       - name: Transfer backend.so to server
