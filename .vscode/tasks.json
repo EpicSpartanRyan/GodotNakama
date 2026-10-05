@@ -142,7 +142,7 @@
     },
     {
       "label": "Aseprite: Start",
-      "group": "aseprite",
+      "group": "apps",
       "type": "shell",
       "command": "DIR=\"${workspaceFolder}/${input:asepriteProjectSelect}\"; mkdir -p ~/.config/aseprite && touch ~/.config/aseprite/aseprite.ini && if grep -q 'current_folder' ~/.config/aseprite/aseprite.ini; then sed -i \"s|^current_folder = .*|current_folder = $DIR|\" ~/.config/aseprite/aseprite.ini; else echo -e \"\\n[file_selector]\\ncurrent_folder = $DIR\" >> ~/.config/aseprite/aseprite.ini; fi; cd \"$DIR\" && aseprite",
       "problemMatcher": []
@@ -191,7 +191,7 @@
     },
     {
       "label": "Inochi: Start",
-      "group": "inochi",
+      "group": "apps",
       "type": "shell",
       "command": "export SDL_VIDEODRIVER=x11; export XDG_STATE_HOME=\"${HOME}/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-launch /opt/inochi-creator/inochi-creator",
       "problemMatcher": [],
@@ -276,7 +276,7 @@
     },
     {
       "label": "Godot: Start",
-      "group": "godot",
+      "group": "apps",
       "type": "shell",
       "command": "P=\"${input:godotProjectSelect}\"; godot -e ${P:+\"--path\" \"$P\"}",
       "problemMatcher": []
