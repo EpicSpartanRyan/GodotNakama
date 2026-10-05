@@ -49,10 +49,36 @@ services:
       timeout: 3s
       retries: 5
 
+  rustfs:
+    container_name: rustfs
+    image: rustfs/rustfs:latest
+    command: ["/data"]
+    environment:
+      - RUSTFS_ACCESS_KEY=admin
+      - RUSTFS_SECRET_KEY=password123
+      - RUSTFS_ADDRESS=:9000
+    volumes:
+      - rustfs-data:/data
+    expose:
+      - "9000"
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   nakama:
     container_name: nakama
     image: heroiclabs/nakama:3.41.0
     user: "1000:1000"
+    environment:
+      - RUSTFS_ENDPOINT=rustfs:9000
+      - RUSTFS_ACCESS_KEY=admin
+      - RUSTFS_SECRET_KEY=password123
+      - RUSTFS_USE_SSL=false
+      - RUSTFS_BUCKET=nakama-world-states
     entrypoint:
       - "/bin/sh"
       - "-ecx"
@@ -62,8 +88,11 @@ services:
     restart: unless-stopped
     links:
       - "postgres:db"
+      - "rustfs:rustfs"
     depends_on:
       postgres:
+        condition: service_healthy
+      rustfs:
         condition: service_healthy
     volumes:
       - ../../nakama:/nakama/data
@@ -85,3 +114,4 @@ services:
 
 volumes:
   postgres-data:
+  rustfs-data:

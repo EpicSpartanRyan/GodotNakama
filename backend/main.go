@@ -15,7 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/heroiclabs/nakama-common/runtime"
 	"github.com/jellydator/ttlcache/v3"
-	arkserde "github.com/mlange-42/ark-serde"
+	"github.com/mlange-42/ark-serde"
 	"github.com/mlange-42/ark/ecs"
 	"github.com/samber/do/v2"
 )
