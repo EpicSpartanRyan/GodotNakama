@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "Act: Build All",
-      "group": "build",
+      "group": "act",
       "type": "shell",
       "command": "echo '✅ All Github Local Actions finalized their execution successfully.'",
       "dependsOrder": "sequence",
@@ -22,7 +22,7 @@
     },
     {
       "label": "Act: Build Nakama Plugin",
-      "group": "build",
+      "group": "act",
       "type": "shell",
       "command": "act",
       "args": [
@@ -46,7 +46,7 @@
     },
     {
       "label": "Act: Build Godot Executables",
-      "group": "build",
+      "group": "act",
       "type": "shell",
       "command": "act",
       "args": [
@@ -70,7 +70,7 @@
     },
     {
       "label": "Act: Nakama Deploy",
-      "group": "build",
+      "group": "act",
       "type": "shell",
       "command": "act",
       "args": [
