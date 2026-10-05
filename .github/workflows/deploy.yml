@@ -125,4 +125,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/my-nakama-project/.devcontainer/windows-wslg-nvidia/
-            docker compose up --build -d postgres nakama
+            docker compose up --build -d postgres nakama rustfs
