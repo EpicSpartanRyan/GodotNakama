@@ -62,10 +62,12 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e # <-- ESTO ES CLAVE: Detiene el script si cualquier comando falla
+            
             PROJECT_PATH="~/my-nakama-project"
             DEVCONTAINER_PATH="$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
             
-            # 1. Apagar servicios existentes si la carpeta de compose existe
+            # 1. Apagar servicios existentes
             if [ -d "$DEVCONTAINER_PATH" ]; then
               echo "Stopping running docker services..."
               cd "$DEVCONTAINER_PATH"
@@ -74,22 +76,15 @@ jobs:
 
             # 2. Actualizar / Clonar repositorio
             if [ ! -d "$PROJECT_PATH/.git" ]; then
-              if [ -d "$PROJECT_PATH" ]; then
-                echo 'Folder exists but is not a git repository. Initializing and syncing...'
-                cd "$PROJECT_PATH"
-                git init
-                if ! git remote get-url origin &>/dev/null; then
-                  git remote add origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
-                fi
-                git fetch origin main
-                git checkout -B main origin/main
-              else
-                echo 'Folder not found. Cloning repository...'
-                git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git "$PROJECT_PATH"
-              fi
+              echo 'Folder not found or not a git repo. Cloning repository...'
+              git clone https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git "$PROJECT_PATH"
             else
-              echo 'Repository found. Resetting tracked files...'
+              echo 'Repository found. Updating remote URL and resetting tracked files...'
               cd "$PROJECT_PATH"
+              # Forzar la URL remota para asegurar que siempre haya permisos de lectura
+              git remote set-url origin https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+              
+              # Obtener los últimos cambios reales de github
               git fetch origin main
               git reset --hard origin/main
             fi
