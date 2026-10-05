@@ -55,7 +55,7 @@ jobs:
           done
         working-directory: nakama
 
-      - name: Prepare Server and Sync Repository
+      - name: Stop Services & Sync Repository
         uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -63,7 +63,16 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             PROJECT_PATH="~/my-nakama-project"
+            DEVCONTAINER_PATH="$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
             
+            # 1. Apagar servicios existentes si la carpeta de compose existe
+            if [ -d "$DEVCONTAINER_PATH" ]; then
+              echo "Stopping running docker services..."
+              cd "$DEVCONTAINER_PATH"
+              docker compose down || true
+            fi
+
+            # 2. Actualizar / Clonar repositorio
             if [ ! -d "$PROJECT_PATH/.git" ]; then
               if [ -d "$PROJECT_PATH" ]; then
                 echo 'Folder exists but is not a git repository. Initializing and syncing...'
@@ -108,7 +117,7 @@ jobs:
           target: "~/my-nakama-project/nakama"
           strip_components: 1
 
-      - name: Restart Server
+      - name: Start Server Services
         uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -116,5 +125,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/my-nakama-project/.devcontainer/windows-wslg-nvidia/
-            docker compose down
             docker compose up --build -d postgres nakama
