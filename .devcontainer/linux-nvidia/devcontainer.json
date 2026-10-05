@@ -21,6 +21,7 @@
         "ms-vscode.cmake-tools",
 
         "ms-dotnettools.csdevkit", // C# Language
+        "patcx.vscode-nuget-gallery",
         "EditorConfig.EditorConfig",
         "csharpier.csharpier-vscode",
         "drain99.perfetto-trace", // Profiling visualization
@@ -30,11 +31,14 @@
         "geequlim.godot-tools", // Godot Support
         "neikeq.godot-csharp-vscode",
         "alfish.godot-files",
+        "DoHe.godot-format",
 
-        "GitHub.vscode-pull-request-github", // GitHub PR's/Actions, Tasks
+        "eamodio.gitlens", // GitLens, GitHub PR's GH/Local Actions, Tasks, TO-DO
+        "GitHub.vscode-pull-request-github", 
         "github.vscode-github-actions",
         "SanjulaGanepola.github-local-actions",
         "isopodlabs.taskviewer",
+        "FanaticPythoner.better-todo-tree",
 
         "ms-ossdata.vscode-pgsql", // PostgreSQL Management
 
