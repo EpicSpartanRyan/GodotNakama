@@ -4,6 +4,10 @@
             "path": "."
         },
         {
+            "path": "nakama",
+            "name": "⚙️🖥️ Server Config"
+        },
+        {
             "path": "backend",
             "name": "⚡🐹 Backend Server"
         },
