@@ -68,7 +68,7 @@ GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, an
 
 Artifacts from game and plugin builds are temporary CI artifacts, not signed releases. Local GitHub Actions can be run with the `Act:` tasks and `act`; workflows that use GitHub secrets or remote deployment still need suitable local configuration.
 
-The Nakama backend's unit tests use Testify and run in CI. Run them locally with `cd backend && go test --mod=vendor ./...`, or use the **Nakama: Test** VS Code task.
+The Nakama backend's tests use Testify and run in CI. Run them locally with `cd backend && go test --mod=vendor ./...`, or use the **Nakama: Test** VS Code task. Docker must be available because the RustFS storage integration test starts a throwaway instance with Testcontainers.
 
 ## Pinned versions
 
