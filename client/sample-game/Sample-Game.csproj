@@ -17,8 +17,5 @@
 
     <!-- Multiplayer -->
     <PackageReference Include="NakamaClient" Version="3.22.1" />
-
-    <!-- Integration testing -->
-    <PackageReference Include="Testcontainers" Version="4.15.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

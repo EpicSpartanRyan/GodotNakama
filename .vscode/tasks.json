@@ -232,10 +232,26 @@
       "command": "dotnet",
       "type": "process",
       "args": [
-        "build"
+        "build",
+        "Sample-Game.csproj"
       ],
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": ".NET: Test",
+      "group": ".net",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "--project",
+        "${workspaceFolder}/client/sample-game.Tests/Sample-Game.Tests.csproj"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": "$msCompile"
     },

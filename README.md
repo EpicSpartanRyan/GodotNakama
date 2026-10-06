@@ -45,9 +45,17 @@ Build the C# game from the repository root:
 dotnet build client/sample-game/Sample-Game.sln
 ```
 
+Run the C# test project:
+
+```bash
+dotnet test --project client/sample-game.Tests/Sample-Game.Tests.csproj
+```
+
+The test project is included in the game solution, targets .NET 10, and uses xUnit v3. Its dependencies, including Testcontainers, are isolated from the exported game, which continues to target .NET 8. C# Dev Kit can discover and run tests from the VS Code Test Explorer.
+
 Start the editor with `godot -e --path client/sample-game`, or use **Godot: Start**. For common operations, use **Tasks: Run Task**:
 
-- **Godot: Build**, **Godot: Export Game**, and **Godot: Install Addons**
+- **Godot: Build**, **Godot: Export Game**, **Godot: Install Addons**, and **.NET: Test**
 - **Nakama: Go Vendor**, and **Nakama: Build & Restart**
 - **Docker: View Logs (Nakama / DB)** and **Environment: Run Doctor**
 - **Aseprite: Start** and **Inochi: Start**
@@ -56,7 +64,7 @@ Start the editor with `godot -e --path client/sample-game`, or use **Godot: Star
 
 ## CI and deployment
 
-GitHub Actions builds the Nakama Go plugin and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image to Docker Hub; deployment of Nakama is a manual workflow.
+GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image to Docker Hub; deployment of Nakama is a manual workflow.
 
 Artifacts from game and plugin builds are temporary CI artifacts, not signed releases. Local GitHub Actions can be run with the `Act:` tasks and `act`; workflows that use GitHub secrets or remote deployment still need suitable local configuration.
 

@@ -94,8 +94,11 @@ jobs:
       - name: Restore .NET Tools & Build C# project
         run: |
           dotnet tool restore || true
-          dotnet build
+          dotnet build Sample-Game.csproj
         working-directory: client/sample-game
+
+      - name: Run C# tests
+        run: dotnet test --project client/sample-game.Tests/Sample-Game.Tests.csproj
 
       - name: Export Game for Windows, Linux, and macOS
         run: |
