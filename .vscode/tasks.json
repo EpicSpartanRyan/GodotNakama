@@ -242,7 +242,7 @@
     },
     {
       "label": ".NET: Test",
-      "group": ".net",
+      "group": "testing",
       "type": "process",
       "command": "dotnet",
       "args": [
@@ -342,6 +342,23 @@
         "cwd": "${workspaceFolder}/backend"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Nakama: Test",
+      "group": "testing",
+      "type": "process",
+      "command": "go",
+      "args": [
+        "test",
+        "-v",
+        "-count=1",
+        "--mod=vendor",
+        "./..."
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "problemMatcher": "$go"
     },
     {
       "label": "Nakama: Build Plugin",

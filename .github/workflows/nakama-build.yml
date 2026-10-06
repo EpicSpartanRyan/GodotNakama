@@ -32,6 +32,10 @@ jobs:
           go mod vendor
         working-directory: backend
 
+      - name: Run Go tests
+        run: go test --mod=vendor ./...
+        working-directory: backend
+
       - name: Install C Compiler for CGO
         run: apt-get update && apt-get install -y gcc libc6-dev
 
