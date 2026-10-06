@@ -5,14 +5,15 @@
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <IsTestProject>true</IsTestProject>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" PrivateAssets="All" />
     <PackageReference Include="Testcontainers" Version="4.15.0" PrivateAssets="All" />
-    <PackageReference Include="xunit.v3" Version="4.0.1" PrivateAssets="All" />
+    <PackageReference Include="xunit.v3.mtp-off" Version="4.0.1" PrivateAssets="All" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../sample-game/Sample-Game.csproj" />

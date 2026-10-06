@@ -98,7 +98,7 @@ jobs:
         working-directory: client/sample-game
 
       - name: Run C# tests
-        run: dotnet test --project client/sample-game.Tests/Sample-Game.Tests.csproj
+        run: dotnet test client/sample-game.Tests/Sample-Game.Tests.csproj
 
       - name: Export Game for Windows, Linux, and macOS
         run: |

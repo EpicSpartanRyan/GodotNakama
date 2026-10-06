@@ -247,7 +247,6 @@
       "command": "dotnet",
       "args": [
         "test",
-        "--project",
         "${workspaceFolder}/client/sample-game.Tests/Sample-Game.Tests.csproj"
       ],
       "options": {

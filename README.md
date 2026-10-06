@@ -48,7 +48,7 @@ dotnet build client/sample-game/Sample-Game.sln
 Run the C# test project:
 
 ```bash
-dotnet test --project client/sample-game.Tests/Sample-Game.Tests.csproj
+dotnet test client/sample-game.Tests/Sample-Game.Tests.csproj
 ```
 
 The test project is included in the game solution, targets .NET 10, and uses xUnit v3. Its dependencies, including Testcontainers, are isolated from the exported game, which continues to target .NET 8. C# Dev Kit can discover and run tests from the VS Code Test Explorer.
