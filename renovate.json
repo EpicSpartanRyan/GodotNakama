@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "packageRules": [
+    {
+      "description": "Use Ubuntu 24.04 Noble repositories for APT packages in client/Dockerfile",
+      "matchFileNames": ["client/Dockerfile"],
+      "matchDatasources": ["deb"],
+      "registryUrls": [
+        "https://archive.ubuntu.com/ubuntu?suite=noble&components=main,universe,restricted,multiverse&binaryArch=amd64",
+        "https://archive.ubuntu.com/ubuntu?suite=noble-updates&components=main,universe,restricted,multiverse&binaryArch=amd64",
+        "https://archive.ubuntu.com/ubuntu?suite=noble-backports&components=main,universe,restricted,multiverse&binaryArch=amd64",
+        "https://security.ubuntu.com/ubuntu?suite=noble-security&components=main,universe,restricted,multiverse&binaryArch=amd64"
+      ]
+    }
+  ]
+}

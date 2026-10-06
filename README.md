@@ -84,7 +84,7 @@ Key versions currently configured:
 | PostgreSQL | `18.6-trixie` |
 | Go | `1.27.1` in CI; module declares `1.27.1` |
 
-Dev Container feature versions and digests are recorded in each profile's lockfile. These pins improve consistency, but the environment is not fully bit-for-bit reproducible: some base images, OS packages, and downloads are not pinned by digest or checksum. RustFS currently uses the mutable `latest` tag.
+Dev Container feature versions and digests are recorded in each profile's lockfile, and the Dockerfile's direct APT packages are version-pinned. Renovate is configured to update those packages from Ubuntu 24.04 repositories; Dependabot does not update APT package pins in Dockerfiles. The environment is not fully bit-for-bit reproducible because base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
 
 ## Troubleshooting
 
