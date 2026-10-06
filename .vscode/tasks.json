@@ -99,7 +99,6 @@
       "command": "echo ✅ Successfully ran all first time recommended tasks",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "Git: Clean Untracked & Ignored Files",
         ".NET: Restore Tools",
         ".NET: Install Profiler",
         "Templates: Instantiate",
