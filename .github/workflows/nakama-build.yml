@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-plugin:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: mcr.microsoft.com/dotnet/sdk:10.0
     steps:
