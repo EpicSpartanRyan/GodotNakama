@@ -51,7 +51,7 @@ services:
 
   rustfs:
     container_name: rustfs
-    image: rustfs/rustfs:latest
+    image: rustfs/rustfs:1.0.1
     command: ["/data"]
     environment:
       - RUSTFS_ACCESS_KEY=admin
