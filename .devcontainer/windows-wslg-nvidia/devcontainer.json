@@ -1,9 +1,14 @@
 {
-  "name": "Godot Nakama Environment Windows",
-  "dockerComposeFile": "docker-compose.yml",
+  "name": "Godot Nakama Environment WSLg (GPU)",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../compose/wslg.yml",
+    "../compose/wslg-gpu.yml"
+  ],
   "service": "godot",
   "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
   "features": {
+    "../features/common-vscode": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
       "moby": false
     },
@@ -14,137 +19,8 @@
     "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
     "ghcr.io/devcontainers-extra/features/act:1.0.15": {}
   },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "llvm-vs-code-extensions.vscode-clangd", // C++ / Clangd Support
-        "vadimcn.vscode-lldb",
-        "ms-vscode.cmake-tools",
-
-        "ms-dotnettools.csdevkit", // C# Language
-        "patcx.vscode-nuget-gallery",
-        "EditorConfig.EditorConfig",
-        "csharpier.csharpier-vscode",
-        "drain99.perfetto-trace", // Profiling visualization
-
-        "golang.go", // Go Language
-
-        "geequlim.godot-tools", // Godot Support
-        "neikeq.godot-csharp-vscode",
-        "alfish.godot-files",
-        "DoHe.godot-format",
-
-        "eamodio.gitlens", // GitLens, GitHub PR's GH/Local Actions, Tasks, TO-DO
-        "GitHub.vscode-pull-request-github", 
-        "github.vscode-github-actions",
-        "SanjulaGanepola.github-local-actions",
-        "isopodlabs.taskviewer",
-        "FanaticPythoner.better-todo-tree",
-
-        "ms-ossdata.vscode-pgsql", // PostgreSQL Management
-
-        "qwtel.sqlite-viewer", // SQLite Support
-
-        "ms-azuretools.vscode-containers", // Docker and Kubernetes
-        "ms-azuretools.vscode-docker",
-        "docker.docker",
-        "ms-kubernetes-tools.vscode-kubernetes-tools",
-        
-        "redhat.vscode-yaml", // Files
-        "redhat.vscode-xml",
-        "AykutSarac.jsoncrack-vscode",
-        "tamasfe.even-better-toml",
-        "grimaldi-tech.aseprite-preview",
-        "three-flatland.fl-tools",
-        "ms-vscode.hexeditor",
-        "YuTengjing.open-in-external-app",
-
-        "saxc.search-on" // Docs Browsing
-      ],
-      "settings": {
-        "searchOn.dockerHub": false,
-        "searchOn.google": false,
-        "searchOn.MDN": false,
-        "searchOn.microsoftLearn": false,
-        "searchOn.NPM": false,
-        "searchOn.nuGet": false,
-        "searchOn.wikipedia": false,
-        "searchOn.youTube": false,
-        "searchOn.stackOverflow": false,
-        "searchOn.customPlatforms": [
-            {
-            "label": ".NET API",
-            "url": "https://learn.microsoft.com/en-us/dotnet/api/?term={{search_term}}"
-            },
-            {
-            "label": "Golang StdLib",
-            "url": "https://pkg.go.dev/search?q={{search_term}}"
-            },
-            {
-            "label": "Godot 4.7.2",
-            "url": "https://docs.godotengine.org/en/stable/search.html?q={{search_term}}&check_keywords=yes&area=default"
-            },
-            {
-            "label": "Nakama Docs",
-            "url": "https://google.com/search?q=site:heroiclabs.com/docs/+{{search_term}}"
-            }
-        ],
-        "workbench.editorAssociations": {
-          "*.chromium.json": "perfetto-trace.perfetto-native-editor"
-        },
-        "files.associations": {
-          "*.cs.template": "csharp"
-        },
-        "csharp.experimental.debug.hotReload": true,
-        "csharp.debug.hotReloadOnSave": true,
-        "openInExternalApp.openMapper": [
-          {
-            "extensionName": "aseprite",
-            "apps": [
-              {
-                "title": "Aseprite",
-                "shellCommand": "aseprite ${file}",
-                "wslConvertWindowsPath": false
-              }
-            ]
-          },
-          {
-            "extensionName": "inp",
-            "apps": [
-              {
-                "title": "Inochi Creator",
-                "shellCommand": "export SDL_VIDEODRIVER=x11; export XDG_STATE_HOME=\"${HOME}/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-launch /opt/inochi-creator/inochi-creator \"${file}\"",
-                "wslConvertWindowsPath": false
-              }
-            ]
-          },
-          {
-            "extensionName": "godot",
-            "apps": [
-              {
-                "title": "Godot Editor",
-                "shellCommand": "godot -e --path \"${fileDirname}\"",
-                "wslConvertWindowsPath": false
-              }
-            ]
-          },
-          {
-            "extensionName": "psd",
-            "apps": [
-              {
-                "title": "GIMP",
-                "shellCommand": "gimp \"${file}\"",
-                "wslConvertWindowsPath": false
-              }
-            ]
-          }
-        ]
-      }
-    }
-  },
   "remoteUser": "ubuntu",
   "remoteEnv": {
-    "NVIDIA_DRIVER_CAPABILITIES": "all",
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "DISPLAY": ":0",
@@ -153,12 +29,9 @@
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
   "containerEnv": {
-    "COMPOSE_YML_PATH": "/home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/windows-wslg-nvidia/docker-compose.yml"
+    "COMPOSE_ARGS": "-f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg-gpu.yml"
   },
-  "forwardPorts": [
-    6007,
-    6008
-  ],
+  "forwardPorts": [6007, 6008],
   "portsAttributes": {
     "6007": {
       "label": "Godot Remote Debugger",

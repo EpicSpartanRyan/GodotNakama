@@ -540,17 +540,19 @@ fi
 # 5 & 6. Docker Compose Services & Backend Responding
 # ==========================================
 
-# Determinar el archivo de compose a utilizar
-COMPOSE_FILE_ARG=""
-if [[ -n "${COMPOSE_YML_PATH:-}" && -f "$COMPOSE_YML_PATH" ]]; then
-    COMPOSE_FILE_ARG="-f $COMPOSE_YML_PATH"
+# Determine the Compose file arguments for the active Dev Container profile.
+COMPOSE_FILE_ARGS=()
+if [[ -n "${COMPOSE_ARGS:-}" ]]; then
+    read -r -a COMPOSE_FILE_ARGS <<< "$COMPOSE_ARGS"
+elif [[ -n "${COMPOSE_YML_PATH:-}" && -f "$COMPOSE_YML_PATH" ]]; then
+    COMPOSE_FILE_ARGS=(-f "$COMPOSE_YML_PATH")
 elif [[ -f docker-compose.yml ]]; then
-    COMPOSE_FILE_ARG="-f docker-compose.yml"
+    COMPOSE_FILE_ARGS=(-f docker-compose.yml)
 fi
 
-if [[ -n "$COMPOSE_FILE_ARG" ]]; then
+if (( ${#COMPOSE_FILE_ARGS[@]} > 0 )); then
     # Check 44: Docker Compose services active overall
-    running_services=$(docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
+    running_services=$(docker compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
     if [[ -n "$running_services" ]]; then
         info_status "44" "Checking Docker Compose services" "ok" "services active"
     else
@@ -558,11 +560,11 @@ if [[ -n "$COMPOSE_FILE_ARG" ]]; then
     fi
 
     # Check 45: Service 'postgres'
-    if docker compose $COMPOSE_FILE_ARG ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
-       docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
+    if docker compose "${COMPOSE_FILE_ARGS[@]}" ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
+       docker compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
          info_status "45" "Checking service 'postgres'" "ok" "running"
     else
-        if docker compose $COMPOSE_FILE_ARG ps --services 2>/dev/null | grep -q "^postgres$"; then
+        if docker compose "${COMPOSE_FILE_ARGS[@]}" ps --services 2>/dev/null | grep -q "^postgres$"; then
             info_status "45" "Checking service 'postgres'" "warn" "defined but not running"
         else
             info_status "45" "Checking service 'postgres'" "warn" "not defined"
@@ -570,11 +572,11 @@ if [[ -n "$COMPOSE_FILE_ARG" ]]; then
     fi
 
     # Check 46: Service 'nakama'
-    if docker compose $COMPOSE_FILE_ARG ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
-       docker compose $COMPOSE_FILE_ARG ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
+    if docker compose "${COMPOSE_FILE_ARGS[@]}" ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
+       docker compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
          info_status "46" "Checking service 'nakama'" "ok" "running"
     else
-        if docker compose $COMPOSE_FILE_ARG ps --services 2>/dev/null | grep -q "^nakama$"; then
+        if docker compose "${COMPOSE_FILE_ARGS[@]}" ps --services 2>/dev/null | grep -q "^nakama$"; then
             info_status "46" "Checking service 'nakama'" "warn" "defined but not running"
         else
             info_status "46" "Checking service 'nakama'" "warn" "not defined"
@@ -582,7 +584,7 @@ if [[ -n "$COMPOSE_FILE_ARG" ]]; then
     fi
 
     # Check 47: PostgreSQL connectivity
-    if docker compose $COMPOSE_FILE_ARG exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
+    if docker compose "${COMPOSE_FILE_ARGS[@]}" exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
         info_status "47" "Checking PostgreSQL connectivity" "ok" "accepting connections"
     else
         info_status "47" "Checking PostgreSQL connectivity" "warn" "not accepting connections"

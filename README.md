@@ -5,28 +5,35 @@ A VS Code Dev Container for developing a Godot C# game with a Go/Nakama backend,
 ## Requirements
 
 - Linux, or Ubuntu on WSL2 with WSLg for graphical applications.
-- Docker Engine/Desktop with Compose and GPU support where applicable.
+- Docker Engine/Desktop with Compose. NVIDIA Container Toolkit is needed only for the NVIDIA profile.
 - VS Code with the Dev Containers extension.
 
-The Linux and WSLg configurations are in `.devcontainer/linux-nvidia` and `.devcontainer/windows-wslg-nvidia`. Their display, GPU, and mount settings are host-specific.
+Dev Container profiles are in `.devcontainer`: choose `linux-nvidia` or `windows-wslg-nvidia` for GPU acceleration, or `linux-cpu` or `windows-wslg-cpu` for software rendering without an NVIDIA runtime. The service stack and VS Code tooling are shared; host display mounts and renderer settings are composed from small profile-specific overlays.
 
 ## Start developing
 
 1. Clone the repository and open `GodotNakama.code-workspace` in VS Code.
-2. Choose **Dev Containers: Reopen in Container** and select the profile for your host.
+2. Choose **Dev Containers: Reopen in Container** and select the profile for your host and renderer.
 3. Run **Tasks: Run Task → Templates: Instantiate** to create local config files from templates. Replace any placeholder values before using integrations that require credentials; do not commit secrets.
 
 The workspace contains the game at `client/sample-game` and backend at `backend`. The Compose stack starts the `godot`, `postgres`, `rustfs`, and `nakama` services. Nakama waits for PostgreSQL and RustFS, then runs database migrations on startup.
 
-To start or inspect the Linux stack manually from the repository root:
+To start or inspect the Linux NVIDIA stack manually from the repository root:
 
 ```bash
-docker compose -f .devcontainer/linux-nvidia/docker-compose.yml up -d --build
-docker compose -f .devcontainer/linux-nvidia/docker-compose.yml ps
-docker compose -f .devcontainer/linux-nvidia/docker-compose.yml logs -f nakama
+docker compose \
+  -f .devcontainer/docker-compose.yml \
+  -f .devcontainer/compose/linux.yml \
+  -f .devcontainer/compose/linux-gpu.yml \
+  up -d --build
+docker compose \
+  -f .devcontainer/docker-compose.yml \
+  -f .devcontainer/compose/linux.yml \
+  -f .devcontainer/compose/linux-gpu.yml \
+  ps
 ```
 
-Use `.devcontainer/windows-wslg-nvidia/docker-compose.yml` instead on WSLg. Stop a stack with the same Compose file and `down`.
+For CPU-only Linux, use `.devcontainer/compose/cpu.yml` instead of `linux-gpu.yml`. On WSLg, use `wslg.yml` instead of `linux.yml`; add `wslg-gpu.yml` for GPU or `cpu.yml` for software rendering. Stop a stack with the same Compose file list and `down`.
 
 | Service | Port | Purpose |
 | --- | ---: | --- |
@@ -36,6 +43,8 @@ Use `.devcontainer/windows-wslg-nvidia/docker-compose.yml` instead on WSLg. Stop
 | Godot | `6007`, `6008` | Remote debugger and language server |
 
 The local Compose files use development credentials. Do not reuse them outside a local environment.
+
+For a CPU-only profile, select `linux-cpu` or `windows-wslg-cpu` in the Dev Containers profile picker. These profiles set `LIBGL_ALWAYS_SOFTWARE=1` and do not request an NVIDIA runtime or mount `/dev/dxg`; rendering uses Mesa software rendering and may be slower. GPU profiles are `linux-nvidia` and `windows-wslg-nvidia`.
 
 ## Build, run, and diagnose
 

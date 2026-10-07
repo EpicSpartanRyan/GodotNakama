@@ -74,13 +74,13 @@ jobs:
             set -euxo pipefail
 
             PROJECT_PATH="$HOME/my-nakama-project"
-            DEVCONTAINER_PATH="$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
+            DEVCONTAINER_PATH="$PROJECT_PATH/.devcontainer"
 
             echo "=== STOP SERVICES ==="
 
-            if [ -d "$DEVCONTAINER_PATH" ]; then
-              cd "$DEVCONTAINER_PATH"
-              docker compose down || true
+            if [ -f "$DEVCONTAINER_PATH/docker-compose.yml" ]; then
+              cd "$PROJECT_PATH"
+              docker compose -f .devcontainer/docker-compose.yml down || true
             fi
 
             echo "=== SYNC REPOSITORY ==="
@@ -146,9 +146,9 @@ jobs:
 
             PROJECT_PATH="$HOME/my-nakama-project"
 
-            cd "$PROJECT_PATH/.devcontainer/windows-wslg-nvidia"
+            cd "$PROJECT_PATH"
 
             echo "=== COMPOSE SERVICES ==="
-            docker compose config --services
+            docker compose -f .devcontainer/docker-compose.yml config --services
 
-            docker compose up --build -d postgres nakama rustfs
+            docker compose -f .devcontainer/docker-compose.yml up --build -d postgres nakama rustfs

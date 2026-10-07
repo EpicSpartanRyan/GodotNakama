@@ -1,13 +1,12 @@
 {
-  "name": "Godot Nakama Environment Linux (NVIDIA)",
+  "name": "Godot Nakama Environment WSLg (CPU)",
   "dockerComposeFile": [
     "../docker-compose.yml",
-    "../compose/linux.yml",
-    "../compose/linux-gpu.yml"
+    "../compose/wslg.yml",
+    "../compose/cpu.yml"
   ],
   "service": "godot",
   "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
-  "initializeCommand": "xhost +local:",
   "features": {
     "../features/common-vscode": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
@@ -24,14 +23,13 @@
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
-    "DISPLAY": ":1",
-    "WAYLAND_DISPLAY": "",
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "wayland-0",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
-    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
-    "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
+    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
   "containerEnv": {
-    "COMPOSE_ARGS": "-f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/linux.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/linux-gpu.yml"
+    "COMPOSE_ARGS": "-f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/cpu.yml"
   },
   "forwardPorts": [6007, 6008],
   "portsAttributes": {

@@ -1,0 +1,14 @@
+services:
+  godot:
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all,graphics,utility,display,compute
+    devices:
+      - /dev/dxg:/dev/dxg
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, graphics, display, utility]

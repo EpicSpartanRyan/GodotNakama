@@ -8,8 +8,8 @@ updates:
           
   - package-ecosystem: "docker-compose"
     directories:
-      - "/.devcontainer/linux-nvidia"
-      - "/.devcontainer/windows-wslg-nvidia"
+      - "/.devcontainer"
+      - "/.devcontainer/compose"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10

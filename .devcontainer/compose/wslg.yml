@@ -1,0 +1,11 @@
+services:
+  godot:
+    environment:
+      DISPLAY: "${DISPLAY:-:0}"
+      WAYLAND_DISPLAY: wayland-0
+      XDG_RUNTIME_DIR: /tmp/runtime-dir
+      PULSE_SERVER: unix:/tmp/runtime-dir/pulse/native
+    volumes:
+      - '\\wsl.localhost\Ubuntu\mnt\wslg\.X11-unix:/tmp/.X11-unix:rw'
+      - '\\wsl.localhost\Ubuntu\mnt\wslg\runtime-dir:/tmp/runtime-dir:rw'
+      - '\\wsl.localhost\Ubuntu\usr\lib\wsl:/usr/lib/wsl:ro'

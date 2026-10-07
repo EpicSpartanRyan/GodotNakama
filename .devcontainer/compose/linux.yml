@@ -1,0 +1,14 @@
+services:
+  godot:
+    ipc: host
+    environment:
+      DISPLAY: ":1"
+      WAYLAND_DISPLAY: ""
+      XAUTHORITY: /tmp/.Xauthority
+      XDG_RUNTIME_DIR: /tmp/runtime-dir
+      PULSE_SERVER: unix:/tmp/runtime-dir/pulse/native
+      VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX: "true"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ~/.Xauthority:/tmp/.Xauthority:ro
+      - /run/user/1000:/tmp/runtime-dir:rw
