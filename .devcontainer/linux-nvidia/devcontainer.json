@@ -56,9 +56,38 @@
         "grimaldi-tech.aseprite-preview",
         "three-flatland.fl-tools",
         "ms-vscode.hexeditor",
-        "YuTengjing.open-in-external-app"
+        "YuTengjing.open-in-external-app",
+
+        "saxc.search-on" // Docs Browsing
       ],
       "settings": {
+        "searchOn.dockerHub": false,
+        "searchOn.google": false,
+        "searchOn.MDN": false,
+        "searchOn.microsoftLearn": false,
+        "searchOn.NPM": false,
+        "searchOn.nuGet": false,
+        "searchOn.wikipedia": false,
+        "searchOn.youTube": false,
+        "searchOn.stackOverflow": false,
+        "searchOn.customPlatforms": [
+            {
+            "label": ".NET API",
+            "url": "https://learn.microsoft.com/en-us/dotnet/api/?term={{search_term}}"
+            },
+            {
+            "label": "Golang StdLib",
+            "url": "https://pkg.go.dev/search?q={{search_term}}"
+            },
+            {
+            "label": "Godot 4.7.2",
+            "url": "https://docs.godotengine.org/en/stable/search.html?q={{search_term}}&check_keywords=yes&area=default"
+            },
+            {
+            "label": "Nakama Docs",
+            "url": "https://google.com/search?q=site:heroiclabs.com/docs/+{{search_term}}"
+            }
+        ],
         "workbench.editorAssociations": {
           "*.chromium.json": "perfetto-trace.perfetto-native-editor"
         },
