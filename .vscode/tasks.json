@@ -217,14 +217,38 @@
       }
     },
     {
-      "label": "Git: Clean Untracked & Ignored Files",
+      "label": "Git: Simulate Clean",
       "group": "git",
       "type": "shell",
-      "command": "git clean -fdx -e .secrets -e .vscode/vscode-kanban.json -e nakama/my-config.yml -e client/sample-game/src/config/Secrets.cs",
+      "command": "git clean -ndx -e .secrets -e .vscode/vscode-kanban.json -e nakama/my-config.yml -e client/sample-game/src/config/Secrets.cs",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Git: Clean",
+      "group": "git",
+      "type": "shell",
+      "command": "printf 'Continue cleanup? [\\033[32myes\\033[0m/\\033[31mno\\033[0m] (default: \\033[31mno\\033[0m): '; read -r answer; if [ \"$answer\" != \"yes\" ]; then printf '\\033[31mCleanup cancelled.\\033[0m\\n'; exit 0; fi; git clean -fdx -e .secrets -e .vscode/vscode-kanban.json -e nakama/my-config.yml -e client/sample-game/src/config/Secrets.cs",
+      "dependsOrder": "sequence",
+      "dependsOn": "Git: Simulate Clean",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
     },
     {
       "label": "Godot: Build",
