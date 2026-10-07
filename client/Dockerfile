@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-noto=20201225-2 \
     zenity=4.0.1-1build3 \
     libsdl2-2.0-0=2.30.0+dfsg-1ubuntu3.1 \
-    libfreetype6=2.13.2+dfsg-1ubuntu0.1 \
+    libfreetype6=2.13.2+dfsg-1ubuntu0.2 \
     fontconfig=2.15.0-1.1ubuntu2 \
     libgl1=1.7.0-1build1 \
     vulkan-tools=1.3.275.0+dfsg1-1 \
