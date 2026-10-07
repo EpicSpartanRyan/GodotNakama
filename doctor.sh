@@ -49,7 +49,7 @@ fail=0
 
 # Check 1: Display variables for GUI
 if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
-    info_status "1" "Checking display variables" "warn" "neither DISPLAY nor WAYLAND_DISPLAY set"
+    info_status "1" "Checking display variables" "warn" "neither DISPLAY nor WAYLAND_DISPLAY set; this environment requires a graphical Linux/WSLg host or a supported display bridge"
 else
     info_status "1" "Checking display variables" "ok" "DISPLAY=${DISPLAY:-unset}, WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-unset}"
 fi

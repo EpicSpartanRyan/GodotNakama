@@ -10,6 +10,23 @@ A VS Code Dev Container for developing a Godot C# game with a Go/Nakama backend,
 
 Dev Container profiles are in `.devcontainer`: choose `linux-nvidia` or `windows-wslg-nvidia` for GPU acceleration, or `linux-cpu` or `windows-wslg-cpu` for software rendering without an NVIDIA runtime. The service stack and VS Code tooling are shared; host display mounts and renderer settings are composed from small profile-specific overlays.
 
+### Host compatibility and risk limits
+
+This environment expects a graphical Linux host. The supported pairs are:
+
+- Linux host with X11 or Wayland + Docker Engine + Compose
+- Ubuntu on WSL2 with WSLg + Docker Desktop or Docker Engine
+- CPU-only profiles for headless or low-end hosts, with software rendering and slower Godot startup
+
+Not recommended or unsupported for the GUI profile:
+
+- macOS as a direct host for the graphical container stack
+- Windows without WSLg or an equivalent X11/Wayland bridge
+- Docker-only setups with no host display socket, no X11/WSLg access, or no GPU drivers for the selected profile
+- GPU-accelerated profiles on hosts without NVIDIA drivers or WSLg DXGI support
+
+The environment intentionally avoids using privileged host credentials or production secrets. Local development credentials are only for the default dev stack; the same values must not be reused in a production deployment.
+
 ## Start developing
 
 1. Clone the repository and open `GodotNakama.code-workspace` in VS Code.

@@ -19,6 +19,11 @@
     "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
     "ghcr.io/devcontainers-extra/features/act:1.0.15": {}
   },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
   "remoteUser": "ubuntu",
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
