@@ -20,10 +20,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Load pinned versions
+        run: |
+          set -a
+          . ./versions.env
+          set +a
+          echo "GO_VERSION=${GO_VERSION}" >> "$GITHUB_ENV"
+
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version: '1.27.1'
+          go-version: ${{ env.GO_VERSION }}
           cache-dependency-path: backend/go.sum
 
       - name: Nakama Go Vendor

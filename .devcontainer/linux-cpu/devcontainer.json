@@ -36,7 +36,7 @@
     "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
   },
   "containerEnv": {
-    "COMPOSE_ARGS": "-f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/linux.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/cpu.yml"
+    "COMPOSE_ARGS": "--env-file /home/ubuntu/${localWorkspaceFolderBasename}/versions.env -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/linux.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/cpu.yml"
   },
   "forwardPorts": [6007, 6008],
   "portsAttributes": {

@@ -309,7 +309,7 @@
       "label": "Godot: Install Export Templates",
       "group": "godot",
       "type": "shell",
-      "command": "V=\"4.7.2\"; DIR=\"${V}.stable.mono\"; URL=\"https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz\"; echo \"Downloading Godot ${V} Mono templates (this is a large file, wait a moment)...\"; curl -L -o /tmp/tpl.zip \"$URL\" && echo \"Extracting...\" && unzip -q /tmp/tpl.zip -d /tmp/gtpl && mkdir -p ~/.local/share/godot/export_templates/$DIR && mv /tmp/gtpl/templates/* ~/.local/share/godot/export_templates/$DIR/ && rm -rf /tmp/tpl.zip /tmp/gtpl && echo \"✅ Export templates installed successfully in ~/.local/share/godot/export_templates/$DIR/\"",
+      "command": "set -a; . \"${workspaceFolder}/versions.env\"; set +a; V=\"${GODOT_VERSION}\"; DIR=\"${V}.stable.mono\"; URL=\"https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz\"; echo \"Downloading Godot ${V} Mono templates (this is a large file, wait a moment)...\"; curl -L -o /tmp/tpl.zip \"$URL\" && echo \"Extracting...\" && unzip -q /tmp/tpl.zip -d /tmp/gtpl && mkdir -p ~/.local/share/godot/export_templates/$DIR && mv /tmp/gtpl/templates/* ~/.local/share/godot/export_templates/$DIR/ && rm -rf /tmp/tpl.zip /tmp/gtpl && echo \"✅ Export templates installed successfully in ~/.local/share/godot/export_templates/$DIR/\"",
       "problemMatcher": []
     },
     {

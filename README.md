@@ -38,12 +38,12 @@ The workspace contains the game at `client/sample-game` and backend at `backend`
 To start or inspect the Linux NVIDIA stack manually from the repository root:
 
 ```bash
-docker compose \
+docker compose --env-file versions.env \
   -f .devcontainer/docker-compose.yml \
   -f .devcontainer/compose/linux.yml \
   -f .devcontainer/compose/linux-gpu.yml \
   up -d --build
-docker compose \
+docker compose --env-file versions.env \
   -f .devcontainer/docker-compose.yml \
   -f .devcontainer/compose/linux.yml \
   -f .devcontainer/compose/linux-gpu.yml \
@@ -98,7 +98,7 @@ The Nakama backend's tests use Testify and run in CI. Run them locally with `cd 
 
 ## Pinned versions
 
-Key versions currently configured:
+All canonical tool versions are tracked in [versions.env](./versions.env). The table below is kept as a quick reference, but the inventory file is the single source of truth for Docker, CI, tasks, and docs.
 
 | Component | Version |
 | --- | --- |
@@ -110,7 +110,7 @@ Key versions currently configured:
 | Nakama | `3.41.0` |
 | NakamaClient | `3.22.1` |
 | PostgreSQL | `18.6-trixie` |
-| Go | `1.27.1` in CI; module declares `1.27.1` |
+| Go | `1.27.1` |
 
 Dev Container feature versions and digests are recorded in each profile's lockfile, and the Dockerfile's direct APT packages are version-pinned. Renovate is configured to update those packages from Ubuntu 24.04 repositories; Dependabot does not update APT package pins in Dockerfiles. The environment is not fully bit-for-bit reproducible because base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
 

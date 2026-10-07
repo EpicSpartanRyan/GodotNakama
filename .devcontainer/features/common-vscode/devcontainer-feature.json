@@ -77,7 +77,7 @@
             "url": "https://pkg.go.dev/search?q={{search_term}}"
           },
           {
-            "label": "Godot 4.7.2",
+            "label": "Godot",
             "url": "https://docs.godotengine.org/en/stable/search.html?q={{search_term}}&check_keywords=yes&area=default"
           },
           {

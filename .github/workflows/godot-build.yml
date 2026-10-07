@@ -42,9 +42,16 @@ jobs:
             && rm -rf /var/lib/apt/lists/*
           git lfs install --system
 
-      - name: Download and install Godot 4.7.2 .NET (Mono)
+      - name: Load pinned versions
         run: |
-          GODOT_VERSION="4.7.2"
+          set -a
+          . ./versions.env
+          set +a
+          echo "GODOT_VERSION=${GODOT_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Download and install Godot ${{ env.GODOT_VERSION }} .NET (Mono)
+        run: |
+          GODOT_VERSION="${{ env.GODOT_VERSION }}"
           GODOT_RELEASE="stable"
           GODOT_BUILD="Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux_x86_64"
           wget --quiet https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/${GODOT_BUILD}.zip
@@ -55,7 +62,7 @@ jobs:
 
       - name: Install Godot Export Templates
         run: |
-          V="4.7.2"
+          V="${{ env.GODOT_VERSION }}"
           DIR="${V}.stable.mono"
           URL="https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz"
           echo "Downloading Godot ${V} Mono templates..."
