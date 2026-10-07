@@ -7,6 +7,8 @@ import (
 
 	"github.com/heroiclabs/nakama-common/runtime"
 	"github.com/stretchr/testify/require"
+
+	"bryanvalc.com/go-project/healthcheck"
 )
 
 type testLogger struct{}
@@ -26,7 +28,7 @@ func (testLogger) Fields() map[string]interface{} {
 }
 
 func TestHealthcheckReturnsSuccessJSON(t *testing.T) {
-	response, err := RpcHealthcheck(
+	response, err := healthcheck.RpcHealthcheck(
 		context.Background(),
 		testLogger{},
 		(*sql.DB)(nil),

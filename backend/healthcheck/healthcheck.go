@@ -1,4 +1,4 @@
-package tests
+package healthcheck
 
 import (
 	"context"
@@ -8,13 +8,13 @@ import (
 	"github.com/heroiclabs/nakama-common/runtime"
 )
 
-type HealthCheckResponse struct {
+type Response struct {
 	Success bool `json:"success"`
 }
 
 func RpcHealthcheck(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, payload string) (string, error) {
 	logger.Debug("Healthcheck RPC called")
-	response := &HealthCheckResponse{Success: true}
+	response := &Response{Success: true}
 
 	out, err := json.Marshal(response)
 	if err != nil {

@@ -6,11 +6,11 @@ import (
 
 	"github.com/heroiclabs/nakama-common/runtime"
 
-	"bryanvalc.com/go-project/tests"
+	"bryanvalc.com/go-project/healthcheck"
 )
 
 func InitModule(ctx context.Context, logger runtime.Logger, db *sql.DB, nk runtime.NakamaModule, initializer runtime.Initializer) error {
-	if err := initializer.RegisterRpc("healthcheck", tests.RpcHealthcheck); err != nil {
+	if err := initializer.RegisterRpc("healthcheck", healthcheck.RpcHealthcheck); err != nil {
 		return err
 	}
 
