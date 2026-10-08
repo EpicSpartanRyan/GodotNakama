@@ -1,41 +1,91 @@
-# Godot Nakama Development Environment
+<div align="center">
+  <img src="docs/assets/readme-banner.svg" alt="Godot Nakama multiplayer development environment" width="100%">
 
-A VS Code Dev Container for developing a Godot C# game with a Go/Nakama backend, PostgreSQL, RustFS, and art tools.
+  <p><strong>A ready-to-code environment for building multiplayer games with Godot C#, Nakama, and Go.</strong></p>
 
-## Requirements
+  <p>
+    <a href="https://godotengine.org/"><img src="https://img.shields.io/badge/Godot-Engine-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine"></a>
+    <a href="https://heroiclabs.com/docs/nakama/"><img src="https://img.shields.io/badge/Nakama-Game%20Server-E05252?style=for-the-badge" alt="Nakama game server"></a>
+    <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-Language-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go"></a>
+    <a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
+  </p>
 
-- Linux, or Ubuntu on WSL2 with WSLg for graphical applications.
-- Docker Engine/Desktop with Compose. NVIDIA Container Toolkit is needed only for the NVIDIA profile.
-- VS Code with the Dev Containers extension.
+  <p>
+    <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
+    <a href="https://heroiclabs.com/docs/nakama/"><strong>Nakama docs</strong></a> ·
+    <a href="https://go.dev/doc/"><strong>Go docs</strong></a> ·
+    <a href="https://learn.microsoft.com/dotnet/"><strong>.NET docs</strong></a>
+  </p>
+</div>
 
-Dev Container profiles are in `.devcontainer`: choose `linux-nvidia` or `windows-wslg-nvidia` for GPU acceleration, or `linux-cpu` or `windows-wslg-cpu` for software rendering without an NVIDIA runtime. The service stack and VS Code tooling are shared; host display mounts and renderer settings are composed from small profile-specific overlays.
+---
 
-### Host compatibility and risk limits
+## ✨ What is this?
 
-This environment expects a graphical Linux host. The supported pairs are:
+A VS Code Dev Container workspace for developing a **Godot C# game** alongside a **Go/Nakama multiplayer backend**. It brings the editor, backend, database, object storage, and art tools together in one development setup.
 
-- Linux host with X11 or Wayland + Docker Engine + Compose
-- Ubuntu on WSL2 with WSLg + Docker Desktop or Docker Engine
-- CPU-only profiles for headless or low-end hosts, with software rendering and slower Godot startup
+| 🧩 Included | 🛠️ Purpose |
+| --- | --- |
+| Godot .NET + C# | Build and run the game |
+| Nakama + Go | Develop the multiplayer server and plugin |
+| PostgreSQL | Store Nakama data |
+| RustFS | Local S3-compatible object storage |
+| Aseprite + Inochi Creator | Create 2D and 2D/3D character assets |
+| VS Code Dev Containers | Keep the development toolchain consistent |
 
-Not recommended or unsupported for the GUI profile:
+## 🚀 Get started
 
-- macOS as a direct host for the graphical container stack
-- Windows without WSLg or an equivalent X11/Wayland bridge
-- Docker-only setups with no host display socket, no X11/WSLg access, or no GPU drivers for the selected profile
-- GPU-accelerated profiles on hosts without NVIDIA drivers or WSLg DXGI support
+<details open>
+<summary><strong>Quick start</strong></summary>
 
-The environment intentionally avoids using privileged host credentials or production secrets. Local development credentials are only for the default dev stack; the same values must not be reused in a production deployment.
+1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+2. Clone this repository and open `GodotNakama.code-workspace` in VS Code.
+3. Choose **Dev Containers: Reopen in Container**, then select a profile for your host and renderer.
+4. Run **Tasks: Run Task → Templates: Instantiate**. Replace any placeholders before using integrations that need credentials; do not commit secrets.
+5. Start the game with **Godot: Start** or run `godot -e --path client/sample-game`.
 
-## Start developing
+The Dev Container starts the `godot`, `postgres`, `rustfs`, and `nakama` services. Nakama waits for PostgreSQL and RustFS, then runs database migrations.
 
-1. Clone the repository and open `GodotNakama.code-workspace` in VS Code.
-2. Choose **Dev Containers: Reopen in Container** and select the profile for your host and renderer.
-3. Run **Tasks: Run Task → Templates: Instantiate** to create local config files from templates. Replace any placeholder values before using integrations that require credentials; do not commit secrets.
+</details>
 
-The workspace contains the game at `client/sample-game` and backend at `backend`. The Compose stack starts the `godot`, `postgres`, `rustfs`, and `nakama` services. Nakama waits for PostgreSQL and RustFS, then runs database migrations on startup.
+<details>
+<summary><strong>Choose a Dev Container profile</strong></summary>
 
-To start or inspect the Linux NVIDIA stack manually from the repository root:
+| Profile | Host | Rendering | Notes |
+| --- | --- | --- | --- |
+| `linux-nvidia` | Linux | NVIDIA GPU | Requires NVIDIA drivers and NVIDIA Container Toolkit |
+| `linux-cpu` | Linux | Software | No NVIDIA runtime; software rendering may be slower |
+| `windows-wslg-nvidia` | Ubuntu on WSL2 with WSLg | WSLg GPU | Requires WSLg and compatible GPU support |
+| `windows-wslg-cpu` | Ubuntu on WSL2 with WSLg | Software | No NVIDIA runtime or `/dev/dxg` device |
+
+The shared service stack and VS Code tooling are composed with host-specific display and renderer overlays.
+
+</details>
+
+<details>
+<summary><strong>Host requirements and compatibility</strong></summary>
+
+Supported graphical hosts are Linux with X11 or Wayland, and Ubuntu on WSL2 with WSLg. Docker Engine or Docker Desktop with Compose is required. NVIDIA Container Toolkit is needed only for the NVIDIA profiles.
+
+The GUI profiles are not intended for macOS as a direct host, Windows without WSLg or another display bridge, or Docker hosts without access to the required display socket. GPU profiles require the relevant host GPU/driver support. CPU profiles use Mesa software rendering and can be significantly slower.
+
+The Compose credentials are for local development only. Do not reuse them in production.
+
+</details>
+
+## 🐳 Services
+
+| Service | Port(s) | Purpose |
+| --- | ---: | --- |
+| PostgreSQL | `5432` | Nakama database |
+| Nakama | `7349`, `7350` TCP/UDP, `7351` | gRPC, realtime API, and console |
+| RustFS | `9000` | S3-compatible object storage |
+| Godot | `6007`, `6008` | Remote debugger and language server |
+
+<details>
+<summary><strong>Start the Linux NVIDIA stack manually</strong></summary>
+
+Run from the repository root:
 
 ```bash
 docker compose --env-file versions.env \
@@ -43,80 +93,98 @@ docker compose --env-file versions.env \
   -f .devcontainer/compose/linux.yml \
   -f .devcontainer/compose/linux-gpu.yml \
   up -d --build
+```
+
+Inspect services and logs:
+
+```bash
 docker compose --env-file versions.env \
   -f .devcontainer/docker-compose.yml \
   -f .devcontainer/compose/linux.yml \
   -f .devcontainer/compose/linux-gpu.yml \
   ps
+
+docker compose --env-file versions.env \
+  -f .devcontainer/docker-compose.yml \
+  -f .devcontainer/compose/linux.yml \
+  -f .devcontainer/compose/linux-gpu.yml \
+  logs -f nakama postgres rustfs
 ```
 
-For CPU-only Linux, use `.devcontainer/compose/cpu.yml` instead of `linux-gpu.yml`. On WSLg, use `wslg.yml` instead of `linux.yml`; add `wslg-gpu.yml` for GPU or `cpu.yml` for software rendering. Stop a stack with the same Compose file list and `down`.
+For CPU-only Linux, replace `linux-gpu.yml` with `cpu.yml`. On WSLg, replace `linux.yml` with `wslg.yml`; use `wslg-gpu.yml` for GPU or `cpu.yml` for software rendering. Use the same Compose file list with `down` to stop the stack.
 
-| Service | Port | Purpose |
-| --- | ---: | --- |
-| PostgreSQL | `5432` | Nakama database |
-| Nakama | `7349`, `7350` TCP/UDP, `7351` | gRPC, realtime API, and console |
-| RustFS | `9000` | S3-compatible object storage |
-| Godot | `6007`, `6008` | Remote debugger and language server |
+</details>
 
-The local Compose files use development credentials. Do not reuse them outside a local environment.
+## 🧰 Build, test, and useful tasks
 
-For a CPU-only profile, select `linux-cpu` or `windows-wslg-cpu` in the Dev Containers profile picker. These profiles set `LIBGL_ALWAYS_SOFTWARE=1` and do not request an NVIDIA runtime or mount `/dev/dxg`; rendering uses Mesa software rendering and may be slower. GPU profiles are `linux-nvidia` and `windows-wslg-nvidia`.
+<details>
+<summary><strong>Build and test</strong></summary>
 
-## Build, run, and diagnose
-
-Build the C# game from the repository root:
+Build the game:
 
 ```bash
 dotnet build client/sample-game/Sample-Game.sln
 ```
 
-Run the C# test project:
+Run the C# tests:
 
 ```bash
 dotnet test client/sample-game.Tests/Sample-Game.Tests.csproj
 ```
 
-The test project is included in the game solution, targets .NET 10, and uses xUnit v3. Its dependencies, including Testcontainers, are isolated from the exported game, which continues to target .NET 8. C# Dev Kit can discover and run tests from the VS Code Test Explorer.
+Run the Nakama backend tests:
 
-Start the editor with `godot -e --path client/sample-game`, or use **Godot: Start**. For common operations, use **Tasks: Run Task**:
+```bash
+cd backend && go test --mod=vendor ./...
+```
 
-- **Godot: Build**, **Godot: Export Game**, **Godot: Install Addons**, and **.NET: Test**
-- **Nakama: Go Vendor**, and **Nakama: Build & Restart**
-- **Docker: View Logs (Nakama / DB)** and **Environment: Run Doctor**
-- **Aseprite: Start** and **Inochi: Start**
+The C# test project targets .NET 10 and uses xUnit v3. Its dependencies, including Testcontainers, are isolated from the exported game, which targets .NET 8. The backend tests use Testify; Docker is required because the RustFS integration test starts a throwaway container.
 
-`./doctor.sh` checks tools, hardware/display access, Docker, services, and network connectivity. Its hardware checks depend on the host and active display session.
+</details>
 
-## CI and deployment
+<details>
+<summary><strong>VS Code task shortcuts</strong></summary>
 
-GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image to Docker Hub; deployment of Nakama is a manual workflow.
+- 🎮 **Godot:** Build, Export Game, Install Addons, Start
+- 🕹️ **Nakama:** Go Vendor, Test, Build & Restart
+- 🐳 **Docker:** View Logs (Nakama / DB)
+- 🩺 **Environment:** Run Doctor
+- 🎨 **Art tools:** Aseprite, Inochi
+- 🧪 **.NET:** Test
 
-Artifacts from game and plugin builds are temporary CI artifacts, not signed releases. Local GitHub Actions can be run with the `Act:` tasks and `act`; workflows that use GitHub secrets or remote deployment still need suitable local configuration.
+Run `./doctor.sh` or **Environment: Run Doctor** to check tools, display/GPU access, Docker, services, and network connectivity. Hardware checks depend on the host and active display session.
 
-The Nakama backend's tests use Testify and run in CI. Run them locally with `cd backend && go test --mod=vendor ./...`, or use the **Nakama: Test** VS Code task. Docker must be available because the RustFS storage integration test starts a throwaway instance with Testcontainers.
+</details>
 
-## Pinned versions
+## 🔁 CI and deployment
 
-All canonical tool versions are tracked in [versions.env](./versions.env). The table below is kept as a quick reference, but the inventory file is the single source of truth for Docker, CI, tasks, and docs.
+GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image; Nakama deployment is manual.
 
-| Component | Version |
-| --- | --- |
-| .NET SDK | `10.0.401` (`global.json`) |
-| Godot .NET | `4.7.2` |
-| Aseprite | `1.3.18.6` |
-| Skia | `m124-08a5439a6b` |
-| Inochi Creator | `0.8.6` |
-| Nakama | `3.41.0` |
-| NakamaClient | `3.22.1` |
-| PostgreSQL | `18.6-trixie` |
-| Go | `1.27.1` |
+Build artifacts are temporary CI artifacts, not signed releases. Workflows that use GitHub secrets or remote deployment need suitable configuration. Local runs through the `Act:` tasks also require `act`.
 
-Dev Container feature versions and digests are recorded in each profile's lockfile, and the Dockerfile's direct APT packages are version-pinned. Renovate is configured to update those packages from Ubuntu 24.04 repositories; Dependabot does not update APT package pins in Dockerfiles. The environment is not fully bit-for-bit reproducible because base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
+## 📌 Versions
 
-## Troubleshooting
+The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Container feature versions and digests are recorded in each profile's lockfile. The Dockerfile also pins direct APT packages. The environment is not fully bit-for-bit reproducible: base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
 
-- **Container startup fails:** verify Docker/Compose, GPU support, and the host-specific display mounts for the selected profile.
-- **Godot or an art tool cannot open a window:** check `DISPLAY`, `WAYLAND_DISPLAY`, `XDG_RUNTIME_DIR`, and the profile's display mounts.
-- **Nakama is unavailable:** inspect `docker compose ... ps` and `logs -f nakama postgres rustfs` using the Compose file selected above.
-- **Wrong .NET SDK:** run `dotnet --version`; `global.json` selects SDK `10.0.401`.
+## 📈 Repository activity
+
+Want a live dashboard like the one in the [RISC-V ISA manual](https://github.com/riscv/riscv-isa-manual#repo-activity)? Connect this repository to [Repobeats](https://repobeats.axiom.co/) and add the repository-specific embed URL it generates here. Each repository has its own embed URL; do not reuse another project's URL.
+
+## 🆘 Troubleshooting
+
+<details>
+<summary><strong>Common issues</strong></summary>
+
+- **Container startup fails:** check Docker/Compose, the selected profile, and the host-specific display mounts.
+- **Godot or an art tool cannot open a window:** check `DISPLAY`, `WAYLAND_DISPLAY`, `XDG_RUNTIME_DIR`, and display socket access.
+- **NVIDIA profile fails:** verify host NVIDIA drivers and NVIDIA Container Toolkit; use a CPU profile if GPU passthrough is unavailable.
+- **Nakama is unavailable:** inspect Compose status and logs for `nakama`, `postgres`, and `rustfs`.
+- **Wrong .NET SDK:** run `dotnet --version`; [`global.json`](./global.json) selects the SDK.
+
+</details>
+
+---
+
+<div align="center">
+  <sub>Built for multiplayer game development 🎮 · Powered by Godot, Nakama, Go, and .NET</sub>
+</div>

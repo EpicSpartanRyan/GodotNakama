@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="400" viewBox="0 0 1400 400" fill="none">
+  <defs>
+    <linearGradient id="background" x1="56" y1="18" x2="1350" y2="405" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101827"/>
+      <stop offset=".55" stop-color="#12172B"/>
+      <stop offset="1" stop-color="#211438"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="150" y1="100" x2="770" y2="342" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#61DBFF"/>
+      <stop offset=".52" stop-color="#8C7CFF"/>
+      <stop offset="1" stop-color="#FF5C9A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 240 -510 0 1080 200)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#843BCE" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#843BCE" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" stroke="#A9B6DA" stroke-opacity=".07"/>
+    </pattern>
+  </defs>
+  <rect width="1400" height="400" rx="28" fill="url(#background)"/>
+  <rect width="1400" height="400" rx="28" fill="url(#glow)"/>
+  <rect width="1400" height="400" rx="28" fill="url(#grid)"/>
+  <rect x="1" y="1" width="1398" height="398" rx="27" stroke="#A6B8E5" stroke-opacity=".22" stroke-width="2"/>
+
+  <g opacity=".75" stroke="url(#accent)" stroke-width="2">
+    <path d="M904 92 1038 148 1188 102 1290 182 1167 282 1015 258 904 318"/>
+    <path d="M1038 148 1015 258M1188 102 1167 282M1290 182 1167 282"/>
+  </g>
+  <g fill="#101827" stroke="url(#accent)" stroke-width="3">
+    <circle cx="904" cy="92" r="8"/><circle cx="1038" cy="148" r="10"/>
+    <circle cx="1188" cy="102" r="8"/><circle cx="1290" cy="182" r="10"/>
+    <circle cx="1167" cy="282" r="11"/><circle cx="1015" cy="258" r="8"/>
+    <circle cx="904" cy="318" r="8"/>
+  </g>
+  <g fill="url(#accent)" opacity=".72">
+    <circle cx="971" cy="120" r="3"/><circle cx="1112" cy="125" r="3"/>
+    <circle cx="1238" cy="142" r="3"/><circle cx="1090" cy="270" r="3"/>
+    <circle cx="960" cy="288" r="3"/>
+  </g>
+
+  <g transform="translate(82 95)">
+    <rect x="0" y="0" width="58" height="58" rx="18" fill="#19243A" stroke="#61DBFF" stroke-opacity=".65"/>
+    <path d="M18 18h22M18 29h22M18 40h22" stroke="#61DBFF" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="18" cy="18" r="2.5" fill="#FF5C9A"/><circle cx="18" cy="29" r="2.5" fill="#FF5C9A"/>
+    <circle cx="18" cy="40" r="2.5" fill="#FF5C9A"/>
+  </g>
+
+  <text x="82" y="220" fill="#F5F7FF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="-1.2">MULTIPLAYER GAME DEV</text>
+  <text x="84" y="264" fill="#B9C4DD" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="23">A ready-to-code Godot C# + Nakama + Go environment</text>
+  <g transform="translate(84 306)" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">
+    <rect width="100" height="30" rx="15" fill="#61DBFF" fill-opacity=".12" stroke="#61DBFF" stroke-opacity=".55"/>
+    <text x="50" y="20" fill="#8DE7FF" text-anchor="middle">GODOT</text>
+    <rect x="112" width="100" height="30" rx="15" fill="#FF5C9A" fill-opacity=".1" stroke="#FF5C9A" stroke-opacity=".5"/>
+    <text x="162" y="20" fill="#FF9ABD" text-anchor="middle">NAKAMA</text>
+    <rect x="224" width="76" height="30" rx="15" fill="#54C8E8" fill-opacity=".1" stroke="#54C8E8" stroke-opacity=".5"/>
+    <text x="262" y="20" fill="#84DFF5" text-anchor="middle">GO</text>
+    <rect x="312" width="76" height="30" rx="15" fill="#A694FF" fill-opacity=".1" stroke="#A694FF" stroke-opacity=".5"/>
+    <text x="350" y="20" fill="#C5B9FF" text-anchor="middle">.NET</text>
+  </g>
+</svg>
