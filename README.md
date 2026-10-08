@@ -1,8 +1,6 @@
 <div align="center">
   <img src="docs/assets/readme-banner.svg" alt="Godot Nakama multiplayer development environment" width="100%">
 
-  <p><strong>Environment for building multiplayer games with Godot C# and Nakama.</strong></p>
-
   <p>
     <a href="https://godotengine.org/download/"><img src="https://img.shields.io/badge/Godot-Engine-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine"></a>
     <a href="https://dotnet.microsoft.com/en-us/apps/games"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
@@ -14,14 +12,6 @@
     <a href="https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/EpicSpartanRyan/GodotNakama">
       <img src="docs/assets/open-in-devcontainers.svg" alt="Clone GodotNakama to your system and open it in VS Code" width="420">
     </a>
-  </p>
-  <p><sub>The button clones the repository onto your system and opens it in VS Code. If you have the Dev Containers extension installed, you can then choose to reopen it in a container.</sub></p>
-
-  <p>
-    <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
-    <a href="https://dotnet.microsoft.com/en-us/apps/games"><strong>.NET for games</strong></a> ·
-    <a href="https://heroiclabs.com/nakama/"><strong>Nakama</strong></a> ·
-    <a href="https://go.dev/doc/"><strong>Go docs</strong></a>
   </p>
 </div>
 
@@ -36,9 +26,9 @@ A VS Code Dev Container workspace for developing a **Godot C# game** alongside a
 | Godot .NET + C# | Build and run the game |
 | Nakama + Go | Develop the multiplayer server and plugin |
 | PostgreSQL | Store Nakama data |
-| RustFS | Local S3-compatible object storage |
-| Aseprite + Inochi Creator | Create 2D and 2D/3D character assets |
-| VS Code Dev Containers | Keep the development toolchain consistent |
+| RustFS | S3-compatible object storage |
+| Aseprite + Inochi Creator | Create 2D and 2D/3D assets |
+| VS Code Dev Containers | Consistent development environment |
 
 ## 🧭 Architecture
 
@@ -201,10 +191,10 @@ The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Co
 
 ---
 
-<div align="center">
-  <sub>Built for multiplayer game development 🎮 · Powered by Godot, Nakama, Go, and .NET</sub>
-</div>
-
 ## 📈 Repository activity
 
 ![Repobeats analytics image](https://repobeats.axiom.co/api/embed/cd77e3721a0b8861ce988b993745762add4ba9b3.svg "Repobeats analytics image")
+
+<div align="center">
+  <sub>Built for multiplayer game development 🎮 · Powered by Godot, Nakama, Go, and .NET</sub>
+</div>
