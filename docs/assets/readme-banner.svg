@@ -5,7 +5,7 @@
       <stop offset=".55" stop-color="#12172B"/>
       <stop offset="1" stop-color="#211438"/>
     </linearGradient>
-    <linearGradient id="accent" x1="150" y1="100" x2="770" y2="342" gradientUnits="userSpaceOnUse">
+    <linearGradient id="accent" x1="900" y1="92" x2="1290" y2="282" gradientUnits="userSpaceOnUse">
       <stop stop-color="#61DBFF"/>
       <stop offset=".52" stop-color="#8C7CFF"/>
       <stop offset="1" stop-color="#FF5C9A"/>
