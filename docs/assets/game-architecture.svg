@@ -48,9 +48,9 @@
   <g opacity=".32" filter="url(#glow)">
     <path d="M365 452H1235" stroke="url(#beam)" stroke-width="26"/>
   </g>
-  <path d="M368 452H648" stroke="#63DCE8" stroke-opacity=".82" stroke-width="2.5" stroke-dasharray="8 10" marker-end="url(#arrow)"/>
+  <path d="M368 452H648" stroke="#63DCE8" stroke-opacity=".82" stroke-width="2.5" marker-end="url(#arrow)"/>
   <path d="M860 400C960 400 1035 314 1140 314" stroke="#56D9D6" stroke-opacity=".86" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <path d="M860 506C960 506 1035 630 1140 630" stroke="#E779B8" stroke-opacity=".82" stroke-width="2.5" stroke-dasharray="8 10" marker-end="url(#arrow)"/>
+  <path d="M860 506C960 506 1035 630 1140 630" stroke="#E779B8" stroke-opacity=".82" stroke-width="2.5" marker-end="url(#arrow)"/>
   <path d="M755 570V654" stroke="#B499FF" stroke-opacity=".82" stroke-width="2.5" marker-end="url(#arrow)"/>
 
   <g filter="url(#shadow)">
@@ -108,10 +108,4 @@
     <text x="755" y="630" fill="#B7A6FF">PLUGIN</text>
   </g>
 
-  <g transform="translate(526 824)" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="12" letter-spacing="1">
-    <path d="M0 0h48" stroke="#8994BF" stroke-width="2" stroke-dasharray="6 7"/>
-    <text x="60" y="4" fill="#A4AAC1">PLANNED / TEST FLOW</text>
-    <path d="M280 0h48" stroke="#8994BF" stroke-width="2"/>
-    <text x="340" y="4" fill="#A4AAC1">CONFIGURED SERVICE</text>
-  </g>
 </svg>
