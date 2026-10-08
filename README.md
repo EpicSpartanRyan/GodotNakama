@@ -162,7 +162,7 @@ The C# test project targets .NET 10 and uses xUnit v3. Its dependencies, includi
 - 🎨 **Art tools:** Aseprite, Inochi
 - 🧪 **.NET:** Test
 
-Run `./doctor.sh` or **Environment: Run Doctor** to check tools, display/GPU access, Docker, services, and network connectivity. Hardware checks depend on the host and active display session.
+Tasks are prefixed by workflow (Godot, Nakama, Docker, and so on). Setup tasks avoid reinstalling existing assets, preserve downloaded add-on sources, and report failures instead of continuing silently. **Play & Profile** uses a shared diagnostics socket; finish a capture with **Godot: Stop Profiler & Convert Trace**. The first-time setup task also rebuilds/exports the game and restarts Nakama when run. Run `./doctor.sh` or **Environment: Run Doctor** to check tools, display/GPU access, Docker, services, and network connectivity. Hardware checks depend on the host and active display session.
 
 </details>
 

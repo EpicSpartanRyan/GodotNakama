@@ -1,3 +1,4 @@
 *.gd linguist-language=GDScript
 
 *.sh text eol=lf
+.vscode/tasks.json whitespace=cr-at-eol

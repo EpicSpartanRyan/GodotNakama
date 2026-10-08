@@ -96,7 +96,7 @@
       "label": "Environment: Run all first time recommended tasks",
       "group": "environment",
       "type": "shell",
-      "command": "echo ✅ Successfully ran all first time recommended tasks",
+      "command": "echo 'Environment setup completed successfully.'",
       "dependsOrder": "sequence",
       "dependsOn": [
         ".NET: Restore Tools",
@@ -119,7 +119,7 @@
       "label": "Environment: Run Doctor",
       "group": "environment",
       "type": "shell",
-      "command": "mkdir -p logs && ./doctor.sh --verbose 2>&1 | tee >(sed 's/\\x1B\\[[0-9;]*[mK]//g' > logs/doctor-$(date +%Y%m%d-%H%M%S).log); exit ${PIPESTATUS[0]}",
+      "command": "set -o pipefail; mkdir -p logs; log_file=\"logs/doctor-$(date +%Y%m%d-%H%M%S).log\"; ./doctor.sh --verbose 2>&1 | tee \"$log_file\"; pipeline_status=(\"${PIPESTATUS[@]}\"); sed -i 's/\\x1B\\[[0-9;]*[mK]//g' \"$log_file\"; if (( pipeline_status[0] != 0 )); then exit \"${pipeline_status[0]}\"; elif (( pipeline_status[1] != 0 )); then echo 'ERROR: Failed to write the doctor log.' >&2; exit \"${pipeline_status[1]}\"; fi; printf 'Doctor output saved to %s\\n' \"$log_file\"",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -136,7 +136,7 @@
       "label": ".NET: Install Profiler",
       "group": ".net",
       "type": "shell",
-      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
+      "command": "set -o pipefail; if dotnet tool list --global | grep -Eq '^[[:space:]]*dotnet-trace[[:space:]]'; then echo 'dotnet-trace is already installed globally.'; else dotnet tool install --global dotnet-trace; fi",
       "problemMatcher": []
     },
     {
@@ -150,7 +150,7 @@
       "label": "Aseprite: Install Languages",
       "group": "aseprite",
       "type": "shell",
-      "command": "FILE=\"${workspaceFolder}/aseprite-languages.txt\"; if [ ! -f \"$FILE\" ]; then echo \"Archivo $FILE no encontrado.\"; exit 1; fi; EXT_DIR=\"$HOME/.config/aseprite/extensions\"; mkdir -p /tmp/ase_ext \"$EXT_DIR\"; while IFS='|' read -r enabled lang url || [ -n \"$enabled\" ]; do enabled=$(echo \"$enabled\" | tr -d '\\r'); if [ \"$enabled\" = \"true\" ]; then url=$(echo \"$url\" | tr -d '\\r'); lang=$(echo \"$lang\" | tr -d '\\r'); echo \"Downloading $lang extension...\"; filename=$(basename \"$url\"); filepath=\"/tmp/ase_ext/$filename\"; curl -# -L -o \"$filepath\" \"$url\"; target_folder=\"$EXT_DIR/$(basename \"$filename\" .aseprite-extension)\"; rm -rf \"$target_folder\"; mkdir -p \"$target_folder\"; unzip -q \"$filepath\" -d \"$target_folder\"; fi; done < \"$FILE\"; rm -rf /tmp/ase_ext; echo \"✅ Extensiones de lenguaje instaladas correctamente en el sistema.\"",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/install-aseprite-assets.sh\" languages \"${workspaceFolder}/aseprite-languages.txt\"",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -163,7 +163,7 @@
       "label": "Aseprite: Install Tools",
       "group": "aseprite",
       "type": "shell",
-      "command": "FILE=\"${workspaceFolder}/aseprite-tools.txt\"; if [ ! -f \"$FILE\" ]; then echo \"Archivo $FILE no encontrado.\"; exit 1; fi; SCRIPTS_DIR=\"$HOME/.config/aseprite/scripts\"; EXT_DIR=\"$HOME/.config/aseprite/extensions\"; mkdir -p /tmp/ase_tools \"$SCRIPTS_DIR\" \"$EXT_DIR\"; while IFS='|' read -r enabled name url type || [ -n \"$enabled\" ]; do enabled=$(echo \"$enabled\" | tr -d '\\r'); if [ \"$enabled\" = \"true\" ]; then url=$(echo \"$url\" | tr -d '\\r'); name=$(echo \"$name\" | tr -d '\\r'); type=$(echo \"$type\" | tr -d '\\r'); filename=$(basename \"$url\"); filepath=\"/tmp/ase_tools/$filename\"; echo \"Downloading $name...\"; curl -# -L -o \"$filepath\" \"$url\"; if [ \"$type\" = \"script\" ]; then cp \"$filepath\" \"$SCRIPTS_DIR/\"; echo \" -> Installed as script in $SCRIPTS_DIR\"; elif [ \"$type\" = \"extension\" ]; then target_folder=\"$EXT_DIR/$(basename \"$filename\" .aseprite-extension)\"; rm -rf \"$target_folder\"; mkdir -p \"$target_folder\"; unzip -q \"$filepath\" -d \"$target_folder\"; echo \" -> Installed as extension in $target_folder\"; fi; fi; done < \"$FILE\"; rm -rf /tmp/ase_tools; echo \"✅ Herramientas y scripts de Aseprite instalados correctamente.\"",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/install-aseprite-assets.sh\" tools \"${workspaceFolder}/aseprite-tools.txt\"",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -205,7 +205,7 @@
       "label": "Docker: View Logs (Nakama / DB)",
       "group": "docker",
       "type": "shell",
-      "command": "docker compose $COMPOSE_ARGS logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
+      "command": "set -o pipefail; docker compose $COMPOSE_ARGS logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -282,7 +282,7 @@
       "label": "Godot: Export Game",
       "group": "build",
       "type": "shell",
-      "command": "TARGET=\"${input:godotExportPlatform}\"; mkdir -p builds/windows builds/linux builds/macos; if [ \"$TARGET\" = \"All\" ]; then godot --headless --export-release \"Windows Desktop\" && godot --headless --export-release \"Linux\" && godot --headless --export-release \"macOS\"; else godot --headless --export-release \"$TARGET\"; fi",
+      "command": "set -Eeuo pipefail; target=\"${input:godotExportPlatform}\"; mkdir -p builds/windows builds/linux builds/macos; if [[ \"$target\" == \"All\" ]]; then for platform in \"Windows Desktop\" Linux macOS; do godot --headless --export-release \"$platform\"; done; else godot --headless --export-release \"$target\"; fi",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -292,14 +292,14 @@
       "label": "Godot: Fix game input",
       "group": "godot",
       "type": "shell",
-      "command": "sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' ~/.config/godot/editor_settings-4.7.tres && echo 'Godot game input fixed.'",
+      "command": "set -Eeuo pipefail; settings=\"$HOME/.config/godot/editor_settings-4.7.tres\"; if [[ ! -f \"$settings\" ]]; then echo \"ERROR: Godot editor settings not found: $settings\" >&2; exit 1; fi; if ! grep -q '^run/window_placement/game_embed_mode = ' \"$settings\"; then echo 'ERROR: game_embed_mode setting not found in Godot editor settings.' >&2; exit 1; fi; sed -i 's|^run/window_placement/game_embed_mode = .*|run/window_placement/game_embed_mode = -1|' \"$settings\"; echo 'Godot game input setting is fixed.'",
       "problemMatcher": []
     },
     {
       "label": "Godot: Install Addons",
       "group": "godot",
       "type": "shell",
-      "command": "godot --headless -s plug.gd install force debug; rm -rf .plugged",
+      "command": "set -Eeuo pipefail; godot --headless -s plug.gd install debug",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -309,7 +309,7 @@
       "label": "Godot: Install Export Templates",
       "group": "godot",
       "type": "shell",
-      "command": "set -a; . \"${workspaceFolder}/versions.env\"; set +a; V=\"${GODOT_VERSION}\"; DIR=\"${V}.stable.mono\"; URL=\"https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz\"; echo \"Downloading Godot ${V} Mono templates (this is a large file, wait a moment)...\"; curl -L -o /tmp/tpl.zip \"$URL\" && echo \"Extracting...\" && unzip -q /tmp/tpl.zip -d /tmp/gtpl && mkdir -p ~/.local/share/godot/export_templates/$DIR && mv /tmp/gtpl/templates/* ~/.local/share/godot/export_templates/$DIR/ && rm -rf /tmp/tpl.zip /tmp/gtpl && echo \"✅ Export templates installed successfully in ~/.local/share/godot/export_templates/$DIR/\"",
+      "command": "bash \"${workspaceFolder}/.vscode/scripts/install-godot-export-templates.sh\" \"${workspaceFolder}\"",
       "problemMatcher": []
     },
     {
@@ -323,8 +323,12 @@
       "label": "Godot: Start Profiler Server",
       "group": "godot",
       "dependsOn": "Godot: Build",
-      "type": "shell",
-      "command": "mkdir -p .traces && NEXT=$(ls .traces/profile-*.nettrace 2>/dev/null | sed -n 's/.*profile-\\([0-9]*\\)\\.nettrace/\\1/p' | sort -n | tail -1); NEXT=$(printf \"%03d\" $((10#${NEXT:-0} + 1))) && export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output \".traces/profile-${NEXT}.nettrace\"",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/.vscode/scripts/start-godot-profiler.sh",
+        "${workspaceFolder}/client/sample-game"
+      ],
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -350,8 +354,13 @@
     {
       "label": "Godot: Stop Profiler & Convert Trace",
       "group": "godot",
-      "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"Trace successfully converted to $FMT format!\"; else echo \"Trace kept in raw format: $LATEST!\"; fi; fi",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/.vscode/scripts/stop-godot-profiler.sh",
+        "${workspaceFolder}/client/sample-game",
+        "${input:traceFormatSelect}"
+      ],
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -361,7 +370,7 @@
       "label": "Nakama: Go Vendor",
       "group": "nakama",
       "type": "shell",
-      "command": "go mod tidy && go mod vendor",
+      "command": "go mod vendor",
       "options": {
         "cwd": "${workspaceFolder}/backend"
       },
@@ -387,12 +396,14 @@
     {
       "label": "Nakama: Build Plugin",
       "group": "build",
-      "type": "shell",
-      "command": "cd backend && go build --trimpath --mod=vendor -buildvcs=false --buildmode=plugin -o ../nakama/modules/${input:pluginNameInput}.so && echo '✅ Plugin ${input:pluginNameInput}.so compiled and moved inside nakama/modules/'",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": [],
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/.vscode/scripts/build-nakama-plugin.sh",
+        "${input:pluginNameInput}",
+        "${workspaceFolder}"
+      ],
+      "problemMatcher": "$go",
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -405,7 +416,7 @@
       "label": "Nakama: Build & Restart",
       "group": "build",
       "type": "shell",
-      "command": "echo '✅ Successfully built Go plugin and restarted Nakama server' && docker compose $COMPOSE_ARGS logs -f --tail 100 nakama | GREP_COLORS='mt=01;36' grep --color=always -E 'go-project/main.go|$'",
+      "command": "echo 'Nakama plugin built and server restart completed. Use Docker: View Logs to follow server output.'",
       "dependsOrder": "sequence",
       "dependsOn": [
         "Nakama: Go Vendor",
@@ -415,17 +426,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "isBackground": true,
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^.*$"
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^.*$",
-          "endsPattern": "Successfully built Go plugin"
-        }
-      },
+      "problemMatcher": [],
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -472,14 +473,14 @@
       "label": "Starship: Install in all terminals",
       "group": "starship",
       "type": "shell",
-      "command": "touch ~/.bashrc && grep -qxF 'eval \"$(starship init bash)\"' ~/.bashrc || echo 'eval \"$(starship init bash)\"' >> ~/.bashrc; touch ~/.zshrc && grep -qxF 'eval \"$(starship init zsh)\"' ~/.zshrc || echo 'eval \"$(starship init zsh)\"' >> ~/.zshrc; mkdir -p ~/.config/powershell && touch ~/.config/powershell/Microsoft.PowerShell_profile.ps1 && grep -qxF 'Invoke-Expression (&starship init powershell)' ~/.config/powershell/Microsoft.PowerShell_profile.ps1 || echo 'Invoke-Expression (&starship init powershell)' >> ~/.config/powershell/Microsoft.PowerShell_profile.ps1; echo 'Starship configured in Bash, Zsh, and PowerShell'",
+      "command": "set -Eeuo pipefail; if ! command -v starship >/dev/null 2>&1; then echo 'ERROR: Starship is not installed or not on PATH.' >&2; exit 1; fi; append_once() { local file=\"$1\" line=\"$2\"; mkdir -p \"$(dirname \"$file\")\"; touch \"$file\"; if ! grep -qxF \"$line\" \"$file\"; then printf '%s\\n' \"$line\" >> \"$file\"; fi; }; append_once \"$HOME/.bashrc\" 'eval \"$(starship init bash)\"'; append_once \"$HOME/.zshrc\" 'eval \"$(starship init zsh)\"'; append_once \"$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1\" 'Invoke-Expression (&starship init powershell)'; echo 'Starship startup configuration is present in Bash, Zsh, and PowerShell.'",
       "problemMatcher": []
     },
     {
       "label": "Templates: Instantiate",
       "group": "git",
       "type": "shell",
-      "command": "find . -type f -name '*.template' | while read -r f; do dest=\"${f%.template}\"; if [ ! -f \"$dest\" ]; then cp \"$f\" \"$dest\"; echo \"Created: $dest\"; fi; done",
+      "command": "set -Eeuo pipefail; created=0; while IFS= read -r -d '' template; do destination=\"${template%.template}\"; if [[ ! -e \"$destination\" ]]; then cp -- \"$template\" \"$destination\"; printf 'Created: %s\\n' \"$destination\"; ((created += 1)); fi; done < <(find . -type f -name '*.template' -print0); if (( created == 0 )); then echo 'All template files are already instantiated.'; else printf 'Instantiated %s template file(s).\\n' \"$created\"; fi",
       "options": {
         "cwd": "${workspaceFolder}"
       },
