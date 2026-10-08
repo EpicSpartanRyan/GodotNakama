@@ -78,9 +78,9 @@ The Compose credentials are for local development only. Do not reuse them in pro
 | Service | Port(s) | Purpose |
 | --- | ---: | --- |
 | PostgreSQL | `5432` | Nakama database |
-| Nakama | `7349`, `7350`, `7351` | gRPC, realtime API, and console |
+| Nakama | `7349` `7350` `7351` | gRPC, realtime API, and console |
 | RustFS | `9000` | S3 object storage |
-| Godot | `6007`, `6008` | Debugger and language server |
+| Godot | `6007` `6008` | Debugger and language server |
 
 <details>
 <summary><strong>Start the Linux NVIDIA stack manually</strong></summary>
