@@ -33,6 +33,12 @@ A VS Code Dev Container workspace for developing a **Godot C# game** alongside a
 | Aseprite + Inochi Creator | Create 2D and 2D/3D character assets |
 | VS Code Dev Containers | Keep the development toolchain consistent |
 
+## 🧭 Architecture
+
+![Game architecture: Godot C# client connected to Nakama and its Go module, PostgreSQL, and RustFS](docs/assets/game-architecture.svg)
+
+Nakama currently loads the Go plugin and registers a healthcheck RPC. Client multiplayer integration is still in progress.
+
 ## 🚀 Get started
 
 <details open>
