@@ -129,7 +129,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "backend/backend.so"
-          target: "~/my-nakama-project/nakama/modules"
+          target: "$HOME/my-nakama-project/nakama/modules"
           strip_components: 1
 
       - name: Transfer configured my-config.yml to server
@@ -139,7 +139,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "nakama/my-config.yml"
-          target: "~/my-nakama-project/nakama"
+          target: "$HOME/my-nakama-project/nakama"
           strip_components: 1
 
       - name: Start Server Services
