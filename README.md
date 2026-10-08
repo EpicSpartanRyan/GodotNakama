@@ -37,7 +37,7 @@ A VS Code Dev Container workspace for developing a **Godot C# game** alongside a
 
 ![Game architecture: Godot C# client connected to Nakama and its Go module, PostgreSQL, and RustFS](docs/assets/game-architecture.svg)
 
-Nakama currently loads the Go plugin and registers a healthcheck RPC. Client multiplayer integration is still in progress.
+Nakama loads the Go server module; client multiplayer integration is still in progress.
 
 ## 🚀 Get started
 
