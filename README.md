@@ -41,7 +41,7 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 <details open>
 <summary><strong>Quick start</strong></summary>
 
-1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Create a repository from this template, clone it, and open `GodotNakama.code-workspace`.
+1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Create a repository from this template, clone it.
 2. In VS Code, run **Dev Containers: Reopen in Container**. The default uses WSLg (GPU); other profiles are listed below. The container starts Godot, PostgreSQL, RustFS, and Nakama, which runs its database migrations.
 3. Run **Templates: Instantiate**, add any required credentials locally (never commit secrets), then start the game with **Godot: Start** or `godot -e --path client/sample-game`.
 
