@@ -1,7 +1,7 @@
 <div align="center">
   <img src="docs/assets/readme-banner.svg" alt="Godot Nakama multiplayer development environment" width="100%">
 
-  <p><strong>A ready-to-code environment for building multiplayer games with Godot C#, Nakama, and Go.</strong></p>
+  <p><strong>Environment for building multiplayer games with Godot C# and Nakama.</strong></p>
 
   <p>
     <a href="https://godotengine.org/"><img src="https://img.shields.io/badge/Godot-Engine-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine"></a>
@@ -162,15 +162,21 @@ Run `./doctor.sh` or **Environment: Run Doctor** to check tools, display/GPU acc
 
 </details>
 
-## 🔁 CI and deployment
+<details>
+<summary><strong>🔁 CI and deployment</strong></summary>
 
 GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image; Nakama deployment is manual.
 
 Build artifacts are temporary CI artifacts, not signed releases. Workflows that use GitHub secrets or remote deployment need suitable configuration. Local runs through the `Act:` tasks also require `act`.
 
-## 📌 Versions
+</details>
+
+<details>
+<summary><strong>📌 Versions</strong></summary>
 
 The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Container feature versions and digests are recorded in each profile's lockfile. The Dockerfile also pins direct APT packages. The environment is not fully bit-for-bit reproducible: base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
+
+</details>
 
 ## 🆘 Troubleshooting
 
