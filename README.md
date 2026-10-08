@@ -171,6 +171,8 @@ Tasks are prefixed by workflow (Godot, Nakama, Docker, and so on). Setup tasks a
 
 GitHub Actions builds and tests the C# projects, builds the Nakama Go plugin, and exports the game for Windows, Linux, and macOS on pushes and pull requests to `main`. A separate workflow builds and publishes the development image; Nakama deployment is manual.
 
+Required add-on installation, .NET tool restore, and deployment shutdown failures are reported as workflow failures rather than ignored.
+
 Build artifacts are temporary CI artifacts, not signed releases. Workflows that use GitHub secrets or remote deployment need suitable configuration. Local runs through the `Act:` tasks also require `act`.
 
 </details>

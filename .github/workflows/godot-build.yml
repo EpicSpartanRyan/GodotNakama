@@ -66,7 +66,7 @@ jobs:
           DIR="${V}.stable.mono"
           URL="https://github.com/godotengine/godot-builds/releases/download/${V}-stable/Godot_v${V}-stable_mono_export_templates.tpz"
           echo "Downloading Godot ${V} Mono templates..."
-          curl -L -o /tmp/tpl.zip "$URL"
+          curl --fail --location --show-error -o /tmp/tpl.zip "$URL"
           mkdir -p /tmp/gtpl
           unzip -q /tmp/tpl.zip -d /tmp/gtpl
           mkdir -p ~/.local/share/godot/export_templates/$DIR
@@ -93,14 +93,12 @@ jobs:
         working-directory: client/sample-game
 
       - name: Install Godot Addons
-        run: |
-          godot --headless -s plug.gd install force debug || true
-          rm -rf .plugged
+        run: godot --headless -s plug.gd install debug
         working-directory: client/sample-game
 
       - name: Restore .NET Tools & Build C# project
         run: |
-          dotnet tool restore || true
+          dotnet tool restore
           dotnet build Sample-Game.csproj
         working-directory: client/sample-game
 
