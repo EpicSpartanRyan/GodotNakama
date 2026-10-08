@@ -363,8 +363,8 @@ else
 fi
 
 # Check 28: dotnet-trace
-if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1 || [[ -f /workspaces/.dotnet/tools/dotnet-trace ]]; then
-    trace_version=$(dotnet-trace --version 2>/dev/null || /workspaces/.dotnet/tools/dotnet-trace --version 2>/dev/null | head -n1 || echo "installed")
+if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-trace ]]; then
+    trace_version=$(dotnet-trace --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-trace --version 2>/dev/null | head -n1 || echo "installed")
     info_status "28" "Checking dotnet-trace" "ok" "$trace_version"
 else
     info_status "28" "Checking dotnet-trace" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Install Profiler)."
