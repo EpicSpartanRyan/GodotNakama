@@ -136,7 +136,7 @@
       "label": ".NET: Install Profiler",
       "group": ".net",
       "type": "shell",
-      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\"",
+      "command": "dotnet tool install --global dotnet-trace; export PATH=\"$PATH:/workspaces/.dotnet/tools\"",
       "problemMatcher": []
     },
     {
@@ -324,7 +324,7 @@
       "group": "godot",
       "dependsOn": "Godot: Build",
       "type": "shell",
-      "command": "mkdir -p .traces && NEXT=$(ls .traces/profile-*.nettrace 2>/dev/null | sed -n 's/.*profile-\\([0-9]*\\)\\.nettrace/\\1/p' | sort -n | tail -1); NEXT=$(printf \"%03d\" $((10#${NEXT:-0} + 1))) && export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output \".traces/profile-${NEXT}.nettrace\"",
+      "command": "mkdir -p .traces && NEXT=$(ls .traces/profile-*.nettrace 2>/dev/null | sed -n 's/.*profile-\\([0-9]*\\)\\.nettrace/\\1/p' | sort -n | tail -1); NEXT=$(printf \"%03d\" $((10#${NEXT:-0} + 1))) && export PATH=\"$PATH:/workspaces/.dotnet/tools\" && rm -f /tmp/godot-diag && dotnet-trace collect --diagnostic-port /tmp/godot-diag --output \".traces/profile-${NEXT}.nettrace\"",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },
@@ -351,7 +351,7 @@
       "label": "Godot: Stop Profiler & Convert Trace",
       "group": "godot",
       "type": "shell",
-      "command": "export PATH=\"$PATH:/home/ubuntu/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"Trace successfully converted to $FMT format!\"; else echo \"Trace kept in raw format: $LATEST!\"; fi; fi",
+      "command": "export PATH=\"$PATH:/workspaces/.dotnet/tools\" && pkill -INT dotnet-trace && while pgrep dotnet-trace > /dev/null; do sleep 1; done && LATEST=$(ls -t .traces/profile-*.nettrace 2>/dev/null | head -n 1) && if [ -n \"$LATEST\" ]; then FMT=\"${input:traceFormatSelect}\"; if [ \"$FMT\" != \"none\" ]; then dotnet-trace convert --format \"$FMT\" \"$LATEST\" && echo \"Trace successfully converted to $FMT format!\"; else echo \"Trace kept in raw format: $LATEST!\"; fi; fi",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game"
       },

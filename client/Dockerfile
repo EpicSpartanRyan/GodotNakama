@@ -85,15 +85,15 @@ RUN mkdir -p /opt/aseprite /opt/skia && \
     wget --quiet https://github.com/aseprite/aseprite/releases/download/v${ASEPRITE_VERSION}/Aseprite-v${ASEPRITE_VERSION}-Source.zip -O /tmp/aseprite.zip && \
     unzip -q /tmp/aseprite.zip -d /opt/aseprite && \
     cmake -S /opt/aseprite -B /opt/aseprite/build -G Ninja \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_C_COMPILER=clang \
-        -DCMAKE_CXX_COMPILER=clang++ \
-        -DCMAKE_CXX_FLAGS:STRING=-stdlib=libstdc++ \
-        -DCMAKE_EXE_LINKER_FLAGS:STRING=-stdlib=libstdc++ \
-        -DLAF_BACKEND=skia \
-        -DSKIA_DIR=/opt/skia \
-        -DSKIA_LIBRARY_DIR=/opt/skia/out/Release-x64 \
-        -DSKIA_LIBRARY=/opt/skia/out/Release-x64/libskia.a && \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS:STRING=-stdlib=libstdc++ \
+    -DCMAKE_EXE_LINKER_FLAGS:STRING=-stdlib=libstdc++ \
+    -DLAF_BACKEND=skia \
+    -DSKIA_DIR=/opt/skia \
+    -DSKIA_LIBRARY_DIR=/opt/skia/out/Release-x64 \
+    -DSKIA_LIBRARY=/opt/skia/out/Release-x64/libskia.a && \
     cmake --build /opt/aseprite/build --target aseprite --parallel && \
     ln -s /opt/aseprite/build/bin/aseprite /usr/local/bin/aseprite && \
     rm -rf /tmp/aseprite /tmp/*.zip
@@ -105,6 +105,6 @@ RUN mkdir -p /opt/inochi-creator && \
     chmod +x /opt/inochi-creator/inochi-creator && \
     rm /tmp/inochi-creator.zip
 
-WORKDIR /home/ubuntu/GodotNakama
+WORKDIR /workspaces/GodotNakama
 
 CMD ["sleep", "infinity"]

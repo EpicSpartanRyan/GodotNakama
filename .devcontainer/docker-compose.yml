@@ -5,11 +5,11 @@ services:
     container_name: godot
     build:
       context: ../client
-    working_dir: /home/ubuntu/GodotNakama
+    working_dir: /workspaces/GodotNakama
     environment:
       DOTNET_CLI_TELEMETRY_OPTOUT: "1"
     volumes:
-      - ..:/home/ubuntu/GodotNakama:cached
+      - ..:/workspaces/GodotNakama:cached
 
   postgres:
     container_name: postgres

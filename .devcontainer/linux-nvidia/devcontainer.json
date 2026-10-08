@@ -6,7 +6,7 @@
     "../compose/linux-gpu.yml"
   ],
   "service": "godot",
-  "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
   "initializeCommand": "xhost +local:",
   "features": {
     "../features/common-vscode": {},
@@ -38,7 +38,10 @@
   "containerEnv": {
     "COMPOSE_ARGS": "--env-file versions.env -f .devcontainer/docker-compose.yml -f .devcontainer/compose/linux.yml -f .devcontainer/compose/linux-gpu.yml"
   },
-  "forwardPorts": [6007, 6008],
+  "forwardPorts": [
+    6007,
+    6008
+  ],
   "portsAttributes": {
     "6007": {
       "label": "Godot Remote Debugger",
