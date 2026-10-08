@@ -5,16 +5,16 @@
 
   <p>
     <a href="https://godotengine.org/"><img src="https://img.shields.io/badge/Godot-Engine-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine"></a>
+    <a href="https://dotnet.microsoft.com/en-us/apps/games"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
     <a href="https://heroiclabs.com/nakama/"><img src="https://img.shields.io/badge/Nakama-Game%20Server-E05252?style=for-the-badge" alt="Nakama game server"></a>
     <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-Language-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go"></a>
-    <a href="https://dotnet.microsoft.com/en-us/apps/games"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
   </p>
 
   <p>
     <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
+    <a href="https://dotnet.microsoft.com/en-us/apps/games"><strong>.NET for games</strong></a> ·
     <a href="https://heroiclabs.com/nakama/"><strong>Nakama</strong></a> ·
-    <a href="https://go.dev/doc/"><strong>Go docs</strong></a> ·
-    <a href="https://dotnet.microsoft.com/en-us/apps/games"><strong>.NET for games</strong></a>
+    <a href="https://go.dev/doc/"><strong>Go docs</strong></a>
   </p>
 </div>
 
