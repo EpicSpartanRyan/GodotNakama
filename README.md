@@ -24,11 +24,11 @@ A VS Code Dev Container workspace for developing a **Godot C# game** alongside a
 | 🧩 Included | 🛠️ Purpose |
 | --- | --- |
 | Godot .NET + C# | Build and run the game |
-| Nakama + Go | Develop the multiplayer server and plugin |
+| Nakama + Go | Develop multiplayer logic |
 | PostgreSQL | Store Nakama data |
 | RustFS | S3-compatible object storage |
-| Aseprite + Inochi Creator | Create 2D and 2D/3D assets |
-| VS Code Dev Containers | Consistent development environment |
+| Aseprite + Inochi | Create 2D/3D assets |
+| VSCode Dev Containers | Consistent dev environment |
 
 ## 🧭 Architecture
 
@@ -41,14 +41,9 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 <details open>
 <summary><strong>Quick start</strong></summary>
 
-1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
-2. Click **Use this template → Create a new repository**, choose an owner and repository name, then create it.
-3. Clone your new repository and open `GodotNakama.code-workspace` in VS Code.
-4. Choose **Dev Containers: Reopen in Container**. The default configuration uses WSLg (GPU); use the profile configurations below for a different host or renderer.
-5. Run **Tasks: Run Task → Templates: Instantiate**. Replace any placeholders before using integrations that need credentials; do not commit secrets.
-6. Start the game with **Godot: Start** or run `godot -e --path client/sample-game`.
-
-The Dev Container starts the `godot`, `postgres`, `rustfs`, and `nakama` services. Nakama waits for PostgreSQL and RustFS, then runs database migrations.
+1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Create a repository from this template, clone it, and open `GodotNakama.code-workspace`.
+2. In VS Code, run **Dev Containers: Reopen in Container**. The default uses WSLg (GPU); other profiles are listed below. The container starts Godot, PostgreSQL, RustFS, and Nakama, which runs its database migrations.
+3. Run **Templates: Instantiate**, add any required credentials locally (never commit secrets), then start the game with **Godot: Start** or `godot -e --path client/sample-game`.
 
 </details>
 
@@ -82,7 +77,7 @@ The Compose credentials are for local development only. Do not reuse them in pro
 | Service | Port(s) | Purpose |
 | --- | ---: | --- |
 | PostgreSQL | `5432` | Nakama database |
-| Nakama | `7349`, `7350` TCP/UDP, `7351` | gRPC, realtime API, and console |
+| Nakama | `7349`, `7350` , `7351` | gRPC, realtime API, and console |
 | RustFS | `9000` | S3-compatible object storage |
 | Godot | `6007`, `6008` | Remote debugger and language server |
 
