@@ -187,7 +187,7 @@ func _on_updated(plugin):
 func _plugging():
 	pass
 
-func request_quit(exit_code=-1):
+func request_quit(exit_code=0):
 	if threadpool.is_all_thread_finished() and threadpool.is_all_task_finished():
 		quit(exit_code)
 		return true
