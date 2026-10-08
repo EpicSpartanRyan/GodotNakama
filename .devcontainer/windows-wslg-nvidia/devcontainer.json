@@ -6,7 +6,7 @@
     "../compose/wslg-gpu.yml"
   ],
   "service": "godot",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
   "features": {
     "../features/common-vscode": {},
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
