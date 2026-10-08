@@ -26,8 +26,8 @@ A VS Code Dev Container workspace for developing a **Godot C# game** alongside a
 | --- | --- |
 | Godot .NET + C# | Build and run the game |
 | Nakama + Go | Develop multiplayer logic |
-| PostgreSQL | Store Nakama data |
-| RustFS | S3-compatible object storage |
+| PostgreSQL | Nakama-managed data using Nakama's default database |
+| RustFS | S3-compatible storage reserved for world-state saves |
 | Aseprite + Inochi | Create 2D/3D assets |
 | VSCode Dev Containers | Consistent dev environment |
 
@@ -40,7 +40,7 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 ## 🚀 Get started
 
 <details open>
-<summary><strong>Quick start</strong></summary>
+<summary><strong>🚀 Quick start</strong></summary>
 
 1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Create a repository from this template, clone it.
 2. In VS Code, run **Dev Containers: Reopen in Container**. The default uses WSLg (GPU); other profiles are listed below. The container starts Godot, PostgreSQL, RustFS, and Nakama, which runs its database migrations.
@@ -49,7 +49,7 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 </details>
 
 <details>
-<summary><strong>Choose a Dev Container profile</strong></summary>
+<summary><strong>🧩 Choose a Dev Container profile</strong></summary>
 
 | Profile | Host | Rendering | Notes |
 | --- | --- | --- | --- |
@@ -63,7 +63,7 @@ The shared service stack and VS Code tooling are composed with host-specific dis
 </details>
 
 <details>
-<summary><strong>Host requirements and compatibility</strong></summary>
+<summary><strong>🖥️ Host requirements and compatibility</strong></summary>
 
 Supported graphical hosts are Linux with X11 or Wayland, and Ubuntu on WSL2 with WSLg. Docker Engine or Docker Desktop with Compose is required. NVIDIA Container Toolkit is needed only for the NVIDIA profiles.
 
@@ -73,7 +73,8 @@ The Compose credentials are for local development only. Do not reuse them in pro
 
 </details>
 
-## 🐳 Services
+<details>
+<summary><strong>🐳 Services</strong></summary>
 
 | Service | Port(s) | Purpose |
 | --- | ---: | --- |
@@ -83,7 +84,7 @@ The Compose credentials are for local development only. Do not reuse them in pro
 | Godot | `6007` `6008` | Debugger and language server |
 
 <details>
-<summary><strong>Start the Linux NVIDIA stack manually</strong></summary>
+<summary><strong>🐧 Start the Linux NVIDIA stack manually</strong></summary>
 
 Run from the repository root:
 
@@ -115,10 +116,19 @@ For CPU-only Linux, replace `linux-gpu.yml` with `cpu.yml`. On WSLg, replace `li
 
 </details>
 
-## 🧰 Build, test, and useful tasks
+</details>
 
 <details>
-<summary><strong>Build and test</strong></summary>
+<summary><strong>💾 Data storage</strong></summary>
+
+PostgreSQL is Nakama's database and stores data managed by Nakama through its default persistence mechanisms. RustFS is reserved exclusively for serialized world-state saves or snapshots; it is not a general-purpose store for Nakama data or player assets.
+
+The backend currently has an integration test that writes and restores a serialized world state through RustFS. This verifies the S3-compatible storage round trip, but world-state persistence is not yet wired into the running game or Nakama module.
+
+</details>
+
+<details>
+<summary><strong>🧪 Build and test</strong></summary>
 
 Build the game:
 
@@ -143,7 +153,7 @@ The C# test project targets .NET 10 and uses xUnit v3. Its dependencies, includi
 </details>
 
 <details>
-<summary><strong>VS Code task shortcuts</strong></summary>
+<summary><strong>⌨️ VS Code task shortcuts</strong></summary>
 
 - 🎮 **Godot:** Build, Export Game, Install Addons, Start
 - 🕹️ **Nakama:** Go Vendor, Test, Build & Restart
@@ -172,10 +182,8 @@ The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Co
 
 </details>
 
-## 🆘 Troubleshooting
-
 <details>
-<summary><strong>Common issues</strong></summary>
+<summary><strong>🛠️ Common issues</strong></summary>
 
 - **Container startup fails:** check Docker/Compose, the selected profile, and the host-specific display mounts.
 - **Godot or an art tool cannot open a window:** check `DISPLAY`, `WAYLAND_DISPLAY`, `XDG_RUNTIME_DIR`, and display socket access.
