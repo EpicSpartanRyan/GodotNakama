@@ -70,9 +70,6 @@
   <text x="800" y="112" fill="#F4F5FF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="64" font-weight="700" letter-spacing="9" text-anchor="middle">GAME ARCHITECTURE</text>
   <path d="M590 148H1010" stroke="#8A79FF" stroke-opacity=".7" stroke-width="3"/>
 
-  <g opacity=".32" filter="url(#glow)">
-    <path d="M365 452H1235" stroke="url(#beam)" stroke-width="26"/>
-  </g>
   <path d="M368 452H648" stroke="#63DCE8" stroke-opacity=".82" stroke-width="2.5" marker-end="url(#arrow)"/>
   <path d="M860 400C960 400 1035 314 1140 314" stroke="#56D9D6" stroke-opacity=".86" stroke-width="2.5" marker-end="url(#arrow)"/>
   <path d="M860 506C960 506 1035 630 1140 630" stroke="#E779B8" stroke-opacity=".82" stroke-width="2.5" marker-end="url(#arrow)"/>
