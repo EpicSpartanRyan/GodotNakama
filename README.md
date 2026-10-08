@@ -11,6 +11,12 @@
   </p>
 
   <p>
+    <a href="https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/EpicSpartanRyan/GodotNakama">
+      <img src="docs/assets/open-in-devcontainers.svg" alt="Open in Dev Containers with VS Code" width="420">
+    </a>
+  </p>
+
+  <p>
     <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
     <a href="https://dotnet.microsoft.com/en-us/apps/games"><strong>.NET for games</strong></a> ·
     <a href="https://heroiclabs.com/nakama/"><strong>Nakama</strong></a> ·
