@@ -188,7 +188,7 @@ The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Co
 
 ## 📈 Repository activity
 
-![Repobeats analytics image](https://repobeats.axiom.co/api/embed/cd77e3721a0b8861ce988b993745762add4ba9b3.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/dc325b288ab2207aa3217955d4bd5ab494692ad7.svg "Repobeats analytics image")
 
 <div align="center">
   <sub>Built for multiplayer game development 🎮 · Powered by Godot, Nakama, Go, and .NET</sub>
