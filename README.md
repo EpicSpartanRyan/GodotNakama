@@ -5,16 +5,16 @@
 
   <p>
     <a href="https://godotengine.org/"><img src="https://img.shields.io/badge/Godot-Engine-478CBF?style=for-the-badge&logo=godotengine&logoColor=white" alt="Godot Engine"></a>
-    <a href="https://heroiclabs.com/docs/nakama/"><img src="https://img.shields.io/badge/Nakama-Game%20Server-E05252?style=for-the-badge" alt="Nakama game server"></a>
+    <a href="https://heroiclabs.com/nakama/"><img src="https://img.shields.io/badge/Nakama-Game%20Server-E05252?style=for-the-badge" alt="Nakama game server"></a>
     <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-Language-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go"></a>
-    <a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
+    <a href="https://dotnet.microsoft.com/en-us/apps/games"><img src="https://img.shields.io/badge/.NET-C%23-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET"></a>
   </p>
 
   <p>
     <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
-    <a href="https://heroiclabs.com/docs/nakama/"><strong>Nakama docs</strong></a> ·
+    <a href="https://heroiclabs.com/nakama/"><strong>Nakama</strong></a> ·
     <a href="https://go.dev/doc/"><strong>Go docs</strong></a> ·
-    <a href="https://learn.microsoft.com/dotnet/"><strong>.NET docs</strong></a>
+    <a href="https://dotnet.microsoft.com/en-us/apps/games"><strong>.NET for games</strong></a>
   </p>
 </div>
 
@@ -166,10 +166,6 @@ Build artifacts are temporary CI artifacts, not signed releases. Workflows that 
 
 The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Container feature versions and digests are recorded in each profile's lockfile. The Dockerfile also pins direct APT packages. The environment is not fully bit-for-bit reproducible: base images, transitive OS packages, and downloaded artifacts are not all pinned by digest or checksum.
 
-## 📈 Repository activity
-
-Want a live dashboard like the one in the [RISC-V ISA manual](https://github.com/riscv/riscv-isa-manual#repo-activity)? Connect this repository to [Repobeats](https://repobeats.axiom.co/) and add the repository-specific embed URL it generates here. Each repository has its own embed URL; do not reuse another project's URL.
-
 ## 🆘 Troubleshooting
 
 <details>
@@ -188,3 +184,7 @@ Want a live dashboard like the one in the [RISC-V ISA manual](https://github.com
 <div align="center">
   <sub>Built for multiplayer game development 🎮 · Powered by Godot, Nakama, Go, and .NET</sub>
 </div>
+
+## 📈 Repository activity
+
+![Repobeats analytics image](https://repobeats.axiom.co/api/embed/cd77e3721a0b8861ce988b993745762add4ba9b3.svg "Repobeats analytics image")
