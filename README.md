@@ -11,11 +11,11 @@
   </p>
 
   <p>
-    <a href="https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/EpicSpartanRyan/GodotNakama">
-      <img src="docs/assets/open-in-devcontainers.svg" alt="Open in VS Code with the default WSLg GPU Dev Container" width="420">
+    <a href="https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/EpicSpartanRyan/GodotNakama">
+      <img src="docs/assets/open-in-devcontainers.svg" alt="Clone GodotNakama to your system and open it in VS Code" width="420">
     </a>
   </p>
-  <p><sub>The button opens the WSLg (GPU) profile by default. It requires Windows host with Ubuntu on WSL2 with WSLg and compatible GPU support.</sub></p>
+  <p><sub>The button clones the repository onto your system and opens it in VS Code. If you have the Dev Containers extension installed, you can then choose to reopen it in a container.</sub></p>
 
   <p>
     <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
