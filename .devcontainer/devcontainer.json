@@ -1,0 +1,51 @@
+{
+  "name": "Godot Nakama Environment WSLg (GPU)",
+  "dockerComposeFile": [
+    "docker-compose.yml",
+    "compose/wslg.yml",
+    "compose/wslg-gpu.yml"
+  ],
+  "service": "godot",
+  "workspaceFolder": "/home/ubuntu/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+  "features": {
+    "./features/common-vscode": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
+      "moby": false
+    },
+    "ghcr.io/devcontainers-extra/features/starship:1.0.10": {},
+    "ghcr.io/devcontainers/features/go:1.4.0": {
+      "version": "1.27.1"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
+    "ghcr.io/devcontainers-extra/features/act:1.0.15": {}
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "remoteUser": "ubuntu",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
+    "DISPLAY": ":0",
+    "WAYLAND_DISPLAY": "wayland-0",
+    "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
+    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
+  },
+  "containerEnv": {
+    "COMPOSE_ARGS": "--env-file /home/ubuntu/${localWorkspaceFolderBasename}/versions.env -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg-gpu.yml"
+  },
+  "forwardPorts": [6007, 6008],
+  "portsAttributes": {
+    "6007": {
+      "label": "Godot Remote Debugger",
+      "onAutoForward": "notify"
+    },
+    "6008": {
+      "label": "GDScript Language Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "shutdownAction": "stopCompose"
+}

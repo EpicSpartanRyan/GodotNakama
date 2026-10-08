@@ -12,9 +12,10 @@
 
   <p>
     <a href="https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/EpicSpartanRyan/GodotNakama">
-      <img src="docs/assets/open-in-devcontainers.svg" alt="Open in Dev Containers with VS Code" width="420">
+      <img src="docs/assets/open-in-devcontainers.svg" alt="Open in VS Code with the default WSLg GPU Dev Container" width="420">
     </a>
   </p>
+  <p><sub>The button opens the WSLg (GPU) profile by default. It requires Windows host with Ubuntu on WSL2 with WSLg and compatible GPU support.</sub></p>
 
   <p>
     <a href="https://docs.godotengine.org/en/stable/"><strong>Godot docs</strong></a> ·
@@ -53,7 +54,7 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 1. Install [Docker](https://docs.docker.com/get-docker/), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 2. Click **Use this template → Create a new repository**, choose an owner and repository name, then create it.
 3. Clone your new repository and open `GodotNakama.code-workspace` in VS Code.
-4. Choose **Dev Containers: Reopen in Container**, then select a profile for your host and renderer.
+4. Choose **Dev Containers: Reopen in Container**. The default configuration uses WSLg (GPU); use the profile configurations below for a different host or renderer.
 5. Run **Tasks: Run Task → Templates: Instantiate**. Replace any placeholders before using integrations that need credentials; do not commit secrets.
 6. Start the game with **Godot: Start** or run `godot -e --path client/sample-game`.
 
