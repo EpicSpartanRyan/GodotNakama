@@ -34,7 +34,7 @@
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native"
   },
   "containerEnv": {
-    "COMPOSE_ARGS": "--env-file /home/ubuntu/${localWorkspaceFolderBasename}/versions.env -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/docker-compose.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg.yml -f /home/ubuntu/${localWorkspaceFolderBasename}/.devcontainer/compose/wslg-gpu.yml"
+    "COMPOSE_ARGS": "--env-file versions.env -f .devcontainer/docker-compose.yml -f .devcontainer/compose/wslg.yml -f .devcontainer/compose/wslg-gpu.yml"
   },
   "forwardPorts": [6007, 6008],
   "portsAttributes": {
