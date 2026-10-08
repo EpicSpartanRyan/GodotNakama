@@ -6,7 +6,7 @@
     "../compose/cpu.yml"
   ],
   "service": "godot",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "initializeCommand": "xhost +local:",
   "features": {
     "../features/common-vscode": {},
