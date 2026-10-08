@@ -1,0 +1,53 @@
+name: Feature request
+description: Suggest an improvement or new capability.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not include passwords, tokens, private URLs, or other secrets.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the need or limitation behind your suggestion.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Explain what you would like the project to do.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe any alternatives or workarounds you have considered.
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Suggested priority
+      description: This is your suggested priority; maintainers will determine the actual priority.
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Dev Container or services
+        - Godot client
+        - Nakama Go backend
+        - CI or deployment
+        - Documentation
+        - Other
+    validations:
+      required: true

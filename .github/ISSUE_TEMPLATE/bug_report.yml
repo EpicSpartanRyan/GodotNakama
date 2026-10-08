@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem in the project.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not include passwords, tokens, private URLs, or other secrets.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the steps that reproduce the problem.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Dev Container or services
+        - Godot client
+        - Nakama Go backend
+        - CI or deployment
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include your OS, Dev Container profile, and Godot, .NET, Go, and Docker versions. For tools you do not use, write "N/A".
+      placeholder: |
+        OS:
+        Dev Container profile:
+        Godot:
+        .NET:
+        Go:
+        Docker:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Add relevant output, after removing secrets and personal data.
+    validations:
+      required: false

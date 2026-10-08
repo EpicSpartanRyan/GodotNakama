@@ -185,6 +185,12 @@ The shared tool-version inventory is in [`versions.env`](./versions.env). Dev Co
 
 </details>
 
+## 🤝 Project policies
+
+- [Contributing](.github/CONTRIBUTING.md)
+- [Community expectations](.github/CODE_OF_CONDUCT.md)
+- [Security policy](.github/SECURITY.md)
+
 ---
 
 ## 📈 Repository activity
