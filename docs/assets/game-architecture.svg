@@ -1,9 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#090E1B"/>
-      <stop offset="1" stop-color="#11152A"/>
+      <stop stop-color="#080D19"/>
+      <stop offset=".55" stop-color="#101528"/>
+      <stop offset="1" stop-color="#0A1020"/>
     </linearGradient>
+    <radialGradient id="tealAura" cx="0" cy="0" r="1" gradientTransform="matrix(0 430 -650 0 250 430)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#087F8C" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#087F8C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violetAura" cx="0" cy="0" r="1" gradientTransform="matrix(0 480 -650 0 1100 450)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6040B7" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#6040B7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="topAura" cx="0" cy="0" r="1" gradientTransform="matrix(0 220 -620 0 800 0)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1C5570" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#1C5570" stop-opacity="0"/>
+    </radialGradient>
     <linearGradient id="beam" x1="320" y1="450" x2="1290" y2="450" gradientUnits="userSpaceOnUse">
       <stop stop-color="#49D9E8"/>
       <stop offset=".52" stop-color="#8277FF"/>
@@ -15,8 +28,8 @@
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
       <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#030610" flood-opacity=".55"/>
     </filter>
-    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" stroke="#A9B9E5" stroke-opacity=".045"/>
+    <pattern id="texture" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#A9B9E5" fill-opacity=".12"/>
     </pattern>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M1 1L8 5L1 9" stroke="#9EA9FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -49,10 +62,13 @@
   </defs>
 
   <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
-  <rect width="1600" height="900" rx="36" fill="url(#grid)"/>
+  <rect width="1600" height="900" rx="36" fill="url(#tealAura)"/>
+  <rect width="1600" height="900" rx="36" fill="url(#violetAura)"/>
+  <rect width="1600" height="900" rx="36" fill="url(#topAura)"/>
+  <rect width="1600" height="900" rx="36" fill="url(#texture)"/>
 
-  <text x="800" y="88" fill="#F4F5FF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="7" text-anchor="middle">GAME ARCHITECTURE</text>
-  <path d="M680 116H920" stroke="#8A79FF" stroke-opacity=".7" stroke-width="2"/>
+  <text x="800" y="112" fill="#F4F5FF" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="64" font-weight="700" letter-spacing="9" text-anchor="middle">GAME ARCHITECTURE</text>
+  <path d="M590 148H1010" stroke="#8A79FF" stroke-opacity=".7" stroke-width="3"/>
 
   <g opacity=".32" filter="url(#glow)">
     <path d="M365 452H1235" stroke="url(#beam)" stroke-width="26"/>
