@@ -265,6 +265,32 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "GDExtension: Initialize Submodules",
+      "group": "build",
+      "type": "process",
+      "command": "git",
+      "args": [
+        "submodule",
+        "update",
+        "--init",
+        "--recursive"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "GDExtension: Build with SCons",
+      "group": "build",
+      "type": "process",
+      "command": "scons",
+      "options": {
+        "cwd": "${workspaceFolder}/client/gdextension"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": ".NET: Test",
       "group": "testing",
       "type": "process",
