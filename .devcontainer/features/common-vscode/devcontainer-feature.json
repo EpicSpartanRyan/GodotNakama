@@ -20,6 +20,9 @@
         // Go Language
         "golang.go",
 
+        // Inline errors
+        "usernamehw.errorlens",
+
         // Godot Support
         "geequlim.godot-tools",
         "neikeq.godot-csharp-vscode",
