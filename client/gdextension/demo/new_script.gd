@@ -1,6 +1,6 @@
 extends Node
 
-var WorldGen: WorldGenerator = WorldGenerator.new()
+var world_gen: WorldGenerator = WorldGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

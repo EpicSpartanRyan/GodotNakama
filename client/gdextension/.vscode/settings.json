@@ -1,5 +1,4 @@
 {
-    "cmake.sourceDirectory": "/workspaces/GodotNakama/client/gdextension/godot-cpp",
     "files.exclude": {
         "**/*.uid": true,
         "demo/.godot/": true
