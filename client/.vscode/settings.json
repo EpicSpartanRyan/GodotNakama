@@ -1,3 +1,19 @@
 {
-    "cmake.sourceDirectory": "/workspaces/GodotNakama/client/gdextension/godot-cpp"
+    "cmake.sourceDirectory": "/workspaces/GodotNakama/client/gdextension/godot-cpp",
+    "files.exclude": {
+        "**/*.uid": true,
+        "gdextension/demo/.godot/": true
+    },
+    "search.exclude": {
+        "**/*.uid": true,
+        "gdextension/demo/.godot/": true
+    },
+    "files.watcherExclude": {
+        "**/*.uid": true,
+        "gdextension/demo/.godot/": true
+    },
+    "files.readonlyInclude": {
+        "**/*.template": true,
+        "**/*.uid": true
+    }
 }
