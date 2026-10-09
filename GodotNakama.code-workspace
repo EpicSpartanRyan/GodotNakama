@@ -5,19 +5,19 @@
         },
         {
             "path": "nakama",
-            "name": "⚙️🖥️ Server Config"
-        },
-        {
-            "path": "client",
-            "name": "🎮💻 Client"
+            "name": "⚙️ Server Config"
         },
         {
             "path": "backend",
-            "name": "⚡🐹 Backend Server"
+            "name": "⚡ Backend Server"
+        },
+        {
+            "path": "client/gdextension",
+            "name": "🧩 Gdextension"
         },
         {
             "path": "client/sample-game",
-            "name": "🕹️🎯 Game Client"
+            "name": "🕹️ Game Client"
         }
     ],
     
