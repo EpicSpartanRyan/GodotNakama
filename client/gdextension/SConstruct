@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+import os
+import sys
+
+# Establece '4.7' por defecto si no se especifica en la terminal con api_version=...
+ARGUMENTS.setdefault("api_version", "4.7")
+ARGUMENTS.setdefault("compiledb", "yes")
+
+# You can find documentation for SCons and SConstruct files at:
+# https://scons.org/documentation.html
+
+# This lets SCons know that we're using godot-cpp, from the godot-cpp folder.
+env = SConscript("godot-cpp/SConstruct")
+
+# Configures the 'src' directory as a source for header files.
+env.Append(CPPPATH=["src/"])
+
+# Collects all .cpp files in the 'src' folder as compile targets.
+sources = Glob("src/*.cpp")
+
+lib_name = "world_generator"
+project_dir = "demo"
+
+# # Add LZ4 library dependency
+# if env["platform"] == "macos":
+#     env.Append(LIBPATH=["/usr/local/lib"])
+#     env.Append(LIBS=["lz4"])
+# else:
+#     env.Append(LIBS=["lz4"])
+#     env.Append(LIBPATH=["/usr/local/lib"])
+
+env.Append(CPPPATH=["/usr/local/include"])
+
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        "{}/bin/lib{}.{}.{}.framework/lib{}.{}.{}".format(
+            project_dir, lib_name, env["platform"], env["target"],
+            lib_name, env["platform"], env["target"]
+        ),
+        source=sources,
+    )
+elif env["platform"] == "ios":
+    if env["ios_simulator"]:
+        library = env.StaticLibrary(
+            "{}/bin/lib{}.{}.{}.simulator.a".format(
+                project_dir, lib_name, env["platform"], env["target"]
+            ),
+            source=sources,
+        )
+    else:
+        library = env.StaticLibrary(
+            "{}/bin/lib{}.{}.{}.a".format(
+                project_dir, lib_name, env["platform"], env["target"]
+            ),
+            source=sources,
+        )
+else:
+    library = env.SharedLibrary(
+        "{}/bin/lib{}{}{}".format(
+            project_dir, lib_name, env["suffix"], env["SHLIBSUFFIX"]
+        ),
+        source=sources,
+    )
+
+# Selects the shared library as the default target.
+Default(library)

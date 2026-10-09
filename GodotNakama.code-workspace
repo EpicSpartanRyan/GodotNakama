@@ -8,6 +8,10 @@
             "name": "⚙️🖥️ Server Config"
         },
         {
+            "path": "client",
+            "name": "🎮💻 Client"
+        },
+        {
             "path": "backend",
             "name": "⚡🐹 Backend Server"
         },

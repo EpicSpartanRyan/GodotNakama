@@ -3,7 +3,13 @@ nakama/modules/**.so
 
 # Godot and .NET generated files
 **/.godot/
-**/bin/
+# clangd cache
+**/.cache/ 
+# Ignore bin contents, but keep extension descriptors and their UID files.
+**/bin/**
+!**/bin/**/
+!**/bin/**/*.gdextension
+!**/bin/**/*.gdextension.uid
 **/obj/
 .vs/
 .idea/
@@ -19,3 +25,8 @@ logs/
 
 .act-artifacts/
 nakama/my-config.yml
+
+**.so
+**.os
+**.dblite
+client/gdextension/compile_commands.json

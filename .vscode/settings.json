@@ -41,5 +41,6 @@
     "**/*.uid": true,
     "**/*.template": true,
     "LICENSE": true
-  }
+  },
+  "cmake.sourceDirectory": "/workspaces/GodotNakama/client/gdextension/godot-cpp"
 }

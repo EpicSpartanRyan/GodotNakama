@@ -2,3 +2,4 @@
 
 *.sh text eol=lf
 .vscode/tasks.json whitespace=cr-at-eol
+client/Dockerfile whitespace=cr-at-eol
