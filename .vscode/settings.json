@@ -41,5 +41,7 @@
     "**/*.uid": true,
     "**/*.template": true,
     "LICENSE": true
-  }
+  },
+  "cmake.autoDetectSourceDirectory": false,
+  "cmake.ignoreCMakeListsMissing": true
 }

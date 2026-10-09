@@ -14,5 +14,7 @@
     "files.readonlyInclude": {
         "**/*.template": true,
         "**/*.uid": true
-    }
+    },
+    "cmake.autoDetectSourceDirectory": false,
+    "cmake.ignoreCMakeListsMissing": true
 }
