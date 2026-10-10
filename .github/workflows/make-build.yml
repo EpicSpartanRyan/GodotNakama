@@ -28,9 +28,6 @@ jobs:
         float-precision: [single]
 
     runs-on: ${{ matrix.target.os }}
-    defaults:
-      run:
-        working-directory: client/gdextension
 
     steps:
       - name: Checkout
@@ -61,6 +58,7 @@ jobs:
 
       - name: Build GDExtension
         shell: sh
+        working-directory: client/gdextension
         env:
           SCONS_CACHE: ${{ github.workspace }}/client/gdextension/.scons-cache/
         run: |
@@ -75,6 +73,7 @@ jobs:
       - name: Windows - Delete compilation files
         if: ${{ matrix.target.platform == 'windows' }}
         shell: pwsh
+        working-directory: client/gdextension
         run: |
           Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
 
