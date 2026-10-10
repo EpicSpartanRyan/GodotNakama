@@ -75,14 +75,14 @@ jobs:
         shell: pwsh
         working-directory: client/gdextension
         run: |
-          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
+          Remove-Item demo/bin/* -Include *.exp,*.lib,*.pdb -Force
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
           name: godot-cpp-template-${{ matrix.target.platform }}-${{ matrix.target.arch }}-${{ matrix.float-precision }}-${{ matrix.target-type }}
           path: |
-            client/gdextension/bin/**
+            client/gdextension/demo/bin/**
 
   merge:
     runs-on: ubuntu-26.04
