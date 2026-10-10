@@ -28,10 +28,10 @@ jobs:
     runs-on: ${{ matrix.target.os }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository and submodules
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: recursive
 
       - name: Install LLVM / LLD (Linux)
         if: ${{ matrix.target.platform == 'linux' }}
@@ -44,12 +44,12 @@ jobs:
           sudo apt-get install -y gcc-multilib g++-multilib
 
       - name: Setup godot-cpp
-        uses: ./godot-cpp/.github/actions/setup-godot-cpp
+        uses: ./client/gdextension/godot-cpp/.github/actions/setup-godot-cpp
         with:
           platform: ${{ matrix.target.platform }}
 
       - name: Restore .scons_cache
-        uses: ./godot-cpp/.github/actions/godot-cache-restore
+        uses: ./client/gdextension/godot-cpp/.github/actions/godot-cache-restore
         with:
           scons-cache: ${{ github.workspace }}/client/gdextension/.scons-cache/
           cache-name: ${{ matrix.target.platform }}_${{ matrix.target.arch }}_${{ matrix.float-precision }}_${{ matrix.target-type }}
@@ -63,7 +63,7 @@ jobs:
           scons use_llvm=yes target=${{ matrix.target-type }} platform=${{ matrix.target.platform }} arch=${{ matrix.target.arch }} precision=${{ matrix.float-precision }}
 
       - name: Save .scons_cache
-        uses: ./godot-cpp/.github/actions/godot-cache-save
+        uses: ./client/gdextension/godot-cpp/.github/actions/godot-cache-save
         with:
           scons-cache: ${{ github.workspace }}/client/gdextension/.scons-cache/
           cache-name: ${{ matrix.target.platform }}_${{ matrix.target.arch }}_${{ matrix.float-precision }}_${{ matrix.target-type }}
