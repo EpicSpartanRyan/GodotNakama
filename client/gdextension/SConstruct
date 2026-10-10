@@ -16,7 +16,7 @@ ARGUMENTS.setdefault("use_llvm", "yes")
 env = SConscript("godot-cpp/SConstruct")
 
 # Si se está compilando con LLVM/Clang, forzamos LLD como el enlazador (linker)
-if env.get("use_llvm", False):
+if env.get("use_llvm", False) and env.get("platform") == "linux":
     env.Append(LINKFLAGS=["-fuse-ld=lld"])
 
 # Configures the 'src' directory as a source for header files.
