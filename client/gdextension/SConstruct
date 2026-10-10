@@ -6,11 +6,18 @@ import sys
 ARGUMENTS.setdefault("api_version", "4.7")
 ARGUMENTS.setdefault("compiledb", "yes")
 
+# Forzar el uso de LLVM/Clang por defecto si no se especifica explícitamente en la terminal
+ARGUMENTS.setdefault("use_llvm", "yes")
+
 # You can find documentation for SCons and SConstruct files at:
 # https://scons.org/documentation.html
 
 # This lets SCons know that we're using godot-cpp, from the godot-cpp folder.
 env = SConscript("godot-cpp/SConstruct")
+
+# Si se está compilando con LLVM/Clang, forzamos LLD como el enlazador (linker)
+if env.get("use_llvm", False):
+    env.Append(LINKFLAGS=["-fuse-ld=lld"])
 
 # Configures the 'src' directory as a source for header files.
 env.Append(CPPPATH=["src/"])
