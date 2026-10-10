@@ -9,6 +9,9 @@ ARGUMENTS.setdefault("compiledb", "yes")
 # Forzar el uso de LLVM/Clang por defecto si no se especifica explícitamente en la terminal
 ARGUMENTS.setdefault("use_llvm", "yes")
 
+# Forzar precisión simple para evitar discrepancias con GitHub Actions
+ARGUMENTS.setdefault("precision", "single")
+
 # You can find documentation for SCons and SConstruct files at:
 # https://scons.org/documentation.html
 
