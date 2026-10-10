@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang=1:18.0-59~exp2 \
     clangd=1:18.0-59~exp2 \
     clang-tidy=1:18.0-59~exp2 \
+    lld=1:18.0-59~exp2 \
     cmake=3.28.3-1build7 \
     scons=4.5.2+dfsg-1 \
     g++=4:13.2.0-7ubuntu1 \
