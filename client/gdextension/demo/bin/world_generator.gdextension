@@ -9,8 +9,6 @@ reloadable = true
 macos.debug = "res://bin/libworld_generator.macos.template_debug.framework"
 macos.release = "res://bin/libworld_generator.macos.template_release.framework"
 
-windows.debug.x86_32 = "res://bin/world_generator.windows.template_debug.x86_32.dll"
-windows.release.x86_32 = "res://bin/world_generator.windows.template_release.x86_32.dll"
 windows.debug.x86_64 = "res://bin/world_generator.windows.template_debug.x86_64.dll"
 windows.release.x86_64 = "res://bin/world_generator.windows.template_release.x86_64.dll"
 linux.debug.x86_64 = "res://bin/libworld_generator.linux.template_debug.x86_64.so"

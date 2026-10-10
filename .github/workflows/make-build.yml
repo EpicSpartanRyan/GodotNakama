@@ -11,17 +11,12 @@ jobs:
         target:
           [
             { platform: linux, arch: x86_64, os: ubuntu-22.04 },
-            { platform: linux, arch: x86_32, os: ubuntu-22.04 },
             { platform: linux, arch: arm64, os: ubuntu-22.04-arm },
-            { platform: linux, arch: arm32, os: ubuntu-22.04-arm },
             { platform: windows, arch: x86_64, os: windows-latest },
-            { platform: windows, arch: x86_32, os: windows-latest },
             { platform: windows, arch: arm64, os: windows-latest },
             { platform: macos, arch: universal, os: macos-latest },
             { platform: android, arch: x86_64, os: ubuntu-22.04 },
-            { platform: android, arch: x86_32, os: ubuntu-22.04 },
             { platform: android, arch: arm64, os: ubuntu-22.04 },
-            { platform: android, arch: arm32, os: ubuntu-22.04 },
             { platform: ios, arch: arm64, os: macos-latest },
           ]
         target-type: [template_debug, template_release]
@@ -39,11 +34,6 @@ jobs:
         if: ${{ matrix.target.platform == 'linux' }}
         run: |
           sudo apt-get update && sudo apt-get install -y clang lld
-
-      - name: Install multilib support
-        if: ${{ matrix.target.platform == 'linux' && matrix.target.arch == 'x86_32' }}
-        run: |
-          sudo apt-get install -y gcc-multilib g++-multilib
 
       - name: Setup godot-cpp
         uses: ./client/gdextension/godot-cpp/.github/actions/setup-godot-cpp
