@@ -85,7 +85,7 @@ jobs:
             client/gdextension/bin/**
 
   merge:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     needs: build
     steps:
       - name: Merge Artifacts
