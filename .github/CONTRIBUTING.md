@@ -7,6 +7,10 @@ discuss the approach before you invest time in implementation.
 By submitting a contribution, you agree that it will be distributed under the
 project's MIT License.
 
+## Licensing and Dependencies Policy
+
+Because this project serves as a foundational template for commercial projects, **we strictly do not accept pull requests that introduce dependencies with copyleft licenses** (e.g., GNU GPL, LGPL, AGPL). Any new libraries, tools, or code snippets introduced must operate under a permissive license (such as MIT, Apache 2.0, BSD-2-Clause, or Zlib) to ensure the project remains safe for closed-source and console development.
+
 ## Before you submit
 
 - Keep changes focused and explain the problem they solve.
