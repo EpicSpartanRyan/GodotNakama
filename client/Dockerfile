@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxinerama1=2:1.1.4-3build1 \
     libxrandr2=2:1.5.2-2build1 \
     libxrandr-dev=2:1.5.2-2build1 \
-    libx11-dev=2:1.8.7-1build1 \
+    libx11-dev=2:1.8.7-1ubuntu0.1 \
     libxkbcommon0=1.6.0-1build1 \
     libxkbcommon-x11-0=1.6.0-1build1 \
     libwayland-client0=1.22.0-2.1build1 \
