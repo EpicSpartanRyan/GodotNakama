@@ -36,7 +36,7 @@
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "DISPLAY": ":1",
-    "WAYLAND_DISPLAY": "",
+    "WAYLAND_DISPLAY": "wayland-0",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
     "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
