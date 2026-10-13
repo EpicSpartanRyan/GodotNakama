@@ -9,6 +9,9 @@
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
   "features": {
     "../features/common-vscode": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.1": {
+      "moby": false
+    },
     "ghcr.io/devcontainers-extra/features/starship:1.0.10": {},
     "ghcr.io/devcontainers/features/go:1.4.0": {
       "version": "1.27.1"
