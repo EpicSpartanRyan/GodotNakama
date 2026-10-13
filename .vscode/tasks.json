@@ -147,6 +147,13 @@
       "problemMatcher": []
     },
     {
+      "label": "Aseprite: Start (Wayland only)",
+      "group": "apps",
+      "type": "shell",
+      "command": "export DISPLAY=:1; export XDG_RUNTIME_DIR=/tmp/runtime-dir; export SDL_AUDIODRIVER=dummy; DIR=\"${workspaceFolder}/${input:asepriteProjectSelect}\"; mkdir -p ~/.config/aseprite && touch ~/.config/aseprite/aseprite.ini && if grep -q 'current_folder' ~/.config/aseprite/aseprite.ini; then sed -i \"s|^current_folder = .*|current_folder = $DIR|\" ~/.config/aseprite/aseprite.ini; else echo -e \"\\n[file_selector]\\ncurrent_folder = $DIR\" >> ~/.config/aseprite/aseprite.ini; fi; cd \"$DIR\" && aseprite",
+      "problemMatcher": []
+    },
+    {
       "label": "Aseprite: Install Languages",
       "group": "aseprite",
       "type": "shell",
@@ -193,6 +200,19 @@
       "group": "apps",
       "type": "shell",
       "command": "export SDL_VIDEODRIVER=x11; export XDG_STATE_HOME=\"${HOME}/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-launch /opt/inochi-creator/inochi-creator",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Inochi: Start (Wayland only)",
+      "group": "apps",
+      "type": "shell",
+      "command": "export DISPLAY=:1; export SDL_VIDEODRIVER=x11; export XDG_RUNTIME_DIR=/tmp/runtime-dir; export XDG_STATE_HOME=\"/root/.local/state\"; mkdir -p \"$XDG_STATE_HOME\"; dbus-run-session -- /opt/inochi-creator/inochi-creator",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -606,33 +626,10 @@
       "id": "logHighlight",
       "type": "promptString",
       "description": "Text to highlight in blue color:",
-      "default": "go-project/main.go"
+      "default": "go-project/main.go5"
     },
     {
-      "id": "traceFormatSelect",
-      "type": "pickString",
-      "description": "Select trace conversion format (Default: Speedscope):",
-      "default": "Chromium",
-      "options": [
-        {
-          "label": "Chromium (chrome://tracing / Perfetto UI)",
-          "value": "Chromium"
-        },
-        {
-          "label": "Speedscope (JSON - speedscope.app / VS Code)",
-          "value": "Speedscope"
-        },
-        {
-          "label": "NetTrace (Re-export / Keep nettrace)",
-          "value": "NetTrace"
-        },
-        {
-          "label": "None (Keep raw .nettrace binary only)",
-          "value": "none"
-        }
-      ]
-    },
-    {
+      "label": "Open Nakama Web Panel",
       "id": "openNakamaPanel",
       "type": "command",
       "command": "simpleBrowser.show",
