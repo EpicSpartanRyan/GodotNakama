@@ -1,0 +1,5 @@
+services:
+  godot:
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/snd:/dev/snd

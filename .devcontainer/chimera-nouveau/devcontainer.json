@@ -1,0 +1,59 @@
+{
+  "name": "Godot Nakama Environment Chimera Wayland (Nouveau)",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../compose/linux-podman.yml",
+    "../compose/nouveau.yml"
+  ],
+  "service": "godot",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/GodotNakama.code-workspace",
+  "features": {
+    "../features/common-vscode": {},
+    "ghcr.io/devcontainers-extra/features/starship:1.0.10": {},
+    "ghcr.io/devcontainers/features/go:1.4.0": {
+      "version": "1.27.1"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1.1.3": {},
+    "ghcr.io/devcontainers-extra/features/act:1.0.15": {}
+  },
+  "mounts": [
+    {
+      "source": "/run/user/1000/podman/podman.sock",
+      "target": "/var/run/docker-host.sock",
+      "type": "bind"
+    }
+  ],
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  },
+  "remoteUser": "root",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+    "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
+    "DISPLAY": ":1",
+    "WAYLAND_DISPLAY": "",
+    "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
+    "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
+    "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"
+  },
+  "containerEnv": {
+    "COMPOSE_ARGS": "--env-file versions.env -f .devcontainer/docker-compose.yml -f .devcontainer/compose/linux-podman.yml -f .devcontainer/compose/nouveau.yml"
+  },
+  "forwardPorts": [
+    6007,
+    6008
+  ],
+  "portsAttributes": {
+    "6007": {
+      "label": "Godot Remote Debugger",
+      "onAutoForward": "notify"
+    },
+    "6008": {
+      "label": "GDScript Language Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "shutdownAction": "stopCompose"
+}
