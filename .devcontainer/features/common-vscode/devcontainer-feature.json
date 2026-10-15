@@ -95,6 +95,7 @@
         },
         "csharp.experimental.debug.hotReload": true,
         "csharp.debug.hotReloadOnSave": true,
+        "csharp.debug.hotReloadVerbosity": "diagnostic",
         "openInExternalApp.openMapper": [
           {
             "extensionName": "aseprite",

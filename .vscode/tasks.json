@@ -257,34 +257,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Godot: Run Game (direct)",
-      "group": "godot",
-      "dependsOn": "Godot: Build",
-      "dependsOrder": "sequence",
-      "type": "shell",
-      "command": "godot --path \"${workspaceFolder}/client/sample-game\" --verbose --debug",
-      "options": {
-        "cwd": "${workspaceFolder}/client/sample-game"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "pattern": {
-          "regexp": "^.*$"
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^WorkerThreadPool:",
-          "endsPattern": "^Godot Engine v"
-        }
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
-    },
-    {
       "label": "Godot: Start Profiler Server",
       "group": "godot",
       "dependsOn": "Godot: Build",
@@ -325,7 +297,8 @@
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game",
         "env": {
-          "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend"
+          "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend",
+          "COMPlus_ForceEnc": "1"
         }
       },
       "isBackground": true,
