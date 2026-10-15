@@ -307,6 +307,43 @@
           "beginsPattern": "Waiting for connection",
           "endsPattern": "DOTNET_DiagnosticPorts="
         }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "Godot: Run Game & Profile (direct)",
+      "group": "godot",
+      "dependsOn": "Godot: Start Profiler Server",
+      "type": "shell",
+      "command": "godot --path \"${workspaceFolder}/client/sample-game\" --verbose --debug",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game",
+        "env": {
+          "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^WorkerThreadPool:",
+          "endsPattern": "^\\.NET: GodotPlugins initialized$"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
       }
     },
     {
@@ -539,6 +576,30 @@
       "type": "promptString",
       "description": "Text to highlight in blue color:",
       "default": "go-project/main.go5"
+    },
+    {
+      "id": "traceFormatSelect",
+      "type": "pickString",
+      "description": "Select trace conversion format (Default: Speedscope):",
+      "default": "Chromium",
+      "options": [
+        {
+          "label": "Chromium (chrome://tracing / Perfetto UI)",
+          "value": "Chromium"
+        },
+        {
+          "label": "Speedscope (JSON - speedscope.app / VS Code)",
+          "value": "Speedscope"
+        },
+        {
+          "label": "NetTrace (Re-export / Keep nettrace)",
+          "value": "NetTrace"
+        },
+        {
+          "label": "None (Keep raw .nettrace binary only)",
+          "value": "none"
+        }
+      ]
     },
     {
       "label": "Open Nakama Web Panel",

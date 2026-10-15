@@ -35,18 +35,10 @@
         {
             "name": "Play & Profile",
             "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "Godot: Start Profiler Server",
-            "program": "/usr/local/bin/godot",
-            "args": [
-                "--path",
-                "${workspaceFolder}/client/sample-game"
-            ],
-            "cwd": "${workspaceFolder}/client/sample-game",
-            "stopAtEntry": false,
-            "env": {
-                "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend"
-            }
+            "request": "attach",
+            "preLaunchTask": "Godot: Run Game & Profile (direct)",
+            "processId": "${command:pickProcess}",
+            "justMyCode": false
         }
     ]
 }
