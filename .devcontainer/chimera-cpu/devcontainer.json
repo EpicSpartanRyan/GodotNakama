@@ -38,6 +38,7 @@
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
+    "TESTCONTAINERS_RYUK_DISABLED": "true",
     "DISPLAY": ":1",
     "WAYLAND_DISPLAY": "wayland-0",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
