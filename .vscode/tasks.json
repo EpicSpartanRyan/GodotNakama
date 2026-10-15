@@ -2,97 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Act: Build All",
-      "group": "act",
-      "type": "shell",
-      "command": "echo '✅ All Github Local Actions finalized their execution successfully.'",
-      "dependsOrder": "sequence",
-      "dependsOn": [
-        "Act: Build Nakama Plugin",
-        "Act: Build Godot Executables"
-      ],
-      "problemMatcher": [],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "clear": true
-      }
-    },
-    {
-      "label": "Act: Build Nakama Plugin",
-      "group": "act",
-      "type": "shell",
-      "command": "act",
-      "args": [
-        "--workflows",
-        ".github/workflows/nakama-build.yml",
-        "--job",
-        "build-plugin",
-        "--secret-file",
-        ".secrets",
-        "--artifact-server-path",
-        "${workspaceFolder}/.act-artifacts"
-      ],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared",
-        "clear": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Act: Build Godot Executables",
-      "group": "act",
-      "type": "shell",
-      "command": "act",
-      "args": [
-        "--workflows",
-        ".github/workflows/godot-build.yml",
-        "--job",
-        "build-executables",
-        "--secret-file",
-        ".secrets",
-        "--artifact-server-path",
-        "${workspaceFolder}/.act-artifacts"
-      ],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared",
-        "clear": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Act: Nakama Deploy",
-      "group": "act",
-      "type": "shell",
-      "command": "act",
-      "args": [
-        "--workflows",
-        ".github/workflows/deploy.yml",
-        "--job",
-        "build-and-deploy",
-        "--secret-file",
-        ".secrets",
-        "--artifact-server-path",
-        "${workspaceFolder}/.act-artifacts"
-      ],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared",
-        "clear": true
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Environment: Run all first time recommended tasks",
       "group": "environment",
       "type": "shell",
@@ -102,7 +11,6 @@
         ".NET: Restore Tools",
         ".NET: Install Profiler",
         "Templates: Instantiate",
-        "Starship: Install in all terminals",
         "Aseprite: Install Languages",
         "Aseprite: Install Tools",
         "Godot: Install Export Templates",
@@ -494,13 +402,6 @@
         "panel": "shared",
         "close": true
       }
-    },
-    {
-      "label": "Starship: Install in all terminals",
-      "group": "starship",
-      "type": "shell",
-      "command": "set -Eeuo pipefail; if ! command -v starship >/dev/null 2>&1; then echo 'ERROR: Starship is not installed or not on PATH.' >&2; exit 1; fi; append_once() { local file=\"$1\" line=\"$2\"; mkdir -p \"$(dirname \"$file\")\"; touch \"$file\"; if ! grep -qxF \"$line\" \"$file\"; then printf '%s\\n' \"$line\" >> \"$file\"; fi; }; append_once \"$HOME/.bashrc\" 'eval \"$(starship init bash)\"'; append_once \"$HOME/.zshrc\" 'eval \"$(starship init zsh)\"'; append_once \"$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1\" 'Invoke-Expression (&starship init powershell)'; echo 'Starship startup configuration is present in Bash, Zsh, and PowerShell.'",
-      "problemMatcher": []
     },
     {
       "label": "Templates: Instantiate",
