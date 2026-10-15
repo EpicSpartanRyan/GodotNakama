@@ -13,7 +13,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 # 1. System tools and dependencies (Godot, Aseprite, GIMP, and Inochi2D)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates=20260601~24.04.1 \
-    curl=8.5.0-2ubuntu10.15 \
+    curl=8.5.0-2ubuntu10.16 \
     wget=1.21.4-1ubuntu4.5 \
     unzip=6.0-28ubuntu4.1 \
     git=1:2.43.0-1ubuntu7.3 \
