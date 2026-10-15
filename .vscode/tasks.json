@@ -113,7 +113,7 @@
       "label": "Docker: View Logs (Nakama / DB)",
       "group": "docker",
       "type": "shell",
-      "command": "set -o pipefail; docker compose $COMPOSE_ARGS logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
+      "command": "set -o pipefail; docker-compose $COMPOSE_ARGS logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -373,7 +373,7 @@
       "label": "Nakama: Restart Server",
       "group": "nakama",
       "type": "shell",
-      "command": "docker compose $COMPOSE_ARGS restart nakama",
+      "command": "docker-compose $COMPOSE_ARGS restart nakama",
       "options": {
         "cwd": "${workspaceFolder}"
       },
