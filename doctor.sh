@@ -367,11 +367,18 @@ else
 fi
 
 # Check: dotnet-trace
-if command -v dotnet-trace >/dev/null 2>&1 || dotnet trace --version >/dev/null 2>&1 || [[ -f /home/ubuntu/.dotnet/tools/dotnet-trace ]]; then
-    trace_version=$(dotnet-trace --version 2>/dev/null || /home/ubuntu/.dotnet/tools/dotnet-trace --version 2>/dev/null | head -n1 || echo "installed")
+trace_binary="$(command -v dotnet-trace || true)"
+
+if [[ -z "$trace_binary" && -x "$HOME/.dotnet/tools/dotnet-trace" ]]; then
+    trace_binary="$HOME/.dotnet/tools/dotnet-trace"
+fi
+
+if [[ -n "$trace_binary" ]]; then
+    trace_version=$("$trace_binary" --version 2>/dev/null | head -n1 || echo "installed")
     info_status "" "Checking dotnet-trace" "ok" "$trace_version"
 else
-    info_status "" "Checking dotnet-trace" "warn" "not found in PATH or ~/.dotnet/tools. Review tasks.json (.NET: Install Profiler)."
+    info_status "" "Checking dotnet-trace" "warn" \
+        "not found in PATH or $HOME/.dotnet/tools. Review tasks.json (.NET: Install Profiler)."
 fi
 
 # Check: Go
