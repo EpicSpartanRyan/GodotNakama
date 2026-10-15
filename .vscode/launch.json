@@ -5,12 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Attach to Godot (C#)",
+            "type": "coreclr",
+            "request": "attach",
+            "preLaunchTask": "Godot: Run Game (direct)",
+            "processId": "${command:pickProcess}",
+            "justMyCode": false
+        },
+        {
             "name": "Play",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Godot: Build",
             "program": "/usr/local/bin/godot",
-            "args": [],
+            "args": [
+                "--path",
+                "${workspaceFolder}/client/sample-game"
+            ],
             "cwd": "${workspaceFolder}/client/sample-game",
             "stopAtEntry": false
         },
@@ -27,11 +38,14 @@
             "request": "launch",
             "preLaunchTask": "Godot: Start Profiler Server",
             "program": "/usr/local/bin/godot",
-            "args": [],
+            "args": [
+                "--path",
+                "${workspaceFolder}/client/sample-game"
+            ],
             "cwd": "${workspaceFolder}/client/sample-game",
             "stopAtEntry": false,
             "env": {
-                "DOTNET_DiagnosticPorts": "/tmp/godot-diag,suspend"
+                "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend"
             }
         }
     ]
