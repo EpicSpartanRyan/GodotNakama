@@ -541,95 +541,140 @@ else
 fi
 
 # ==========================================
-# 5 & 6. Docker Compose Services & Backend Responding
+# 5 & 6. Container Services & Backend Health
 # ==========================================
 
-# Determine the Compose file arguments for the active Dev Container profile.
-COMPOSE_FILE_ARGS=()
-if [[ -n "${COMPOSE_ARGS:-}" ]]; then
-    read -r -a COMPOSE_FILE_ARGS <<< "$COMPOSE_ARGS"
-elif [[ -n "${COMPOSE_YML_PATH:-}" && -f "$COMPOSE_YML_PATH" ]]; then
-    COMPOSE_FILE_ARGS=(-f "$COMPOSE_YML_PATH")
-elif [[ -f docker-compose.yml ]]; then
-    COMPOSE_FILE_ARGS=(-f docker-compose.yml)
+# Find the Compose project from an existing container.
+# We use Docker-compatible commands directly because Podman Compose
+# containers are not always discovered correctly by Docker Compose.
+COMPOSE_PROJECT_NAME=""
+
+for container in nakama postgres rustfs godot; do
+    candidate_project=$(
+        docker inspect \
+            --format '{{ index .Config.Labels "com.docker.compose.project" }}' \
+            "$container" 2>/dev/null || true
+    )
+
+    if [[ -n "$candidate_project" && "$candidate_project" != "<no value>" ]]; then
+        COMPOSE_PROJECT_NAME="$candidate_project"
+        break
+    fi
+done
+
+# Report the actual state of a container using the Docker-compatible API.
+container_state() {
+    local container="$1"
+
+    if ! docker inspect "$container" >/dev/null 2>&1; then
+        echo "missing"
+    elif [[ "$(docker inspect --format '{{.State.Running}}' "$container" 2>/dev/null || true)" == "true" ]]; then
+        echo "running"
+    else
+        echo "stopped"
+    fi
+}
+
+# Check: Running containers for the detected project
+if [[ -n "$COMPOSE_PROJECT_NAME" ]]; then
+    running_services=$(
+        docker ps \
+            --filter "label=com.docker.compose.project=$COMPOSE_PROJECT_NAME" \
+            --format '{{.Label "com.docker.compose.service"}}' 2>/dev/null |
+            grep -v '^$' | sort -u || true
+    )
+else
+    # Fallback for containers that do not expose Compose project labels.
+    running_services=$(
+        docker ps --format '{{.Names}}' 2>/dev/null |
+            grep -E '^(godot|postgres|rustfs|nakama)$' || true
+    )
 fi
 
-if (( ${#COMPOSE_FILE_ARGS[@]} > 0 )); then
-    # Check: Docker Compose services active overall
-    running_services=$(docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -v '^$' || true)
-    if [[ -n "$running_services" ]]; then
-        info_status "" "Checking Docker Compose services" "ok" "services active"
-    else
-        info_status "" "Checking Docker Compose services" "warn" "no services running"
-    fi
+if [[ -n "$running_services" ]]; then
+    info_status "" "Checking Docker-compatible container services" "ok" \
+        "running: $(echo "$running_services" | paste -sd ', ' -)"
+else
+    info_status "" "Checking Docker-compatible container services" "warn" \
+        "no project containers are running"
+fi
 
-    # Check: Service 'postgres'
-    if docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^postgres$" || \
-       docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -q "^postgres$"; then
+# Check: PostgreSQL container
+postgres_state=$(container_state postgres)
+
+case "$postgres_state" in
+    running)
         info_status "" "Checking service 'postgres'" "ok" "running"
-    else
-        if docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --services 2>/dev/null | grep -q "^postgres$"; then
-            info_status "" "Checking service 'postgres'" "warn" "defined but not running"
-        else
-            info_status "" "Checking service 'postgres'" "warn" "not defined"
-        fi
-    fi
+        ;;
+    stopped)
+        info_status "" "Checking service 'postgres'" "warn" \
+            "container exists but is stopped"
+        ;;
+    *)
+        info_status "" "Checking service 'postgres'" "warn" \
+            "container not found"
+        ;;
+esac
 
-    # Check: Service 'nakama'
-    if docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --format '{{.Service}}' --filter "status=running" 2>/dev/null | grep -q "^nakama$" || \
-       docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --services --filter "status=running" 2>/dev/null | grep -q "^nakama$"; then
+# Check: Nakama container
+nakama_state=$(container_state nakama)
+
+case "$nakama_state" in
+    running)
         info_status "" "Checking service 'nakama'" "ok" "running"
-    else
-        if docker-compose "${COMPOSE_FILE_ARGS[@]}" ps --services 2>/dev/null | grep -q "^nakama$"; then
-            info_status "" "Checking service 'nakama'" "warn" "defined but not running"
-        else
-            info_status "" "Checking service 'nakama'" "warn" "not defined"
-        fi
-    fi
+        ;;
+    stopped)
+        info_status "" "Checking service 'nakama'" "warn" \
+            "container exists but is stopped"
+        ;;
+    *)
+        info_status "" "Checking service 'nakama'" "warn" \
+            "container not found"
+        ;;
+esac
 
-    # Check: PostgreSQL connectivity
-    if docker-compose "${COMPOSE_FILE_ARGS[@]}" exec -T postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
-        info_status "" "Checking PostgreSQL connectivity" "ok" "accepting connections"
-    else
-        info_status "" "Checking PostgreSQL connectivity" "warn" "not accepting connections"
-    fi
+# Check: PostgreSQL connectivity
+if [[ "$postgres_state" == "running" ]] &&
+   docker exec postgres pg_isready -U postgres -d nakama >/dev/null 2>&1; then
+    info_status "" "Checking PostgreSQL connectivity" "ok" \
+        "accepting connections"
+else
+    info_status "" "Checking PostgreSQL connectivity" "warn" \
+        "not accepting connections"
+fi
 
-    # Check: Nakama Client API (Port 7350)
-    if curl -s -f http://nakama:7350/healthcheck >/dev/null 2>&1 || \
-       curl -s -f http://localhost:7350/healthcheck >/dev/null 2>&1; then
-        info_status "" "Checking Nakama Client API (7350)" "ok" "responding"
-    else
-        info_status "" "Checking Nakama Client API (7350)" "warn" "not responding"
-    fi
+# Check: Nakama Client API (Port 7350)
+if curl -s -f http://nakama:7350/healthcheck >/dev/null 2>&1 ||
+   curl -s -f http://localhost:7350/healthcheck >/dev/null 2>&1; then
+    info_status "" "Checking Nakama Client API (7350)" "ok" "responding"
+else
+    info_status "" "Checking Nakama Client API (7350)" "warn" \
+        "not responding"
+fi
 
-    # Check: Nakama gRPC API (Port 7349)
-    if curl -s --http2-prior-knowledge http://nakama:7349 >/dev/null 2>&1 || \
-       nc -z nakama 7349 >/dev/null 2>&1 || \
-       nc -z localhost 7349 >/dev/null 2>&1; then
-        info_status "" "Checking Nakama gRPC API (7349)" "ok" "responding"
-    else
-        info_status "" "Checking Nakama gRPC API (7349)" "warn" "not responding"
-    fi
+# Check: Nakama gRPC API (Port 7349)
+if curl -s --http2-prior-knowledge http://nakama:7349 >/dev/null 2>&1 ||
+   nc -z nakama 7349 >/dev/null 2>&1 ||
+   nc -z localhost 7349 >/dev/null 2>&1; then
+    info_status "" "Checking Nakama gRPC API (7349)" "ok" "responding"
+else
+    info_status "" "Checking Nakama gRPC API (7349)" "warn" \
+        "not responding"
+fi
 
-    # Check: Nakama UDP API (Port 7350 - Realtime / Socket Routing)
-    if command -v nc >/dev/null 2>&1; then
-        if echo "" | nc -u -w 1 localhost 7350 >/dev/null 2>&1 || \
-           echo "" | nc -u -w 1 nakama 7350 >/dev/null 2>&1; then
-            info_status "" "Checking Nakama UDP routing (7350)" "ok" "UDP socket reachable"
-        else
-            info_status "" "Checking Nakama UDP routing (7350)" "warn" "UDP port 7350 unreachable (ensure 7350:7350/udp is declared in docker-compose.yml)"
-        fi
+# Check: Nakama UDP API (Port 7350 - Realtime / Socket Routing)
+if command -v nc >/dev/null 2>&1; then
+    if echo "" | nc -u -w 1 localhost 7350 >/dev/null 2>&1 ||
+       echo "" | nc -u -w 1 nakama 7350 >/dev/null 2>&1; then
+        info_status "" "Checking Nakama UDP routing (7350)" "ok" \
+            "UDP socket reachable"
     else
-        info_status "" "Checking Nakama UDP routing (7350)" "warn" "netcat (nc) not installed, skipping UDP test"
+        info_status "" "Checking Nakama UDP routing (7350)" "warn" \
+            "UDP port 7350 unreachable (check the port mapping)"
     fi
 else
-    info_status "" "Checking Docker Compose services" "warn" "docker-compose file not found"
-    info_status "" "Checking service 'postgres'" "warn" "docker-compose file not found"
-    info_status "" "Checking service 'nakama'" "warn" "docker-compose file not found"
-    info_status "" "Checking PostgreSQL connectivity" "warn" "docker-compose file not found"
-    info_status "" "Checking Nakama Client API (7350)" "warn" "docker-compose file not found"
-    info_status "" "Checking Nakama gRPC API (7349)" "warn" "docker-compose file not found"
-    info_status "" "Checking Nakama UDP routing (7350)" "warn" "docker-compose file not found"
+    info_status "" "Checking Nakama UDP routing (7350)" "warn" \
+        "netcat (nc) not installed, skipping UDP test"
 fi
 
 

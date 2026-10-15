@@ -113,7 +113,10 @@
       "label": "Docker: View Logs (Nakama / DB)",
       "group": "docker",
       "type": "shell",
-      "command": "set -o pipefail; docker-compose $COMPOSE_ARGS logs -f --tail 100 ${input:serviceLogSelect} | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
+      "command": "set -o pipefail; service='${input:serviceLogSelect}'; if [[ -n \"$service\" ]]; then docker logs -f --tail 100 \"$service\" 2>&1; else project=\"$(docker inspect -f '{{ index .Config.Labels \\\"com.docker.compose.project\\\" }}' nakama 2>/dev/null)\"; if [[ -z \"$project\" ]]; then echo 'ERROR: Cannot determine the container project.' >&2; exit 1; fi; docker ps --filter \"label=com.docker.compose.project=$project\" --format '{{.Names}}' | xargs -r -P 0 -I{} sh -c 'docker logs -f --tail 100 \"$1\" 2>&1 | sed -u \"s/^/[$1] /\"' _ {}; fi | GREP_COLORS='mt=01;36' grep --color=always -E '${input:logHighlight}|$'",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "problemMatcher": [],
       "presentation": {
         "echo": true,
@@ -373,7 +376,7 @@
       "label": "Nakama: Restart Server",
       "group": "nakama",
       "type": "shell",
-      "command": "docker-compose $COMPOSE_ARGS restart nakama",
+      "command": "docker restart nakama",
       "options": {
         "cwd": "${workspaceFolder}"
       },
