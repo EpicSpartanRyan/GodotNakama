@@ -24,6 +24,11 @@
       "source": "/run/user/1000/podman/podman.sock",
       "target": "/var/run/docker-host.sock",
       "type": "bind"
+    },
+    {
+      "source": "/run/user/1000/wayland-0",
+      "target": "/tmp/runtime-dir/wayland-0",
+      "type": "bind"
     }
   ],
   "hostRequirements": {
