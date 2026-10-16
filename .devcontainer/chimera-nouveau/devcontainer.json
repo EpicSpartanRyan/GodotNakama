@@ -22,11 +22,6 @@
       "source": "/run/user/1000/podman/podman.sock",
       "target": "/var/run/docker-host.sock",
       "type": "bind"
-    },
-    {
-      "source": "/run/user/1000/wayland-0",
-      "target": "/tmp/runtime-dir/wayland-0",
-      "type": "bind"
     }
   ],
   "hostRequirements": {
@@ -40,7 +35,7 @@
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "TESTCONTAINERS_RYUK_DISABLED": "true",
     "DISPLAY": ":1",
-    "WAYLAND_DISPLAY": "wayland-0",
+    "WAYLAND_DISPLAY": "wayland-1",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",
     "VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX": "true"

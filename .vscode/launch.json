@@ -11,6 +11,14 @@
             "preLaunchTask": "Godot: Run Game & Profile (direct)",
             "processId": "${command:pickProcess}",
             "justMyCode": false
+        },
+        {
+            "name": "Play & Profile (Wayland)",
+            "type": "coreclr",
+            "request": "attach",
+            "preLaunchTask": "Godot: Run Game & Profile (direct / Wayland)",
+            "processId": "${command:pickProcess}",
+            "justMyCode": false
         }
     ]
 }

@@ -257,6 +257,13 @@
       "problemMatcher": []
     },
     {
+      "label": "Godot: Start (Wayland)",
+      "group": "apps",
+      "type": "shell",
+      "command": "P=\"${input:godotProjectSelect}\"; godot --display-driver wayland -e ${P:+\"--path\" \"$P\"}",
+      "problemMatcher": []
+    },
+    {
       "label": "Godot: Start Profiler Server",
       "group": "godot",
       "dependsOn": "Godot: Build",
@@ -294,6 +301,37 @@
       "dependsOn": "Godot: Start Profiler Server",
       "type": "shell",
       "command": "godot --path \"${workspaceFolder}/client/sample-game\" --verbose --debug",
+      "options": {
+        "cwd": "${workspaceFolder}/client/sample-game",
+        "env": {
+          "DOTNET_DiagnosticPorts": "/tmp/godot-diag,nosuspend",
+          "COMPlus_ForceEnc": "1"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^WorkerThreadPool:",
+          "endsPattern": "^\\.NET: GodotPlugins initialized$"
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Godot: Run Game & Profile (direct / Wayland)",
+      "group": "godot",
+      "dependsOn": "Godot: Start Profiler Server",
+      "type": "shell",
+      "command": "godot --display-driver wayland --path \"${workspaceFolder}/client/sample-game\" --verbose --debug",
       "options": {
         "cwd": "${workspaceFolder}/client/sample-game",
         "env": {
