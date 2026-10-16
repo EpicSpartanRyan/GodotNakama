@@ -108,17 +108,27 @@ fi
 
 # Check: Vulkan API
 if command -v vulkaninfo >/dev/null 2>&1; then
-    if vulkaninfo --summary >/dev/null 2>&1; then
+    if timeout 10s vulkaninfo --summary >/dev/null 2>&1; then
         info_status "" "Checking Vulkan API" "ok" "Vulkan API initialized successfully"
     else
-        info_status "" "Checking Vulkan API" "error" "vulkaninfo failed to run (driver issues or missing dependencies)"
-        fail=1
+        vulkan_status=$?
+
+        if (( vulkan_status == 124 || vulkan_status == 137 )); then
+            info_status "" "Checking Vulkan API" "warn" \
+                "vulkaninfo timed out after 10 seconds; continuing diagnostics"
+        else
+            info_status "" "Checking Vulkan API" "error" \
+                "vulkaninfo failed (exit code $vulkan_status; possible driver issue or missing dependency)"
+            fail=1
+        fi
     fi
 else
     if command -v ldconfig >/dev/null 2>&1 && ldconfig -p | grep -q "libvulkan.so"; then
-        info_status "" "Checking Vulkan API" "ok" "libvulkan found (vulkaninfo not installed to verify init)"
+        info_status "" "Checking Vulkan API" "ok" \
+            "libvulkan found (vulkaninfo not installed to verify init)"
     else
-        info_status "" "Checking Vulkan API" "warn" "Vulkan libraries not found. Godot may crash or fallback to software rendering"
+        info_status "" "Checking Vulkan API" "warn" \
+            "Vulkan libraries not found. Godot may crash or fallback to software rendering"
     fi
 fi
 
@@ -401,13 +411,23 @@ fi
 
 # Check: Godot Vulkan rendering
 if command -v godot >/dev/null 2>&1; then
-    if godot --rendering-driver vulkan --headless --editor --quit >/dev/null 2>&1; then
-        info_status "" "Checking Godot Vulkan rendering" "ok" "headless Vulkan initialization succeeded"
+    if timeout 20s godot --rendering-driver vulkan --headless --editor --quit >/dev/null 2>&1; then
+        info_status "" "Checking Godot Vulkan rendering" "ok" \
+            "headless Vulkan initialization succeeded"
     else
-        info_status "" "Checking Godot Vulkan rendering" "warn" "failed to initialize Vulkan renderer in headless mode"
+        godot_vulkan_status=$?
+
+        if (( godot_vulkan_status == 124 || godot_vulkan_status == 137 )); then
+            info_status "" "Checking Godot Vulkan rendering" "warn" \
+                "Godot Vulkan initialization timed out after 20 seconds"
+        else
+            info_status "" "Checking Godot Vulkan rendering" "warn" \
+                "failed to initialize Vulkan renderer in headless mode (exit code $godot_vulkan_status)"
+        fi
     fi
 else
-    info_status "" "Checking Godot Vulkan rendering" "warn" "skipped (Godot binary not found)"
+    info_status "" "Checking Godot Vulkan rendering" "warn" \
+        "skipped (Godot binary not found)"
 fi
 
 # Check: Aseprite
@@ -415,8 +435,25 @@ if ! command -v aseprite >/dev/null 2>&1; then
     info_status "" "Checking Aseprite" "error" "not found in PATH"
     fail=1
 else
-    aseprite_version=$(aseprite --version | head -n1)
-    info_status "" "Checking Aseprite" "ok" "$aseprite_version"
+    if aseprite_output=$(timeout 5s aseprite --version 2>&1); then
+        aseprite_version="${aseprite_output%%$'\n'*}"
+
+        if [[ -z "$aseprite_version" ]]; then
+            aseprite_version="installed (version unavailable)"
+        fi
+
+        info_status "" "Checking Aseprite" "ok" "$aseprite_version"
+    else
+        aseprite_status=$?
+
+        if (( aseprite_status == 124 || aseprite_status == 137 )); then
+            info_status "" "Checking Aseprite" "warn" \
+                "aseprite --version timed out after 5 seconds"
+        else
+            info_status "" "Checking Aseprite" "warn" \
+                "aseprite --version failed (exit code $aseprite_status)"
+        fi
+    fi
 fi
 
 # Check: GIMP
@@ -424,16 +461,42 @@ if ! command -v gimp >/dev/null 2>&1; then
     info_status "" "Checking GIMP" "error" "not found in PATH"
     fail=1
 else
-    gimp_version=$(gimp --version 2>/dev/null | head -n1 || echo "installed")
-    info_status "" "Checking GIMP" "ok" "$gimp_version"
+    if gimp_output=$(timeout 5s gimp --version 2>&1); then
+        gimp_version="${gimp_output%%$'\n'*}"
+
+        if [[ -z "$gimp_version" ]]; then
+            gimp_version="installed (version unavailable)"
+        fi
+
+        info_status "" "Checking GIMP" "ok" "$gimp_version"
+    else
+        gimp_status=$?
+
+        if (( gimp_status == 124 || gimp_status == 137 )); then
+            info_status "" "Checking GIMP" "warn" \
+                "gimp --version timed out after 5 seconds"
+        else
+            info_status "" "Checking GIMP" "warn" \
+                "gimp --version failed (exit code $gimp_status)"
+        fi
+    fi
 fi
 
 # Check: Inochi Creator
-if command -v inochi-creator >/dev/null 2>&1 || [[ -x /opt/inochi-creator/inochi-creator ]]; then
-    inochi_path=$(command -v inochi-creator || echo "/opt/inochi-creator/inochi-creator")
-    info_status "" "Checking Inochi Creator" "ok" "binary available ($inochi_path)"
+inochi_path=""
+
+if command -v inochi-creator >/dev/null 2>&1; then
+    inochi_path="$(command -v inochi-creator)"
+elif [[ -x /opt/inochi-creator/inochi-creator ]]; then
+    inochi_path="/opt/inochi-creator/inochi-creator"
+fi
+
+if [[ -n "$inochi_path" ]]; then
+    info_status "" "Checking Inochi Creator" "ok" \
+        "executable available ($inochi_path; startup not tested)"
 else
-    info_status "" "Checking Inochi Creator" "error" "not found in PATH or /opt/inochi-creator"
+    info_status "" "Checking Inochi Creator" "error" \
+        "not found in PATH or /opt/inochi-creator"
     fail=1
 fi
 
