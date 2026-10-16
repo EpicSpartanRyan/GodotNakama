@@ -1,5 +1,5 @@
 {
-  "name": "Godot Nakama Environment Linux (CPU)",
+  "name": "Linux (CPU)",
   "dockerComposeFile": [
     "../docker-compose.yml",
     "../compose/linux.yml",

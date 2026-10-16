@@ -1,5 +1,5 @@
 {
-  "name": "Godot Nakama Environment WSLg (CPU)",
+  "name": "WSLg (CPU)",
   "dockerComposeFile": [
     "../docker-compose.yml",
     "../compose/wslg.yml",

@@ -1,5 +1,5 @@
 {
-  "name": "Godot Nakama Environment Chimera Wayland (CPU)",
+  "name": "Chimera Wayland (CPU)",
   "dockerComposeFile": [
     "../docker-compose.yml",
     "../compose/linux-podman.yml",

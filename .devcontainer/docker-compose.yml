@@ -1,4 +1,4 @@
-name: windows-wslg-nvidia
+name: godot-nakama-env
 
 services:
   godot:

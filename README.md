@@ -55,8 +55,8 @@ Nakama loads the Go server module; client multiplayer integration is still in pr
 | --- | --- | --- | --- |
 | `linux-nvidia` | Linux | NVIDIA GPU | Requires NVIDIA drivers and NVIDIA Container Toolkit |
 | `linux-cpu` | Linux | Software | No NVIDIA runtime; software rendering may be slower |
-| `windows-wslg-nvidia` | Ubuntu on WSL2 with WSLg | WSLg GPU | Requires WSLg and compatible GPU support |
-| `windows-wslg-cpu` | Ubuntu on WSL2 with WSLg | Software | No NVIDIA runtime or `/dev/dxg` device |
+| `wslg-nvidia` | Ubuntu on WSL2 with WSLg | WSLg GPU | Requires WSLg and compatible GPU support |
+| `wslg-cpu` | Ubuntu on WSL2 with WSLg | Software | No NVIDIA runtime or `/dev/dxg` device |
 
 The shared service stack and VS Code tooling are composed with host-specific display and renderer overlays.
 
