@@ -1,68 +1,83 @@
+
 #!/usr/bin/env python
+
 import os
 import sys
 
-# Establece '4.7' por defecto si no se especifica en la terminal con api_version=...
+# Set default godot-cpp configuration options.
 ARGUMENTS.setdefault("api_version", "4.7")
 ARGUMENTS.setdefault("compiledb", "yes")
-
-# Forzar el uso de LLVM/Clang por defecto si no se especifica explícitamente en la terminal
 ARGUMENTS.setdefault("use_llvm", "yes")
-
-# Forzar precisión simple para evitar discrepancias con GitHub Actions
 ARGUMENTS.setdefault("precision", "single")
 
-# You can find documentation for SCons and SConstruct files at:
-# https://scons.org/documentation.html
+# Enable ThinLTO through the native godot-cpp option.
+ARGUMENTS.setdefault("lto", "thin")
 
-# This lets SCons know that we're using godot-cpp, from the godot-cpp folder.
+# Configure godot-cpp.
 env = SConscript("godot-cpp/SConstruct")
 
-# Si se está compilando con LLVM/Clang, forzamos LLD como el enlazador (linker)
+# Use LLD as the linker on Linux when LLVM is enabled.
 if env.get("use_llvm", False) and env.get("platform") == "linux":
-    env.Append(LINKFLAGS=["-fuse-ld=lld"])
+    env.Append(
+        LINKFLAGS=["-fuse-ld=lld"],
+        SHLINKFLAGS=["-fuse-ld=lld"],
+    )
 
-# Configures the 'src' directory as a source for header files.
-env.Append(CPPPATH=["src/"])
+# Configure header search paths.
+env.Append(CPPPATH=["src/", "/usr/local/include"])
 
-# Collects all .cpp files in the 'src' folder as compile targets.
+# Collect GDExtension source files.
 sources = Glob("src/*.cpp")
 
 lib_name = "world_generator"
 project_dir = "demo"
 
-env.Append(CPPPATH=["/usr/local/include"])
-
 if env["platform"] == "macos":
     library = env.SharedLibrary(
         "{}/bin/lib{}.{}.{}.framework/lib{}.{}.{}".format(
-            project_dir, lib_name, env["platform"], env["target"],
-            lib_name, env["platform"], env["target"]
+            project_dir,
+            lib_name,
+            env["platform"],
+            env["target"],
+            lib_name,
+            env["platform"],
+            env["target"],
         ),
         source=sources,
     )
+
 elif env["platform"] == "ios":
     if env["ios_simulator"]:
         library = env.StaticLibrary(
             "{}/bin/lib{}.{}.{}.simulator.a".format(
-                project_dir, lib_name, env["platform"], env["target"]
+                project_dir,
+                lib_name,
+                env["platform"],
+                env["target"],
             ),
             source=sources,
         )
     else:
         library = env.StaticLibrary(
             "{}/bin/lib{}.{}.{}.a".format(
-                project_dir, lib_name, env["platform"], env["target"]
+                project_dir,
+                lib_name,
+                env["platform"],
+                env["target"],
             ),
             source=sources,
         )
+
 else:
     library = env.SharedLibrary(
         "{}/bin/lib{}{}{}".format(
-            project_dir, lib_name, env["suffix"], env["SHLIBSUFFIX"]
+            project_dir,
+            lib_name,
+            env["suffix"],
+            env["SHLIBSUFFIX"],
         ),
         source=sources,
     )
 
-# Selects the shared library as the default target.
+# Set the default build target.
 Default(library)

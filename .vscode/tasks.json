@@ -192,10 +192,10 @@
       "problemMatcher": []
     },
     {
-      "label": "GDExtension: Build with SCons",
+      "label": "GDExtension: Clean and Build with SCons",
       "group": "build",
-      "type": "process",
-      "command": "scons",
+      "type": "shell",
+      "command": "scons -c && scons -Q",
       "options": {
         "cwd": "${workspaceFolder}/client/gdextension"
       },
