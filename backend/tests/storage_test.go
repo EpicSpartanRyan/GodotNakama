@@ -25,7 +25,7 @@ func TestRustFSStorageRoundTripPreservesWorld(t *testing.T) {
 
 	rustfs, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: testcontainers.ContainerRequest{
-			Image:        "rustfs/rustfs:1.0.1",
+			Image:        "rustfs/rustfs:1.0.2",
 			ExposedPorts: []string{"9000/tcp"},
 			Env: map[string]string{
 				"RUSTFS_ACCESS_KEY": "admin",
