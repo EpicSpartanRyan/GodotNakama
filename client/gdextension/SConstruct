@@ -31,14 +31,6 @@ sources = Glob("src/*.cpp")
 lib_name = "world_generator"
 project_dir = "demo"
 
-# # Add LZ4 library dependency
-# if env["platform"] == "macos":
-#     env.Append(LIBPATH=["/usr/local/lib"])
-#     env.Append(LIBS=["lz4"])
-# else:
-#     env.Append(LIBS=["lz4"])
-#     env.Append(LIBPATH=["/usr/local/lib"])
-
 env.Append(CPPPATH=["/usr/local/include"])
 
 if env["platform"] == "macos":
