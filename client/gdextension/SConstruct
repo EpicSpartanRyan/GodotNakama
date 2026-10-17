@@ -10,13 +10,17 @@ ARGUMENTS.setdefault("compiledb", "yes")
 ARGUMENTS.setdefault("use_llvm", "yes")
 ARGUMENTS.setdefault("precision", "single")
 
-# Enable ThinLTO through the native godot-cpp option.
-ARGUMENTS.setdefault("lto", "thin")
+# Enable ThinLTO by default only on Linux with LLVM.
+if (
+    ARGUMENTS.get("platform", sys.platform) == "linux"
+    and ARGUMENTS.get("use_llvm", "yes") == "yes"
+):
+    ARGUMENTS.setdefault("lto", "thin")
 
 # Configure godot-cpp.
 env = SConscript("godot-cpp/SConstruct")
 
-# Use LLD as the linker on Linux when LLVM is enabled.
+# Use LLD on Linux when LLVM is enabled.
 if env.get("use_llvm", False) and env.get("platform") == "linux":
     env.Append(
         LINKFLAGS=["-fuse-ld=lld"],
