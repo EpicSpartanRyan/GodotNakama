@@ -110,6 +110,19 @@
       }
     },
     {
+      "label": "Inochi: Start (Software Rendering)",
+      "group": "apps",
+      "type": "shell",
+      "command": "mkdir -p /tmp/inochi-state && dbus-run-session -- env GALLIUM_DRIVER=llvmpipe LIBGL_ALWAYS_SOFTWARE=1 SDL_VIDEODRIVER=x11 XDG_STATE_HOME=/tmp/inochi-state /opt/inochi-creator/inochi-creator",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Docker: View Logs (Nakama / DB)",
       "group": "docker",
       "type": "shell",
