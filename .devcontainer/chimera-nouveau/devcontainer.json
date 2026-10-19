@@ -34,7 +34,7 @@
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
     "TESTCONTAINERS_HOST_OVERRIDE": "host.docker.internal",
     "TESTCONTAINERS_RYUK_DISABLED": "true",
-    "DISPLAY": ":1",
+    "DISPLAY": ":0",
     "WAYLAND_DISPLAY": "wayland-1",
     "XDG_RUNTIME_DIR": "/tmp/runtime-dir",
     "PULSE_SERVER": "unix:/tmp/runtime-dir/pulse/native",

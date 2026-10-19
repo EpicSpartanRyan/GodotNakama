@@ -1,3 +1,4 @@
+
 FROM mcr.microsoft.com/dotnet/sdk:10.0
 
 # Version pinning
@@ -10,7 +11,7 @@ ARG INOCHI_CREATOR_VERSION="0.8.6"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-# 1. System tools and dependencies (Godot, Aseprite, GIMP, and Inochi2D)
+# 1. System tools, GUI dependencies, and diagnostics
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates=20260601~24.04.1 \
     curl=8.5.0-2ubuntu10.16 \
@@ -75,23 +76,40 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2t64=1.2.11-1ubuntu0.3 \
     libasound2-plugins=1.2.7.1-1ubuntu5 \
     pulseaudio-utils=1:16.1+dfsg1-2ubuntu10.1 \
+    file=1:5.45-3build1 \
+    strace=6.8-0ubuntu2 \
+    x11-utils=7.7+6build2 \
+    xauth=1:1.1.2-1build1 \
+    lsof=4.95.0-1build3 \
+    psmisc=23.7-1build1 \
+    procps=2:4.0.4-4ubuntu3.3 \
+    binutils=2.42-4ubuntu2.10 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git lfs install --system
 
-# 2. Download and install Godot 4.7.2 .NET version (labeled as mono)
-RUN GODOT_BUILD="Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux_x86_64" && \
-    wget --quiet https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/${GODOT_BUILD}.zip && \
-    unzip ${GODOT_BUILD}.zip -d /opt/godot && \
-    rm ${GODOT_BUILD}.zip && \
-    mv /opt/godot/${GODOT_BUILD} /opt/godot/godot-mono && \
-    ln -s /opt/godot/godot-mono/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux.x86_64 /usr/local/bin/godot
+# 2. Download and install Godot .NET
+RUN set -eux; \
+    mkdir -p /opt/godot; \
+    GODOT_BUILD="Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux_x86_64"; \
+    GODOT_URL="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/${GODOT_BUILD}.zip"; \
+    echo "Descargando Godot desde: ${GODOT_URL}"; \
+    wget --show-progress --progress=bar:force:noscroll \
+      --timeout=30 --tries=3 \
+      "${GODOT_URL}" -O "/tmp/${GODOT_BUILD}.zip"; \
+    test -s "/tmp/${GODOT_BUILD}.zip"; \
+    echo "Extrayendo Godot..."; \
+    unzip "/tmp/${GODOT_BUILD}.zip" -d /opt/godot; \
+    rm "/tmp/${GODOT_BUILD}.zip"; \
+    mv "/opt/godot/${GODOT_BUILD}" /opt/godot/godot-mono; \
+    ln -s "/opt/godot/godot-mono/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_mono_linux.x86_64" /usr/local/bin/godot; \
+    /usr/local/bin/godot --version
 
 # 3. Build and install Aseprite with Skia
 RUN mkdir -p /opt/aseprite /opt/skia && \
-    wget --quiet https://github.com/aseprite/skia/releases/download/${SKIA_VERSION}/Skia-Linux-Release-x64.zip -O /tmp/skia.zip && \
+    wget --quiet "https://github.com/aseprite/skia/releases/download/${SKIA_VERSION}/Skia-Linux-Release-x64.zip" -O /tmp/skia.zip && \
     unzip -q /tmp/skia.zip -d /opt/skia && \
-    wget --quiet https://github.com/aseprite/aseprite/releases/download/v${ASEPRITE_VERSION}/Aseprite-v${ASEPRITE_VERSION}-Source.zip -O /tmp/aseprite.zip && \
+    wget --quiet "https://github.com/aseprite/aseprite/releases/download/v${ASEPRITE_VERSION}/Aseprite-v${ASEPRITE_VERSION}-Source.zip" -O /tmp/aseprite.zip && \
     unzip -q /tmp/aseprite.zip -d /opt/aseprite && \
     cmake -S /opt/aseprite -B /opt/aseprite/build -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
@@ -105,11 +123,11 @@ RUN mkdir -p /opt/aseprite /opt/skia && \
     -DSKIA_LIBRARY=/opt/skia/out/Release-x64/libskia.a && \
     cmake --build /opt/aseprite/build --target aseprite --parallel && \
     ln -s /opt/aseprite/build/bin/aseprite /usr/local/bin/aseprite && \
-    rm -rf /tmp/aseprite /tmp/*.zip
+    rm -f /tmp/aseprite.zip /tmp/skia.zip
 
-# 4. Download and install precompiled Inochi Creator v0.8.6
+# 4. Download and install Inochi Creator
 RUN mkdir -p /opt/inochi-creator && \
-    wget --quiet https://github.com/Inochi2D/inochi-creator/releases/download/v${INOCHI_CREATOR_VERSION}/inochi-creator-linux.zip -O /tmp/inochi-creator.zip && \
+    wget --quiet "https://github.com/Inochi2D/inochi-creator/releases/download/v${INOCHI_CREATOR_VERSION}/inochi-creator-linux.zip" -O /tmp/inochi-creator.zip && \
     unzip -q /tmp/inochi-creator.zip -d /opt/inochi-creator && \
     chmod +x /opt/inochi-creator/inochi-creator && \
     rm /tmp/inochi-creator.zip

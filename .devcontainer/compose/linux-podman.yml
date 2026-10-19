@@ -2,7 +2,7 @@ services:
   godot:
     ipc: host
     environment:
-      DISPLAY: ":1"
+      DISPLAY: ":0"
       WAYLAND_DISPLAY: "wayland-1"
       XAUTHORITY: /tmp/.Xauthority
       XDG_RUNTIME_DIR: /tmp/runtime-dir
@@ -10,5 +10,5 @@ services:
       VSCODE_DOTNET_RUNTIME_DISABLE_MUTEX: "true"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ~/.Xauthority:/tmp/.Xauthority:ro
+      - ${XAUTHORITY}:/tmp/.Xauthority:ro
       - /run/user/1000:/tmp/runtime-dir:rw
