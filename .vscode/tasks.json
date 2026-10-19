@@ -260,7 +260,14 @@
       "group": "godot",
       "type": "shell",
       "command": "bash \"${workspaceFolder}/.vscode/scripts/install-godot-export-templates.sh\" \"${workspaceFolder}\"",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "clear": false
+      }
     },
     {
       "label": "Godot: Start",
