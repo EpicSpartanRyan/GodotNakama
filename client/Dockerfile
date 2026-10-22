@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     scons=4.5.2+dfsg-1 \
     g++=4:13.2.0-7ubuntu1 \
     ninja-build=1.11.1-2 \
-    tmux=3.4-1ubuntu0.1 \
+    tmux=3.4-1ubuntu0.2 \
     zsh=5.9-6ubuntu2 \
     jq=1.7.1-3ubuntu0.24.04.2 \
     nano=7.2-2ubuntu0.2 \
