@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl=8.5.0-2ubuntu10.16 \
     wget=1.21.4-1ubuntu4.5 \
     unzip=6.0-28ubuntu4.1 \
-    git=1:2.43.0-1ubuntu7.3 \
+    git=1:2.43.0-1ubuntu7.4 \
     git-lfs=3.4.1-1ubuntu0.4 \
     clang=1:18.0-59~exp2 \
     clangd=1:18.0-59~exp2 \
