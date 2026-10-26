@@ -13,7 +13,7 @@
     <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
     
     <!-- Dependency Injection -->
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
 
     <!-- Multiplayer -->
     <PackageReference Include="NakamaClient" Version="3.22.1" />
