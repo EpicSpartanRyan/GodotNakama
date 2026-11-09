@@ -16,6 +16,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
 
     <!-- Multiplayer -->
-    <PackageReference Include="NakamaClient" Version="3.22.1" />
+    <PackageReference Include="NakamaClient" Version="3.23.0" />
   </ItemGroup>
 </Project>
