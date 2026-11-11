@@ -1,5 +1,5 @@
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0
+FROM mcr.microsoft.com/dotnet/sdk:11.0
 
 # Version pinning
 ARG GODOT_VERSION="4.7.2"
