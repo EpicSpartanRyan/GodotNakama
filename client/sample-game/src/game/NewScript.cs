@@ -19,6 +19,14 @@ public partial class NewScript : Node2D
 
         // Set the rich presence
 
+        if (_discordClient == null)
+        {
+            GD.Print("Couldn't initialize discord client");
+            return;
+        }
+        GD.Print("Discord client initialized");
+        
+
         _discordClient.SetPresence(new RichPresence()
         {
            Details = "A Basic Example",
