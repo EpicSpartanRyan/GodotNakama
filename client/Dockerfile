@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     netcat-openbsd=1.226-1ubuntu2 \
     libfontconfig1-dev=2.15.0-1.1ubuntu2 \
     libfontconfig1=2.15.0-1.1ubuntu2 \
-    libgl1-mesa-dev=25.2.8-0ubuntu0.24.04.4 \
+    libgl1-mesa-dev=25.2.8-0ubuntu0.24.04.5 \
     libglu1-mesa=9.0.2-1.1build1 \
     libxcursor1=1:1.2.1-1build1 \
     libxcursor-dev=1:1.2.1-1build1 \
