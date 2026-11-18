@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1=1.7.0-1build1 \
     vulkan-tools=1.3.275.0+dfsg1-1 \
     libvulkan1=1.3.275.0-1build1 \
-    mesa-vulkan-drivers=25.2.8-0ubuntu0.24.04.4 \
+    mesa-vulkan-drivers=25.2.8-0ubuntu0.24.04.5 \
     vulkan-validationlayers=1.3.275.0-1 \
     netcat-openbsd=1.226-1ubuntu2 \
     libfontconfig1-dev=2.15.0-1.1ubuntu2 \
