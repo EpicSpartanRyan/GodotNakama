@@ -63,7 +63,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wayland-protocols=1.45-1~ubuntu0.24.04.2 \
     libasound2-dev=1.2.11-1ubuntu0.3 \
     libpulse-dev=1:16.1+dfsg1-2ubuntu10.1 \
-    libudev-dev=255.4-1ubuntu8.18 \
+    libudev-dev=255.4-1ubuntu8.19 \
     pkg-config=1.8.1-2build1 \
     libwayland-client0=1.22.0-2.1build1 \
     libwayland-egl1=1.22.0-2.1build1 \
