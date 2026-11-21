@@ -68,7 +68,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libwayland-client0=1.22.0-2.1build1 \
     libwayland-egl1=1.22.0-2.1build1 \
     libwayland-cursor0=1.22.0-2.1build1 \
-    libglx-mesa0=25.2.8-0ubuntu0.24.04.4 \
+    libglx-mesa0=25.2.8-0ubuntu0.24.04.5 \
     libglib2.0-0t64=2.80.0-6ubuntu3.10 \
     libdbus-1-3=1.14.10-4ubuntu4.1 \
     dbus-x11=1.14.10-4ubuntu4.1 \
