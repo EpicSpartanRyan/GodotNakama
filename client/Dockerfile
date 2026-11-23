@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1=1.7.0-1build1 \
     vulkan-tools=1.3.275.0+dfsg1-1 \
     libvulkan1=1.3.275.0-1build1 \
-    mesa-vulkan-drivers=25.2.8-0ubuntu0.24.04.4 \
+    mesa-vulkan-drivers=25.2.8-0ubuntu0.24.04.5 \
     vulkan-validationlayers=1.3.275.0-1 \
     netcat-openbsd=1.226-1ubuntu2 \
     libfontconfig1-dev=2.15.0-1.1ubuntu2 \
@@ -63,12 +63,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wayland-protocols=1.45-1~ubuntu0.24.04.2 \
     libasound2-dev=1.2.11-1ubuntu0.3 \
     libpulse-dev=1:16.1+dfsg1-2ubuntu10.1 \
-    libudev-dev=255.4-1ubuntu8.18 \
+    libudev-dev=255.4-1ubuntu8.19 \
     pkg-config=1.8.1-2build1 \
     libwayland-client0=1.22.0-2.1build1 \
     libwayland-egl1=1.22.0-2.1build1 \
     libwayland-cursor0=1.22.0-2.1build1 \
-    libglx-mesa0=25.2.8-0ubuntu0.24.04.4 \
+    libglx-mesa0=25.2.8-0ubuntu0.24.04.5 \
     libglib2.0-0t64=2.80.0-6ubuntu3.10 \
     libdbus-1-3=1.14.10-4ubuntu4.1 \
     dbus-x11=1.14.10-4ubuntu4.1 \
