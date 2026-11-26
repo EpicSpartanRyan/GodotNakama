@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcursor1=1:1.2.1-1build1 \
     libxcursor-dev=1:1.2.1-1build1 \
     libxi6=2:1.8.1-1build1 \
-    libxi-dev=2:1.8.1-1build1 \
+    libxi-dev=2:1.8.1-1ubuntu0.1 \
     libxinerama1=2:1.1.4-3build1 \
     libxrandr2=2:1.5.2-2build1 \
     libxrandr-dev=2:1.5.2-2build1 \
