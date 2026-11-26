@@ -73,7 +73,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-3=1.14.10-4ubuntu4.1 \
     dbus-x11=1.14.10-4ubuntu4.1 \
     libpulse0=1:16.1+dfsg1-2ubuntu10.1 \
-    libasound2t64=1.2.11-1ubuntu0.3 \
+    libasound2t64=1.2.11-1ubuntu0.5 \
     libasound2-plugins=1.2.7.1-1ubuntu5 \
     pulseaudio-utils=1:16.1+dfsg1-2ubuntu10.1 \
     file=1:5.45-3build1 \
