@@ -83,7 +83,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     lsof=4.95.0-1build3 \
     psmisc=23.7-1build1 \
     procps=2:4.0.4-4ubuntu3.3 \
-    binutils=2.42-4ubuntu2.10 \
+    binutils=2.42-4ubuntu2.11 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git lfs install --system
