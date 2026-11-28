@@ -10,3 +10,6 @@ func _plugging():
 	
 	# Unit test
 	plug("bitwes/Gut", {"tag": "v9.7.1", "dev": true})
+	
+	# Godot MCP (editor plugin + MCP server bridge, 386 tools)
+	plug("yanhuifair/godot-mcp", {"tag": "v1.12.18", "dev": true})
