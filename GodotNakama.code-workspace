@@ -20,11 +20,9 @@
             "name": "🕹️ Game Client"
         }
     ],
-    
     "settings": {
         "dotnet.defaultSolution": "client/sample-game/Sample-Game.sln",
-        "taskviewer.showAll": false,
-        "taskviewer.showLaunches": false,
+        "taskviewer.showAll": true,
         "taskviewer.icons": {
             "recommended": "device-desktop",
             "doctor": "heart",
@@ -55,7 +53,6 @@
             "default": "charts.blue"
         }
     },
-
     "extensions": {
         "recommendations": [
             "davidanson.vscode-markdownlint",

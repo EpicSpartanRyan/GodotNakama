@@ -30,3 +30,5 @@ nakama/my-config.yml
 **.os
 **.dblite
 client/gdextension/compile_commands.json
+
+.agents/
