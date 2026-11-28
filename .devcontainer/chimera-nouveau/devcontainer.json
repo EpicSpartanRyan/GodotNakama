@@ -30,11 +30,6 @@
       "source": "godotnakama-cline-data",
       "target": "/home/ubuntu/.cline",
       "type": "volume"
-    },
-    {
-      "source": "godotnakama-vscode-globalstorage",
-      "target": "/home/ubuntu/.vscode-server/data/User/globalStorage",
-      "type": "volume"
     }
   ],
   "hostRequirements": {
@@ -71,5 +66,5 @@
     }
   },
   "shutdownAction": "stopCompose",
-  "postCreateCommand": "sudo chown -R root:root /home/ubuntu/.cline /home/ubuntu/.vscode-server/data/User/globalStorage"
+  "postCreateCommand": "sudo chown -R root:root /home/ubuntu/.cline"
 }
