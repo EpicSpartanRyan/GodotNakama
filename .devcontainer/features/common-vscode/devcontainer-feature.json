@@ -57,7 +57,10 @@
         "YuTengjing.open-in-external-app",
 
         // Documentation browsing
-        "saxc.search-on"
+        "saxc.search-on",
+
+        // Agentic Development
+        "saoudrizwan.claude-dev"
       ],
       "settings": {
         "searchOn.dockerHub": false,
