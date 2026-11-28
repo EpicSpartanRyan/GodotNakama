@@ -15,6 +15,10 @@ run/main_scene="res://scenes/node_2d.tscn"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 config/icon="res://assets/icon.svg"
 
+[autoload]
+
+godot_mcp_runtime="*res://addons/godot-mcp/runtime_bridge.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"
