@@ -51,5 +51,10 @@
       "onAutoForward": "notify"
     }
   },
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "mounts": [
+    "source=godotnakama-cline-data,target=/home/ubuntu/.cline,type=volume",
+    "source=godotnakama-vscode-globalstorage,target=/home/ubuntu/.vscode-server/data/User/globalStorage,type=volume"
+  ],
+  "postCreateCommand": "sudo chown -R ubuntu:ubuntu /home/ubuntu/.cline /home/ubuntu/.vscode-server/data/User/globalStorage"
 }

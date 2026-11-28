@@ -30,6 +30,16 @@
       "source": "/run/user/1000/wayland-0",
       "target": "/tmp/runtime-dir/wayland-0",
       "type": "bind"
+    },
+    {
+      "source": "godotnakama-cline-data",
+      "target": "/home/ubuntu/.cline",
+      "type": "volume"
+    },
+    {
+      "source": "godotnakama-vscode-globalstorage",
+      "target": "/home/ubuntu/.vscode-server/data/User/globalStorage",
+      "type": "volume"
     }
   ],
   "hostRequirements": {
@@ -65,5 +75,6 @@
       "onAutoForward": "notify"
     }
   },
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "sudo chown -R root:root /home/ubuntu/.cline /home/ubuntu/.vscode-server/data/User/globalStorage"
 }

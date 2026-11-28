@@ -25,6 +25,16 @@
       "source": "/run/user/1000/podman/podman.sock",
       "target": "/var/run/docker-host.sock",
       "type": "bind"
+    },
+    {
+      "source": "godotnakama-cline-data",
+      "target": "/home/ubuntu/.cline",
+      "type": "volume"
+    },
+    {
+      "source": "godotnakama-vscode-globalstorage",
+      "target": "/home/ubuntu/.vscode-server/data/User/globalStorage",
+      "type": "volume"
     }
   ],
   "hostRequirements": {
@@ -60,5 +70,6 @@
       "onAutoForward": "notify"
     }
   },
-  "shutdownAction": "stopCompose"
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "sudo chown -R root:root /home/ubuntu/.cline /home/ubuntu/.vscode-server/data/User/globalStorage"
 }
